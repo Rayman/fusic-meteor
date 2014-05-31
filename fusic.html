@@ -1,13 +1,34 @@
 <head>
-  <title>fusic</title>
+  <title>Fusic</title>
 </head>
 
+<template name="layout">
 <body>
-  {{> hello}}
+	<div class="container">
+	
+	<div class="navbar navbar-default">
+		<div class="navbar-right">
+			{{loginButtons align="right"}}
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-8 col-md-offset-1">
+			<!-- Can be anything based on the router -->
+			{{yield}}
+		</div>
+	</div>
+	</div>
 </body>
+</template>
 
-<template name="hello">
-  <h1>Hello World!</h1>
-  {{greeting}}
-  <input type="button" value="Click" />
+<template name="home">
+	{{#if currentUser}}
+	<p>Welcome back! {{username}}</p>
+	 {{else}}
+	<p>Login to enjoy this website!</p>
+	{{/if}}
+	<h1>Fusic</h1>
+	<h3>Collaborative social music thingy</h3>
+
 </template>
