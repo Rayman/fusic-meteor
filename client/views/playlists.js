@@ -6,3 +6,9 @@ Template.playlists.selected_name = function () {
 Template.playlist.selected = function () {
   return Session.equals("playing_song", this._id) ? "selected" : '';
 };
+
+Template.playlist.helpers({
+  isActiveTab: function(route) {
+	return Session.equals("active_tab", route) ? "active" : "";
+  }
+});

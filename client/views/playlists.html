@@ -22,20 +22,31 @@
 
       <div class="col-md-8">
 
+        <!-- Nav tabs -->
         <ul class="nav nav-tabs">
-          <li class="active"><a href="#">Search</a></li>
-          <li><a href="#">Playlist</a></li>
-          <li><a href="#">Followers</a></li>
-          <li><a href="#">Stats</a></li>
+          <li class="{{isActiveTab 'search'   }}"><a>Search</a></li>
+          <li class="{{isActiveTab 'songs'    }}"><a>Songs</a></li>
+          <li class="{{isActiveTab 'followers'}}"><a>Followers</a></li>
+          <li class="{{isActiveTab 'stats'    }}"><a>Stats</a></li>
         </ul>
 
-        <div class="col-md-10">
-          asdf
-        </div>
-        <div class="col-md-2">
-          <div class="col-md-4"><span class="glyphicon glyphicon-search"></span></div>
-          <div class="col-md-4"><span class="glyphicon glyphicon-heart"></span></div>
-          <div class="col-md-4"><span class="glyphicon glyphicon-remove"></span></div>
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div class="tab-pane active" id="home">
+
+            <div class="col-md-10">
+              asdf
+            </div>
+            <div class="col-md-2">
+              <div class="col-md-4"><span class="glyphicon glyphicon-search"></span></div>
+              <div class="col-md-4"><span class="glyphicon glyphicon-heart"></span></div>
+              <div class="col-md-4"><span class="glyphicon glyphicon-remove"></span></div>
+            </div>
+
+          </div>
+          <div class="tab-pane" id="profile">...</div>
+          <div class="tab-pane" id="messages">...</div>
+          <div class="tab-pane" id="settings">...</div>
         </div>
 
       </div>
