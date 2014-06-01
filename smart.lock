@@ -1,0 +1,15 @@
+{
+  "meteor": {},
+  "dependencies": {
+    "basePackages": {
+      "less-bootstrap-3": {}
+    },
+    "packages": {
+      "less-bootstrap-3": {
+        "git": "https://github.com/DerMambo/less-bootstrap-3.git",
+        "tag": "v0.0.1",
+        "commit": "1321ac0ebc809bc354186b96f4c28b7042e38507"
+      }
+    }
+  }
+}
