@@ -19,9 +19,9 @@
           <li class="{{ isActivePath 'friends'   }}"><a href="{{pathFor 'friends'}}">Friends</a></li>
         </ul>
 
-        <div class="navbar-form navbar-right">
-          <button type="submit" class="btn btn-success">Sign in</button>
-        </div>
+        <ul class="nav navbar-nav navbar-right">
+          {{> loginButtons }}
+        </ul>
 
       </div><!--/.nav-collapse -->
     </div>
