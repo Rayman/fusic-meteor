@@ -10,14 +10,22 @@ var LoggedInController = BaseController.extend({
 Router.map(function() {
   this.route('home', {path: '/'});
   this.route('overview');
-  this.route('playlists');
-  this.route('loved');
-  this.route('friends');
 
-  this.route('playlist', { 
+  this.route('playlists', {
+    data: {
+      playlists: function() {
+        return Playlists.find({});
+      }
+    }
+  });
+  this.route('playlist', {
     path: '/playlist/:_id',
+    notFoundTemplate: 'playlistNotFound',
     data: function() {
       return Playlists.findOne(this.params._id);
     }
   });
+
+  this.route('loved');
+  this.route('friends');
 });

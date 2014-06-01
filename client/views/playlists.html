@@ -1,3 +1,45 @@
 <template name="playlists">
-	Playlists
+  <ul class="playlists">
+    {{#each playlists}}
+      {{> playlistEntry}}
+    {{/each}}
+  </ul>
+</template>
+
+<template name="playlistEntry">
+  <li>
+    <a href="{{pathFor 'playlist'}}">{{name}}</a>
+  </li>
+</template>
+
+<template name="playlist">
+  <div class="container">
+
+    <div class="row">
+      <div class="col-md-4">
+        <h1>{{name}}</h1>
+      </div>
+
+      <div class="col-md-8">
+
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#">Search</a></li>
+          <li><a href="#">Playlist</a></li>
+          <li><a href="#">Followers</a></li>
+          <li><a href="#">Stats</a></li>
+        </ul>
+
+        <div class="col-md-10">
+          asdf
+        </div>
+        <div class="col-md-2">
+          <div class="col-md-4"><span class="glyphicon glyphicon-search"></span></div>
+          <div class="col-md-4"><span class="glyphicon glyphicon-heart"></span></div>
+          <div class="col-md-4"><span class="glyphicon glyphicon-remove"></span></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
 </template>
