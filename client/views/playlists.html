@@ -41,10 +41,10 @@
   <div class="tab-content">
     <div class="tab-pane {{isActiveTab 'search'}}">
 
-      <form>
+      <form class="youtube-search">
         <div class="input-group">
           <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
-          <input type="text" class="form-control" placeholder="Search">
+          <input type="text" class="form-control youtube-query" placeholder="Search">
         </div>
       </form>
       {{> searchResults}}
@@ -72,5 +72,22 @@
   {{#if error}}
     <h1>{{error}}</h1>
   {{/if}}
-  {{result}}
+
+  {{#with result}}
+    <p>Results found: {{totalResults}}</p>
+    <ul>
+    {{#each items}}
+      {{> searchResult}}
+    {{/each}}
+    </ul>
+  {{/with}}
+</template>
+
+<template name="searchResult">
+  <li>
+    {{#with snippet}}
+      <img src="{{thumbnails.default.url}}" alt="thumbnail" />
+      {{title}}
+    {{/with}}
+  </li>
 </template>
