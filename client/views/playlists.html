@@ -39,12 +39,21 @@
 
   <!-- Tab panes -->
   <div class="tab-content">
-    <div class="tab-pane {{isActiveTab 'search'}}">search</div>
+    <div class="tab-pane {{isActiveTab 'search'}}">
+
+      <form>
+        <div class="input-group">
+          <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+      </form>
+      {{> searchResults}}
+    </div>
 
     <div class="tab-pane {{isActiveTab 'songs'}}">
 
       <div class="col-md-10">
-        asdf
+        songs
       </div>
       <div class="col-md-2">
         <div class="col-md-4"><span class="glyphicon glyphicon-search"></span></div>
@@ -54,7 +63,14 @@
 
     </div>
 
-    <div class="tab-pane {{isActiveTab 'followers'}}">songs</div>
-    <div class="tab-pane {{isActiveTab 'stats'}}">asdf</div>
+    <div class="tab-pane {{isActiveTab 'followers'}}">followers</div>
+    <div class="tab-pane {{isActiveTab 'stats'}}">stats</div>
   </div>
+</template>
+
+<template name="searchResults">
+  {{#if error}}
+    <h1>{{error}}</h1>
+  {{/if}}
+  {{result}}
 </template>

@@ -14,13 +14,20 @@ Meteor.methods({
 
     Youtube.search.list(options, function (err, data) {
       if (err) {
-        console.log('Youtube error:', err, data);
+        console.log('Youtube error:', err);
+        future.return(new Meteor.Error(500, 'Internal server error', err));
+      } else {
+        // Return the results
+        future.return(data);
       }
-      // Return the results
-      future.return(arguments);
     });
 
     // Wait for async to finish before returning the result
-    return future.wait();
+    var r = future.wait();
+    if (r instanceof Meteor.Error) {
+      throw r;
+    } else {
+      return r;
+    }
   },
 });

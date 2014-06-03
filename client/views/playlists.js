@@ -23,3 +23,38 @@ Template.playlistTabs.events = {
     Session.set("active_tab", route);
   }
 };
+
+// Youtube search results
+
+var searchResults;
+var searchError;
+var searchResultsDependency = new Deps.Dependency();
+
+youtubeSearch = function(options) {
+  options = options || {};
+  var defaultOptions = {
+    'part': 'snippet'
+  };
+  options = _.extend(defaultOptions, options);
+
+  Meteor.call('youtube_search', options, function(error, data) {
+    if (error) {
+      console.log('Youtube API error:', error);
+    } else {
+      console.log('Youtube API result:', data);
+    }
+    searchError   = error;
+    searchResults = data;
+    searchResultsDependency.changed();
+  });
+};
+
+Template.searchResults.result = function() {
+  Deps.depend(searchResultsDependency);
+  return searchResults;
+};
+
+Template.searchResults.error = function() {
+  Deps.depend(searchResultsDependency);
+  return searchError;
+};
