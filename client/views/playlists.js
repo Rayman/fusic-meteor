@@ -28,17 +28,33 @@ Template.playlistTabs.events = {
   'input input.youtube-query': function (e) {
     var input = $(e.currentTarget);
     youtubeSearch(input.val());
+  },
+  'click .youtube-result': function (e) {
+    var el = $(e.currentTarget);
+    var videoId = el.data('id');
+    console.log('queue video:', videoId);
+  },
+  'click a[rel="external"]': function(e) {
+    e.stopPropagation(); // prevent queueing
+    e.preventDefault(); // prevent linking in current window
+    window.open(e.currentTarget.href, '_blank');
   }
 };
 
 // Youtube search results
 
 var searchTimer;
-var searchDelay = 200; // ms
+var searchDelay = 250; // ms
 
 function youtubeSearch(value) {
   clearTimeout(searchTimer);
   searchTimer = setTimeout(function() {
+    if (!value) {
+      searchResults = null;
+      searchError = 'Please search for something';
+      searchResultsDependency.changed();
+      return;
+    }
     console.log('youtube search for:', value);
     youtubeSearchQuery({
       part: 'snippet',

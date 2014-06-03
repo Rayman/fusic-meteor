@@ -74,7 +74,7 @@
   {{/if}}
 
   {{#with result}}
-    <p>Results found: {{totalResults}}</p>
+    <p>Results found: {{pageInfo.totalResults}}</p>
     <ul>
     {{#each items}}
       {{> searchResult}}
@@ -84,10 +84,11 @@
 </template>
 
 <template name="searchResult">
-  <li>
-    {{#with snippet}}
-      <img src="{{thumbnails.default.url}}" alt="thumbnail" />
-      {{title}}
-    {{/with}}
+  <li class="youtube-result" data-id="{{id.videoId}}">
+      <img src="{{snippet.thumbnails.default.url}}" alt="thumbnail" />
+      {{snippet.title}}
+      <a rel="external" href="http://youtu.be/{{id.videoId}}">
+        <span class="glyphicon glyphicon-link"></span>
+      </a>
   </li>
 </template>
