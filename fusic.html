@@ -30,5 +30,29 @@
 	{{/if}}
 	<h1>Fusic</h1>
 	<h3>Collaborative social music thingy</h3>
+	{{#if currentUser}}
+		<h2>Playlists</h2>
+		<ul>
+		{{#each playlists}}
+			<li><a href="/show/{{_id}}">{{name}}</a></li>
+		{{/each}}
+		</ul>
+	{{/if}}
 
+</template>
+
+<template name="showPlayList">
+	<h1>{{name}}</h1>
+	<p>Description for current playlist</p>
+
+</template>
+
+<template name="loading">
+<div class="alert alert-warning">
+	<span class="glyphicon glyphicon-time"></span>Enjoy your free time! This page is loading..
+</div>
+</template>
+
+<template name="notFound">
+<div class="alert alert-warning"><span class="glyphicon glyphicon-exclamation-sign"></span>Stay within the lines please! I don't know what you're trying to do here..</div>
 </template>

@@ -6,3 +6,5 @@
 autopublish
 insecure
 preserve-inputs
+accounts-ui-unstyled
+accounts-password
