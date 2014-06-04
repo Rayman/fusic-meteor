@@ -7,12 +7,10 @@ Youtube.authenticate({
   key: YOUTUBE_ACCESS_TOKEN
 });
 
-Meteor.methods({
-  youtube_search: function(options) {
-
+function callYoutubeAPI(module, fn, options) {
     var future = new Future();
 
-    Youtube.search.list(options, function (err, data) {
+    Youtube[module][fn](options, function (err, data) {
       if (err) {
         console.log('Youtube error:', err);
         future.return(new Meteor.Error(500, 'Internal server error', err));
@@ -29,5 +27,13 @@ Meteor.methods({
     } else {
       return r;
     }
+}
+
+Meteor.methods({
+  youtube_search: function(options) {
+    return callYoutubeAPI("search", "list", options);
+  },
+  youtube_videos_list: function(options) {
+    return callYoutubeAPI("videos", "list", options);
   },
 });
