@@ -1,0 +1,94 @@
+<template name="playlists">
+  <ul class="playlists">
+    {{#each playlists}}
+      {{> playlistEntry}}
+    {{/each}}
+  </ul>
+</template>
+
+<template name="playlistEntry">
+  <li>
+    <a href="{{pathFor 'playlist'}}">{{name}}</a>
+  </li>
+</template>
+
+<template name="playlist">
+  <div class="container">
+
+    <div class="row">
+      <div class="col-md-4">
+        <h1>{{name}}</h1>
+      </div>
+
+      <div class="col-md-8">
+        {{> playlistTabs}}
+      </div>
+    </div>
+
+  </div>
+</template>
+
+<template name="playlistTabs">
+  <!-- Nav tabs -->
+  <ul class="playlist-tabs nav nav-tabs">
+    <li class="{{isActiveTab 'search'   }}" data-id="search"   ><a>Search</a></li>
+    <li class="{{isActiveTab 'songs'    }}" data-id="songs"    ><a>Songs</a></li>
+    <li class="{{isActiveTab 'followers'}}" data-id="followers"><a>Followers</a></li>
+    <li class="{{isActiveTab 'stats'    }}" data-id="stats"    ><a>Stats</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div class="tab-pane {{isActiveTab 'search'}}">
+
+      <form class="youtube-search">
+        <div class="input-group">
+          <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+          <input type="text" class="form-control youtube-query" placeholder="Search">
+        </div>
+      </form>
+      {{> searchResults}}
+    </div>
+
+    <div class="tab-pane {{isActiveTab 'songs'}}">
+
+      <div class="col-md-10">
+        songs
+      </div>
+      <div class="col-md-2">
+        <div class="col-md-4"><span class="glyphicon glyphicon-search"></span></div>
+        <div class="col-md-4"><span class="glyphicon glyphicon-heart"></span></div>
+        <div class="col-md-4"><span class="glyphicon glyphicon-remove"></span></div>
+      </div>
+
+    </div>
+
+    <div class="tab-pane {{isActiveTab 'followers'}}">followers</div>
+    <div class="tab-pane {{isActiveTab 'stats'}}">stats</div>
+  </div>
+</template>
+
+<template name="searchResults">
+  {{#if error}}
+    <h1>{{error}}</h1>
+  {{/if}}
+
+  {{#with result}}
+    <p>Results found: {{pageInfo.totalResults}}</p>
+    <ul>
+    {{#each items}}
+      {{> searchResult}}
+    {{/each}}
+    </ul>
+  {{/with}}
+</template>
+
+<template name="searchResult">
+  <li class="youtube-result" data-id="{{id.videoId}}">
+      <img src="{{snippet.thumbnails.default.url}}" alt="thumbnail" />
+      {{snippet.title}}
+      <a rel="external" href="http://youtu.be/{{id.videoId}}">
+        <span class="glyphicon glyphicon-link"></span>
+      </a>
+  </li>
+</template>

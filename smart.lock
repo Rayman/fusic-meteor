@@ -1,0 +1,50 @@
+{
+  "meteor": {},
+  "dependencies": {
+    "basePackages": {
+      "less-bootstrap-3": {},
+      "iron-router": {},
+      "iron-router-active": {},
+      "accounts-ui-bootstrap-3": {},
+      "npm": {},
+      "assert": {}
+    },
+    "packages": {
+      "less-bootstrap-3": {
+        "git": "https://github.com/DerMambo/less-bootstrap-3.git",
+        "tag": "v0.0.1",
+        "commit": "1321ac0ebc809bc354186b96f4c28b7042e38507"
+      },
+      "iron-router": {
+        "git": "https://github.com/EventedMind/iron-router.git",
+        "tag": "v0.7.1",
+        "commit": "d1ffb3f06ea4c112132b030f2eb1a70b81675ecb"
+      },
+      "iron-router-active": {
+        "git": "https://github.com/XpressiveCode/iron-router-active.git",
+        "tag": "v0.2.0",
+        "commit": "1b05aad5325c3dfdb5186b9c288aa53013d767b8"
+      },
+      "accounts-ui-bootstrap-3": {
+        "git": "https://github.com/mangasocial/meteor-accounts-ui-bootstrap-3.git",
+        "tag": "v0.3.0-1",
+        "commit": "93ffa5d0e325dc7026de89f6d90c178fa04bdd3a"
+      },
+      "npm": {
+        "git": "https://github.com/arunoda/meteor-npm.git",
+        "tag": "v0.2.6",
+        "commit": "177ab6118de5bf8cffb19481343d5762ff7a2aaf"
+      },
+      "assert": {
+        "git": "https://github.com/peerlibrary/meteor-assert.git",
+        "tag": "v0.2.3",
+        "commit": "9c838fbf5053a9f4c9ea21cad8e2fef8f1374e7c"
+      },
+      "blaze-layout": {
+        "git": "https://github.com/EventedMind/blaze-layout.git",
+        "tag": "v0.2.4",
+        "commit": "b40e9b0612329288d75cf52ad14a7da64bb8618f"
+      }
+    }
+  }
+}

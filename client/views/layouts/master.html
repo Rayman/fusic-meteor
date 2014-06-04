@@ -1,0 +1,12 @@
+<template name="masterLayout">
+    <header>
+        {{> yield region='header'}}
+    </header>
+    <div id="main">
+        {{> yield}}
+        {{! Also a sidebar! }}
+    </div>
+    <footer>
+        {{> yield region='footer'}}
+    </footer>
+</template>
