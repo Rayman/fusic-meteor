@@ -4,6 +4,7 @@
     "iron-router": {},
     "iron-router-active": {},
     "accounts-ui-bootstrap-3": {},
-    "npm": {}
+    "npm": {},
+    "assert": {}
   }
 }

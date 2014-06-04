@@ -6,7 +6,8 @@
       "iron-router": {},
       "iron-router-active": {},
       "accounts-ui-bootstrap-3": {},
-      "npm": {}
+      "npm": {},
+      "assert": {}
     },
     "packages": {
       "less-bootstrap-3": {
@@ -33,6 +34,11 @@
         "git": "https://github.com/arunoda/meteor-npm.git",
         "tag": "v0.2.6",
         "commit": "177ab6118de5bf8cffb19481343d5762ff7a2aaf"
+      },
+      "assert": {
+        "git": "https://github.com/peerlibrary/meteor-assert.git",
+        "tag": "v0.2.3",
+        "commit": "9c838fbf5053a9f4c9ea21cad8e2fef8f1374e7c"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",

@@ -34,6 +34,30 @@ Meteor.methods({
     return callYoutubeAPI("search", "list", options);
   },
   youtube_videos_list: function(options) {
-    return callYoutubeAPI("videos", "list", options);
+    var result = callYoutubeAPI("videos", "list", options);
+
+    // cache result
+    for (var i=0; i<result.items.length; i++) {
+      var item = result.items[i];
+
+      assert.equal(item.kind, 'youtube#video');
+
+      var doc = {
+        _id      : JSON.stringify(item.id),
+        modified : new Date(),
+        etag     : item.etag
+      };
+      if (item.snippet) {
+        console.log('updating cache for video:', item.id);
+        doc.snippet = item.snippet;
+        Songs.update(
+          { _id: doc._id },
+          doc,
+          { upsert: true }
+        );
+      }
+    }
+
+    return result;
   },
 });
