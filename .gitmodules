@@ -10,3 +10,6 @@
 [submodule "packages/iron-router-active"]
 	path = packages/iron-router-active
 	url = https://github.com/XpressiveCode/iron-router-active.git
+[submodule "packages/blaze-layout"]
+	path = packages/blaze-layout
+	url = https://github.com/EventedMind/blaze-layout.git
