@@ -1,3 +1,6 @@
 [submodule "packages/accounts-ui-bootstrap-3"]
 	path = packages/accounts-ui-bootstrap-3
 	url = https://github.com/mangasocial/meteor-accounts-ui-bootstrap-3.git
+[submodule "packages/less-bootstrap-3"]
+	path = packages/less-bootstrap-3
+	url = https://github.com/DerMambo/less-bootstrap-3.git
