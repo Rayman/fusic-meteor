@@ -4,3 +4,6 @@
 [submodule "packages/less-bootstrap-3"]
 	path = packages/less-bootstrap-3
 	url = https://github.com/DerMambo/less-bootstrap-3.git
+[submodule "packages/iron-router"]
+	path = packages/iron-router
+	url = https://github.com/EventedMind/iron-router.git
