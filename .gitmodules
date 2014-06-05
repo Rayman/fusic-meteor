@@ -13,3 +13,6 @@
 [submodule "packages/blaze-layout"]
 	path = packages/blaze-layout
 	url = https://github.com/EventedMind/blaze-layout.git
+[submodule "packages/npm"]
+	path = packages/npm
+	url = https://github.com/arunoda/meteor-npm.git
