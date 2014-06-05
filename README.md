@@ -7,16 +7,23 @@ The developement version runs on http://fusic.meteor.com/
 
 If you have any modifications or additions, please send a pull request.
 
-Installation
-------------
-1. First, install meteor (https://www.meteor.com/)
-   * `curl https://install.meteor.com/ | sh`
+Installation on Linux
+---------------------
+1. Install meteor (https://www.meteor.com/)
+   `curl https://install.meteor.com/ | sh`
 2. Install meteorite (`mrt`) for meteor package management
-   * `sudo -H npm install -g meteorite`
+   `sudo -H npm install -g meteorite`
 3. Install the local meteorite packages
-   * `mrt update`
+   `mrt update`
 4. Run fusic locally
-   * `meteor`
+   `meteor`
+
+Installation on Windows
+-----------------------
+- Update all git submodules
+  `git submodule update --init`
+- Update the submodules of the assert package
+  `git submodule update --init`
 
 More recent nodejs installation
 -------------------
