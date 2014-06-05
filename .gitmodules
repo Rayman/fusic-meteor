@@ -1,0 +1,3 @@
+[submodule "packages/accounts-ui-bootstrap-3"]
+	path = packages/accounts-ui-bootstrap-3
+	url = https://github.com/mangasocial/meteor-accounts-ui-bootstrap-3.git
