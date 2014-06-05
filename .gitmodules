@@ -7,3 +7,6 @@
 [submodule "packages/iron-router"]
 	path = packages/iron-router
 	url = https://github.com/EventedMind/iron-router.git
+[submodule "packages/iron-router-active"]
+	path = packages/iron-router-active
+	url = https://github.com/XpressiveCode/iron-router-active.git
