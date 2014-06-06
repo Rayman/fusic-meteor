@@ -21,10 +21,8 @@ Router.map(function() {
   this.route('playlist', {
     path: '/playlist/:_id',
     notFoundTemplate: 'playlistNotFound',
-    data: {
-      'playlist': function() {
-        return Playlists.findOne(this.params._id);
-      },
+    data: function() {
+      return Playlists.findOne(this.params._id);
     }
   });
 
