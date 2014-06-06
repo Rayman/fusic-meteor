@@ -20,10 +20,10 @@ Installation on Linux
 
 Installation on Windows
 -----------------------
+- Initialize all git submodules
+  `git submodule update --init --recursive`
 - Update all git submodules
-  `git submodule update --init`
-- Update the submodules of the assert package
-  `git submodule update --init`
+  `git submodule update --recursive`
 
 More recent nodejs installation
 -------------------
