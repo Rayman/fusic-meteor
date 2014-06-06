@@ -1,0 +1,33 @@
+[submodule "packages/accounts-ui-bootstrap-3"]
+	path = packages/accounts-ui-bootstrap-3
+	url = https://github.com/mangasocial/meteor-accounts-ui-bootstrap-3.git
+[submodule "packages/less-bootstrap-3"]
+	path = packages/less-bootstrap-3
+	url = https://github.com/DerMambo/less-bootstrap-3.git
+[submodule "packages/iron-router"]
+	path = packages/iron-router
+	url = https://github.com/EventedMind/iron-router.git
+[submodule "packages/iron-router-active"]
+	path = packages/iron-router-active
+	url = https://github.com/XpressiveCode/iron-router-active.git
+[submodule "packages/blaze-layout"]
+	path = packages/blaze-layout
+	url = https://github.com/EventedMind/blaze-layout.git
+[submodule "packages/npm"]
+	path = packages/npm
+	url = https://github.com/arunoda/meteor-npm.git
+[submodule "packages/assert"]
+	path = packages/assert
+	url = https://github.com/peerlibrary/meteor-assert.git
+[submodule "packages/autoform"]
+	path = packages/autoform
+	url = https://github.com/aldeed/meteor-autoform.git
+[submodule "packages/simple-schema"]
+	path = packages/simple-schema
+	url = https://github.com/aldeed/meteor-simple-schema.git
+[submodule "packages/collection2"]
+	path = packages/collection2
+	url = https://github.com/aldeed/meteor-collection2.git
+[submodule "packages/moment"]
+	path = packages/moment
+	url = https://github.com/acreeger/meteor-moment.git
