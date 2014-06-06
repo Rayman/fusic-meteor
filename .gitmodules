@@ -19,3 +19,15 @@
 [submodule "packages/assert"]
 	path = packages/assert
 	url = https://github.com/peerlibrary/meteor-assert.git
+[submodule "packages/autoform"]
+	path = packages/autoform
+	url = https://github.com/aldeed/meteor-autoform.git
+[submodule "packages/simple-schema"]
+	path = packages/simple-schema
+	url = https://github.com/aldeed/meteor-simple-schema.git
+[submodule "packages/collection2"]
+	path = packages/collection2
+	url = https://github.com/aldeed/meteor-collection2.git
+[submodule "packages/moment"]
+	path = packages/moment
+	url = https://github.com/acreeger/meteor-moment.git

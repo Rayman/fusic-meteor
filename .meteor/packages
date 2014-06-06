@@ -15,3 +15,7 @@ accounts-ui-bootstrap-3
 coffeescript
 npm
 assert
+autoform
+simple-schema
+collection2
+moment
