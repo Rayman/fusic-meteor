@@ -68,7 +68,9 @@
     <div class="tab-pane {{isActiveTab 'songs'}}">
 
       <div class="col-md-10">
-        songs
+        {{#each songs}}
+			<p><span id="removesong" class="glyphicon glyphicon-remove"></span> <strong>{{name}}</strong> ({{duration}})</p>
+		{{/each}}
       </div>
       <div class="col-md-2">
         <div class="col-md-4"><span class="glyphicon glyphicon-search"></span></div>
@@ -89,8 +91,8 @@
   {{/if}}
 
   {{#with result}}
-    <p>Results found: {{pageInfo.totalResults}}</p>
-    <ul>
+    <!-- Not interesting at all <p>Results found: {{pageInfo.totalResults}}</p> -->
+    <ul class="list-group">
     {{#each items}}
       {{> searchResult}}
     {{/each}}
@@ -99,11 +101,21 @@
 </template>
 
 <template name="searchResult">
-  <li class="youtube-result" data-id="{{id.videoId}}">
-      <img src="{{snippet.thumbnails.default.url}}" alt="thumbnail" />
-      {{snippet.title}}
-      <a rel="external" href="http://youtu.be/{{id.videoId}}">
-        <span class="glyphicon glyphicon-link"></span>
-      </a>
+  <li class="youtube-result list-group-item" data-id="{{id}}">
+	<div class="floatleft overlay-container" style="margin-right:20px">
+		<p class="duration-container">{{calcTime contentDetails.duration}}</p>
+		<img src="{{snippet.thumbnails.default.url}}" alt="thumbnail" />
+	</div>
+	<div>
+		<h4 class="list-group-item-heading">{{snippet.title}}</h4>
+		<button type="submit" id="quickAdd" class="btn btn-primary btn-xs floatright">
+			<span class="glyphicon glyphicon-plus"></span>
+		</button>
+		<span class="glyphicon glyphicon-thumbs-up green bold"></span> {{statistics.likeCount}}
+		<span class="glyphicon glyphicon-thumbs-down red bold"></span> {{statistics.dislikeCount}}
+		<a rel="external" href="http://youtu.be/{{id.videoId}}">
+			<span class="glyphicon glyphicon-link"></span>
+		</a>
+	</div>
   </li>
 </template>
