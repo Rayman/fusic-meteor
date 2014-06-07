@@ -3,29 +3,42 @@ fusic-meteor
 
 Fusic: Realtime Social Music Collaboration
 
-The developement version runs on http://fusic.meteor.com/
+The development version runs on http://fusic.meteor.com/
+
+If you have good idea's or want to report a bug, please [create a new issue on github](https://github.com/Rayman/fusic-meteor/issues).
 
 If you have any modifications or additions, please send a pull request.
 
-Installation on Linux
----------------------
+Installation
+------------
 1. Install meteor (https://www.meteor.com/)
    `curl https://install.meteor.com/ | sh`
-2. Install meteorite (`mrt`) for meteor package management
-   `sudo -H npm install -g meteorite`
-3. Install the local meteorite packages
-   `mrt update`
+2. Initialize all git submodules
+   `git submodule update --init --recursive`
+3. Update all git submodules
+   `git submodule update --recursive`
 4. Run fusic locally
    `meteor`
 
-Installation on Windows
------------------------
-- Initialize all git submodules
-  `git submodule update --init --recursive`
-- Update all git submodules
-  `git submodule update --recursive`
+Collaborating
+------------
+Here is some good reading material: https://help.github.com/categories/63/articles
 
-More recent nodejs installation
+- [Using pull requests](https://help.github.com/articles/using-pull-requests)
+- [Syncing a fork](https://help.github.com/articles/syncing-a-fork)
+
+Meteorite (Optional)
+--------------------
+You can use meteorite to quickly add new meteor packages. Unfortunately it only runs on Windows.
+
+1. Install
+  `sudo -H npm install -g meteorite`
+2. Add a new package
+   `mrt add <package name>`
+3. Update all packages
+   `mrt update`
+
+Install a more recent nodejs installation (Optional)
 -------------------
     sudo add-apt-repository ppa:chris-lea/node.js
     sudo apt-get update
