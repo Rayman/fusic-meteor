@@ -26,10 +26,13 @@
 
     <div class="row">
       <div class="col-md-4">
-        <h1>Title: {{title}}</h1>
-        <h2>Description</h2>
-        <div>{{description}}</div>
-        <img height="100px" src="{{cover}}" />
+        <h1>{{title}}</h1>
+		{{#if description}}
+			<p class="lead">{{description}}</p>
+		{{/if}}
+		{{#if cover}}
+			<img height="100px" src="{{cover}}" />
+		{{/if}}
       </div>
 
       <div class="col-md-8">
