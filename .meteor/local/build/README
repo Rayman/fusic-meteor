@@ -1,0 +1,15 @@
+This is a Meteor application bundle. It has only one dependency:
+Node.js 0.10.26 or newer, plus the 'fibers' module. To run the application:
+
+  $ rm -r programs/server/node_modules/fibers
+  $ npm install fibers@1.0.1
+  $ export MONGO_URL='mongodb://user:password@host:port/databasename'
+  $ export ROOT_URL='http://example.com'
+  $ export MAIL_URL='smtp://user:password@mailhost:port/'
+  $ node main.js
+
+Use the PORT environment variable to set the port where the
+application will listen. The default is 80, but that will require
+root on most systems.
+
+Find out more about Meteor at meteor.com.
