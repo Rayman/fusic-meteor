@@ -33,6 +33,7 @@ Template.playlistTabs.events = {
     var el = $(e.currentTarget);
     var videoId = el.data('id');
     console.log('queue video:', videoId);
+    youtubePlayer.loadVideoById(videoId, 0, "large");
   },
   'click a[rel="external"]': function(e) {
     e.stopPropagation(); // prevent queueing
