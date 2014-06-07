@@ -1,3 +1,35 @@
 .tab-content {
 	margin-top: 10px;
 }
+.floatleft {
+	float:left;
+}
+.floatright {
+	float:right;
+}
+.overlay-container {
+	position:relative;
+}
+.duration-container {
+	position: absolute;
+	color: white;
+	font-weight: bold;
+	bottom: -10px;
+	background-color: rgba(117, 226, 226, 0.83);
+	padding: 4px;
+}
+
+form.youtube-search {
+	margin-bottom: 1em;
+}
+.glyphicon-remove {
+	cursor:pointer;
+}
+
+li.youtube-result {
+	overflow:auto;
+}
+
+.red { 		color:rgb(196, 87, 87);		}
+.green { 	color:rgb(96, 185, 96); 	}
+.bold { 	font-weight:bold;			}

@@ -30,8 +30,20 @@ function callYoutubeAPI(module, fn, options) {
 }
 
 Meteor.methods({
-  youtube_search: function(options) {
-    return callYoutubeAPI("search", "list", options);
+  youtube_search: function(options) { 
+	//first get id's, then fetch additional info using youtube_videos_list method
+    var results = callYoutubeAPI("search", "list", options).items;
+	var idString = "";
+	results.forEach(function(result) {
+		var id = result.id.videoId;
+		idString += id+",";
+	});
+
+	return callYoutubeAPI("videos", "list", {
+		//list options, retrieve additional info per video
+		part:	"snippet,contentDetails,statistics",
+		id:		idString
+	});
   },
   youtube_videos_list: function(options) {
     var result = callYoutubeAPI("videos", "list", options);
@@ -50,6 +62,9 @@ Meteor.methods({
       if (item.snippet) {
         console.log('updating cache for video:', item.id);
         doc.snippet = item.snippet;
+		doc.contentDetails = item.contentDetails;
+		doc.statistics = item.statistics;
+		
         Songs.update(
           { _id: doc._id },
           doc,
