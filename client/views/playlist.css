@@ -19,6 +19,16 @@
 	padding: 4px;
 }
 
+.playlist-container:hover {
+	background-color: #eee;
+}
+.playlist-container {
+	width:19%;
+	margin-left:10px;
+	cursor:pointer;
+	text-align:center;
+}
+
 button#quickLove {
 	margin-right:10px;
 }

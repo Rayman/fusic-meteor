@@ -14,7 +14,7 @@ Router.map(function() {
   this.route('playlists', {
     data: {
       playlists: function() {
-        return Playlists.find({});
+        return Playlists.find({},{sort: {createdAt: -1}, limit: 5});
       }
     }
   });

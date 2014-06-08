@@ -68,6 +68,16 @@ Template.playlistTabs.events = {
     console.log('queue video:', videoId);
     youtubePlayer.loadVideoById(videoId, 0, "large");
   },
+  //Loved a song!
+  'click button#quickLove': function(e) {
+	e.stopPropagation();
+	console.log("add "+this.snippet.title+" to loved songs");
+	var user = Meteor.users; //loved songs are stored in users profile
+	user.update(
+                    { _id: Meteor.userId()	},
+                    { $addToSet : { 'profile.lovedSongs': this.id.videoId }}
+                  );
+  },
   'click a[rel="external"]': function(e) {
     e.stopPropagation(); // prevent queueing
     e.preventDefault(); // prevent linking in current window
