@@ -42,19 +42,8 @@ Template.playlistTabs.events = {
     youtubeSearch(input.val());
   },
   'click .youtube-result': function (e) {
-    var el = $(e.currentTarget);
-    var videoId = el.data('id');
+    var videoId = this.id.videoId;
     console.log('queue video:', videoId);
-
-	//DUMMY functionality, we should think about how to really store a song in a collection..
-	var title = el.find("h4").text();
-	var duration = el.find(".duration-container").text();
-
-	Songs.insert({videoId: videoId,
-					name:title,
-					duration:duration,
-					playlist: Router.current().params['_id'] });
-
     youtubePlayer.loadVideoById(videoId, 0, "large");
   },
   'click a[rel="external"]': function(e) {

@@ -20,12 +20,24 @@ function onYouTubeIframeAPIReady() {
   });
 }
 
-// THIS IS NEEDED SINCE THE ONYOUTUBEIFRAMEAPIREADY IS NOT CALLED AUTOMATICALLY BY METEOR
-setTimeout(onYouTubeIframeAPIReady,1000);
+Template.player.rendered = function() {
+  console.log('Youtube player container is rendered');
+  // THIS IS NEEDED SINCE THE ONYOUTUBEIFRAMEAPIREADY IS NOT CALLED AUTOMATICALLY BY METEOR
+  setTimeout(onYouTubeIframeAPIReady, 900);
+
+  var progress = setInterval(function() {
+    if (youtubePlayer && youtubePlayer.getPlayerState && youtubePlayer.getPlayerState() == 1) {
+      var percentage = 100*(youtubePlayer.current/youtubePlayer.duration);
+      $("#player-progressbar").width(percentage + "%");
+      youtubePlayer.current+=1;
+    }
+  }, 1000);
+}
 
 //  * * * * * * * * * * * * * * Callbacks  * * * * * * * * * * * * * * 
 
 function onPlayerReady(event) {
+  console.log('Youtube Player Ready');
 }
 
 function onPlayerStateChange(event) {
@@ -33,14 +45,6 @@ function onPlayerStateChange(event) {
   youtubePlayer.current = event.target.getCurrentTime();
   $("#player-progressbar p").text(event.target.getVideoData().title);
 }
-
-var progress = setInterval(function() {
-  if (youtubePlayer.getPlayerState() == 1) {
-    var percentage = 100*(youtubePlayer.current/youtubePlayer.duration);
-    $("#player-progressbar").width(percentage + "%");
-    youtubePlayer.current+=1;
-  }
-}, 1000);
 
 //  * * * * * * * * * * * * * * Player Controls  * * * * * * * * * * * * * * 
 
