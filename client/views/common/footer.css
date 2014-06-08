@@ -2,3 +2,16 @@
 	width: 640px;
 	height: 480px;
 }
+
+#player-song-title {
+	position: absolute;
+	margin: 1px 10px 1px 10px;
+	font-size: 13px;
+}
+
+#player-song-duration {
+	position: absolute;
+	margin: 1px 10px 1px 10px;
+	font-size: 13px;
+	right: 0px;
+}
