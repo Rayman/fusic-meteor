@@ -27,7 +27,8 @@ form.youtube-search {
 }
 
 li.youtube-result {
-	overflow:auto;
+	overflow: auto;
+	cursor: pointer;
 }
 
 .red { 		color:rgb(196, 87, 87);		}
