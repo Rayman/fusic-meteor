@@ -1,15 +1,20 @@
+// * * * * * * * * * * * * * * * PLAYER TEMPLATE CALLBACKS  * * * * * * * * * * * * * * 
+
+Template.player.created = function() {
+  Session.set('youtubePlayerInitialized', false);
+};  
+
+Template.player.rendered = function() {
+  if (Session.equals('youtubePlayerInitialized', false)) {
+    $.getScript('https://www.youtube.com/iframe_api', function () {});
+  }
+};
+
 // * * * * * * * * * * * * * * * YOUTUBE IFRAME PLAYER INITIALIZATION  * * * * * * * * * * * * * * 
 
-// 1. This code loads the IFrame Player API code asynchronously.
-var tag = document.createElement('script');
-
-tag.src = "https://www.youtube.com/iframe_api";
-var firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-// 2. This function creates an <iframe> (and YouTube player) after the API code downloads.
-function onYouTubeIframeAPIReady() {
-    youtubePlayer = new YT.Player('youtube-embed', {
+onYouTubeIframeAPIReady = function() {
+  console.log("youtubeApiReady");
+  youtubePlayer = new YT.Player('youtube-embed', {
     height: '480',
     width: '640',
     videoId: 'M7lc1UVf-VE',
@@ -18,10 +23,8 @@ function onYouTubeIframeAPIReady() {
       'onStateChange': onPlayerStateChange
     }
   });
-}
-
-// THIS IS NEEDED SINCE THE ONYOUTUBEIFRAMEAPIREADY IS NOT CALLED AUTOMATICALLY BY METEOR
-setTimeout(onYouTubeIframeAPIReady,1000);
+  Session.set('youtubePlayerInitialized', true);
+};
 
 //  * * * * * * * * * * * * * * Callbacks  * * * * * * * * * * * * * * 
 
@@ -29,20 +32,19 @@ function onPlayerReady(event) {
 }
 
 function onPlayerStateChange(event) {
-  youtubePlayer.duration = event.target.getDuration();
-  youtubePlayer.current = event.target.getCurrentTime();
   $("#player-progressbar p").text(event.target.getVideoData().title);
 }
 
-var progress = setInterval(function() {
-  if (youtubePlayer.getPlayerState() == 1) {
-    var percentage = 100*(youtubePlayer.current/youtubePlayer.duration);
-    $("#player-progressbar").width(percentage + "%");
-    youtubePlayer.current+=1;
+var playerProgress = setInterval(function() {
+  if(Session.equals('youtubePlayerInitialized', true)) {
+    if (youtubePlayer.getCurrentTime) {
+      var percentage = 100*(youtubePlayer.getCurrentTime()/youtubePlayer.getDuration());
+      $("#player-progressbar").width(percentage + "%");
+    }
   }
-}, 1000);
+}, 100);
 
-//  * * * * * * * * * * * * * * Player Controls  * * * * * * * * * * * * * * 
+//  * * * * * * * * * * * * * * Player TEMPLATE Controls  * * * * * * * * * * * * * * 
 
 Template.player.events = {
   'click a#player-play': function (e) {
