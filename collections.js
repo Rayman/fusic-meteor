@@ -23,6 +23,12 @@ Playlists = new Meteor.Collection('playlists', {
       label: "A brief description of your playlist",
       optional: true,
       max: 1000
+    },
+
+    songs: {
+      type: [String],
+      optional: true,
+      max: 2000
     }
   }
 });

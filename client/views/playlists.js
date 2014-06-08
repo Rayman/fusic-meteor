@@ -11,6 +11,10 @@ Template.playlist.events = {
   }
 };
 
+Template.playlistEntry.song = function() {
+  return Songs.findOne({_id: ""+this});
+}
+
 Template.updatePlaylistForm.editingDoc = function () {
   return Playlists.findOne({_id: this._id});
 };
@@ -23,20 +27,6 @@ Template.playlistTabs.helpers({
     return Session.equals("active_tab", route) ? "active" : "";
   }
  });
-
-//Query to fetch songs from a specific playlist
-Template.playlistTabs.songs = function() {
-	return Songs.find({playlist: Router.current().params['_id']});
-};
-
-//Format youtube duration to normal duration
-Template.searchResult.helpers({
-  calcTime: function(oldTime) {
-	//Format PT15M51S --> 15 minutes 51 seconds
-  var time = oldTime || "";
-	return time.replace("PT","").replace("H",":").replace("M",":").replace("S","");
-  }
-});
 
 Template.playlistTabs.events = {
   'click ul.playlist-tabs > li': function (e) {
@@ -54,9 +44,14 @@ Template.playlistTabs.events = {
     var input = $(e.currentTarget);
     youtubeSearch(input.val());
   },
-  'click .youtube-result': function (e) {
+  'click .youtube-result': function (e, template) {
     var videoId = this.id.videoId;
-    console.log('queue video:', videoId);
+    var playlistId = template.data._id;
+    console.log('queue video:', videoId, 'to playlist', playlistId);
+    Playlists.update(
+      { _id: playlistId},
+      { $push: { songs: videoId} }
+    );
     youtubePlayer.loadVideoById(videoId, 0, "large");
   },
   'click a[rel="external"]': function(e) {

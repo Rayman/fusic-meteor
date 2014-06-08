@@ -2,7 +2,7 @@
   <div class="container">
     <ul class="playlists">
       {{#each playlists}}
-        {{> playlistEntry}}
+        {{> playlistsEntry}}
       {{/each}}
     </ul>
     {{> insertPlaylistForm}}
@@ -10,10 +10,10 @@
 </template>
 
 <template name="insertPlaylistForm">
-  {{> quickForm collection="Playlists" id="insertPlaylistForm" type="insert"}}
+  {{> quickForm collection="Playlists" id="insertPlaylistForm" type="insert" fields="title,cover,tags,description"}}
 </template>
 
-<template name="playlistEntry">
+<template name="playlistsEntry">
   <li>
     <img height="20px" src="{{cover}}" />
     <a href="{{pathFor 'playlist'}}">{{title}}</a>
@@ -59,7 +59,7 @@
 </template>
 
 <template name="updatePlaylistForm">
-  {{> quickForm collection="Playlists" doc=editingDoc id="updatePlaylistForm" type="update"}}
+  {{> quickForm collection="Playlists" doc=editingDoc id="updatePlaylistForm" type="update" fields="title,cover,tags,description"}}
 </template>
 
 <template name="playlistTabs">
@@ -85,18 +85,7 @@
     </div>
 
     <div class="tab-pane {{isActiveTab 'songs'}}">
-
-      <div class="col-md-10">
-        {{#each songs}}
-			<p><span data-action="remove" class="glyphicon glyphicon-remove"></span> <strong>{{name}}</strong> ({{duration}})</p>
-		{{/each}}
-      </div>
-      <div class="col-md-2">
-        <div class="col-md-4"><span class="glyphicon glyphicon-search"></span></div>
-        <div class="col-md-4"><span class="glyphicon glyphicon-heart"></span></div>
-        <div class="col-md-4"><span class="glyphicon glyphicon-remove"></span></div>
-      </div>
-
+      {{> songs}}
     </div>
 
     <div class="tab-pane {{isActiveTab 'followers'}}">followers</div>
@@ -136,4 +125,22 @@
 		</a>
 	</div>
   </li>
+</template>
+
+<template name="songs">
+  {{#each songs}}
+    {{> playlistEntry}}
+  {{/each}}
+</template>
+
+<template name="playlistEntry">
+  <div class="col-md-10">
+    <p><strong>{{song.snippet.title}}</strong> ({{calcTime song.contentDetails.duration}})</p>
+  </div>
+
+  <div class="col-md-2">
+    <div class="col-md-4"><span class="glyphicon glyphicon-search"></span></div>
+    <div class="col-md-4"><span class="glyphicon glyphicon-heart"></span></div>
+    <div class="col-md-4"><span data-action="remove" class="glyphicon glyphicon-remove"></span></div>
+  </div>
 </template>
