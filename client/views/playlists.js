@@ -21,6 +21,15 @@ Session.set('active_tab', 'songs');
 Template.playlistTabs.helpers({
   isActiveTab: function(route) {
     return Session.equals("active_tab", route) ? "active" : "";
+  },
+  ownerName: function() {
+	var ownerId = this.owner;
+	console.log("owner: " + ownerId);
+	if (ownerId) {
+		var user =  Meteor.users.findOne({_id: ownerId});
+		if (user.username != null) { return user.username; }
+		else { return user.emails[0].address; } //fallback, just to have at least something displayed
+	}
   }
  });
 

@@ -100,7 +100,12 @@
     </div>
 
     <div class="tab-pane {{isActiveTab 'followers'}}">followers</div>
-    <div class="tab-pane {{isActiveTab 'stats'}}">stats</div>
+    <div class="tab-pane {{isActiveTab 'stats'}}">
+		<p>Created: {{fromNow createdAt}}</p>
+		<p>Owner:  {{ownerName}}</p>
+	
+	
+	</div>
   </div>
 </template>
 
@@ -128,6 +133,9 @@
 		<h4 class="list-group-item-heading">{{snippet.title}}</h4>
 		<button type="submit" id="quickAdd" class="btn btn-primary btn-xs floatright">
 			<span class="glyphicon glyphicon-plus"></span>
+		</button>
+		<button type="submit" id="quickLove" class="btn btn-danger btn-xs floatright">
+			<span class="glyphicon glyphicon-heart"></span>
 		</button>
 		<span class="glyphicon glyphicon-thumbs-up green bold"></span> {{song.statistics.likeCount}}
 		<span class="glyphicon glyphicon-thumbs-down red bold"></span> {{song.statistics.dislikeCount}}
