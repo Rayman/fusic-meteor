@@ -26,13 +26,26 @@
 
     <div class="row">
       <div class="col-md-4">
-        <h1>{{title}}</h1>
-		{{#if description}}
-			<p class="lead">{{description}}</p>
-		{{/if}}
-		{{#if cover}}
-			<img height="100px" src="{{cover}}" />
-		{{/if}}
+
+        <div class="edittoggle collapse-group">
+          <a href="" data-toggle="collapse">edit <span class="glyphicon glyphicon-edit"></span></a>
+          <div class="collapse in">
+
+            <h1>{{title}}</h1>
+            {{#if description}}
+              <p class="lead">{{description}}</p>
+            {{/if}}
+            {{#if cover}}
+              <img height="100px" src="{{cover}}" />
+            {{/if}}
+
+          </div>
+
+          <div class="collapse">
+            {{> updatePlaylistForm}}
+          </div>
+
+        </div>
       </div>
 
       <div class="col-md-8">
@@ -41,6 +54,10 @@
     </div>
 
   </div>
+</template>
+
+<template name="updatePlaylistForm">
+  {{> quickForm collection="Playlists" doc=editingDoc id="updatePlaylistForm" type="update"}}
 </template>
 
 <template name="playlistTabs">

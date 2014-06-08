@@ -2,6 +2,19 @@ Template.playlist.selected = function () {
   return Session.equals("playing_song", this._id) ? "selected" : '';
 };
 
+Template.playlist.events = {
+  'click [data-toggle="collapse"]': function (e) {
+    var parent = $('.edittoggle');
+    var out = parent.find('.collapse.in')
+    parent.find('.collapse:not(.in)').collapse('show');
+    out.collapse('hide');    
+  }
+};
+
+Template.updatePlaylistForm.editingDoc = function () {
+  return Playlists.findOne({_id: this._id});
+};
+
 // initialize active_tab
 Session.set('active_tab', 'songs');
 
