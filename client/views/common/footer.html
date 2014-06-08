@@ -6,7 +6,7 @@
 
 <template name="player">
   <div id="player" class="container-fluid row">
-  	<div id="player-controls" class="col-md-2">
+    <div id="player-controls" class="col-md-2">
       <ul class="nav navbar-nav">
         <li><a href="#" id="player-play"><span class="glyphicon glyphicon-play"></span></a></li>
         <li><a href="#" id="player-pause"><span class="glyphicon glyphicon-pause"></span></a></li>
@@ -14,20 +14,21 @@
       </ul>
     </div>
     <div id="player-progress" class="col-md-8">
-		<div class="nav navbar-text progress" style="width:100%;">
-			<div class="progress-bar" id="player-progressbar" role="progressbar">
-				<p>Daft Punk - Harder, Better, Faster, Stronger - 01:52</p>
-			</div>
-		</div>
-	</div>
-	<div id="player-youtube" class="col-md-2">
-	  <ul class="nav navbar-nav navbar-right">
-	  	<li class="dropup">
+      <div class="nav navbar-text progress" id="player-progressbar-container" style="width:100%;">
+        <span id="player-song-title">This is the most awesome song ever - Awesomeness</span>
+        <span id="player-song-duration">13:37</span>
+        <div class="progress-bar" id="player-progressbar" role="progressbar">
+        </div>
+      </div>
+    </div>
+    <div id="player-youtube" class="col-md-2">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropup">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-expand"></span></a>
           <ul class="dropdown-menu">
             <li>
-            	<div id="youtube-embed">
-            	</div>
+              <div id="youtube-embed">
+              </div>
             </li>
           </ul>
         </li>
