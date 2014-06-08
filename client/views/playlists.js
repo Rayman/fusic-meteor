@@ -10,12 +10,12 @@ Template.playlistTabs.helpers({
     return Session.equals("active_tab", route) ? "active" : "";
   }
  });
- 
+
 //Query to fetch songs from a specific playlist
 Template.playlistTabs.songs = function() {
 	return Songs.find({playlist: Router.current().params['_id']});
 };
-  
+
 //Format youtube duration to normal duration
 Template.searchResult.helpers({
   calcTime: function(oldTime) {
@@ -32,8 +32,8 @@ Template.playlistTabs.events = {
     var route = li.data('id');
     Session.set("active_tab", route);
   },
-  'click #removesong' : function(e) {
-	Songs.remove(this._id);
+  'click [data-action="remove"]' : function(e) {
+    Songs.remove(this._id);
   },
   'submit form.youtube-search': function (e) {
     e.preventDefault();
@@ -46,16 +46,16 @@ Template.playlistTabs.events = {
     var el = $(e.currentTarget);
     var videoId = el.data('id');
     console.log('queue video:', videoId);
-	
+
 	//DUMMY functionality, we should think about how to really store a song in a collection..
 	var title = el.find("h4").text();
 	var duration = el.find(".duration-container").text();
-	
-	Songs.insert({videoId: videoId, 
-					name:title, 
-					duration:duration, 
+
+	Songs.insert({videoId: videoId,
+					name:title,
+					duration:duration,
 					playlist: Router.current().params['_id'] });
-	
+
     youtubePlayer.loadVideoById(videoId, 0, "large");
   },
   'click a[rel="external"]': function(e) {

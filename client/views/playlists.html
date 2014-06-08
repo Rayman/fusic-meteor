@@ -69,7 +69,7 @@
 
       <div class="col-md-10">
         {{#each songs}}
-			<p><span id="removesong" class="glyphicon glyphicon-remove"></span> <strong>{{name}}</strong> ({{duration}})</p>
+			<p><span data-action="remove" class="glyphicon glyphicon-remove"></span> <strong>{{name}}</strong> ({{duration}})</p>
 		{{/each}}
       </div>
       <div class="col-md-2">
