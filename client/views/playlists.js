@@ -20,9 +20,8 @@ Template.playlistTabs.songs = function() {
 Template.searchResult.helpers({
   calcTime: function(oldTime) {
 	//Format PT15M51S --> 15 minutes 51 seconds
-
-	var formattedTime = oldTime.replace("PT","").replace("H",":").replace("M",":").replace("S","");
-	return formattedTime;
+  var time = oldTime || "";
+	return time.replace("PT","").replace("H",":").replace("M",":").replace("S","");
   }
 });
 
@@ -81,7 +80,7 @@ function youtubeSearch(value) {
     }
     console.log('youtube search for:', value);
     youtubeSearchQuery({
-      part: 'id',
+      part: 'id,snippet',
       type: 'video',
       videoEmbeddable: 'true',
       q: value
@@ -105,6 +104,27 @@ youtubeSearchQuery = function(options) {
     searchError   = error;
     searchResults = data;
     searchResultsDependency.changed();
+
+    // query for more details (needs optimization)
+    var ids = _.pluck(_.pluck(data.items, 'id'), 'videoId');
+    console.log('load more data for ', ids);
+
+    youtubeVideoQuery({
+      'part': 'snippet,contentDetails,statistics',
+      'id': ids,
+    })
+  });
+};
+
+youtubeVideoQuery = function(options) {
+  options = options || {};
+
+  Meteor.call('youtube_videos_list', options, function(error, data) {
+    if (error) {
+      console.log('Youtube API error:', error);
+    } else {
+      console.log('Youtube API result:', data);
+    }
   });
 };
 
@@ -117,3 +137,7 @@ Template.searchResults.error = function() {
   Deps.depend(searchResultsDependency);
   return searchError;
 };
+
+Template.searchResult.song = function() {
+  return Songs.findOne({_id: this.id.videoId});
+}

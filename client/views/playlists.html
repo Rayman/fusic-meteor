@@ -91,7 +91,6 @@
   {{/if}}
 
   {{#with result}}
-    <!-- Not interesting at all <p>Results found: {{pageInfo.totalResults}}</p> -->
     <ul class="list-group">
     {{#each items}}
       {{> searchResult}}
@@ -103,7 +102,7 @@
 <template name="searchResult">
   <li class="youtube-result list-group-item" data-id="{{id}}">
 	<div class="floatleft overlay-container" style="margin-right:20px">
-		<p class="duration-container">{{calcTime contentDetails.duration}}</p>
+		<p class="duration-container">{{calcTime song.contentDetails.duration}}</p>
 		<img src="{{snippet.thumbnails.default.url}}" alt="thumbnail" />
 	</div>
 	<div>
@@ -111,8 +110,8 @@
 		<button type="submit" id="quickAdd" class="btn btn-primary btn-xs floatright">
 			<span class="glyphicon glyphicon-plus"></span>
 		</button>
-		<span class="glyphicon glyphicon-thumbs-up green bold"></span> {{statistics.likeCount}}
-		<span class="glyphicon glyphicon-thumbs-down red bold"></span> {{statistics.dislikeCount}}
+		<span class="glyphicon glyphicon-thumbs-up green bold"></span> {{song.statistics.likeCount}}
+		<span class="glyphicon glyphicon-thumbs-down red bold"></span> {{song.statistics.dislikeCount}}
 		<a rel="external" href="http://youtu.be/{{id.videoId}}">
 			<span class="glyphicon glyphicon-link"></span>
 		</a>
