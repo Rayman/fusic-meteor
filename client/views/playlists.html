@@ -148,12 +148,12 @@
 </template>
 
 <template name="playlistEntry">
-  <div class="col-md-10">
+  <div class="col-md-10 songtitle">
     <p><strong>{{song.snippet.title}}</strong> ({{calcTime song.contentDetails.duration}})</p>
   </div>
 
   <div class="col-md-2">
-    <div class="col-md-4"><span class="glyphicon glyphicon-search"></span></div>
+    <div class="col-md-4"><span data-action="play" class="glyphicon glyphicon-play {{song._id}}"></span></div>
     <div class="col-md-4"><span class="glyphicon glyphicon-heart"></span></div>
     <div class="col-md-4"><span data-action="remove" class="glyphicon glyphicon-remove"></span></div>
   </div>
