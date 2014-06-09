@@ -1,3 +1,12 @@
 <template name="loved">
-	Loved
+	<h2><span class=" red glyphicon glyphicon-heart"></span> Songs</h2>
+	{{#each lovedSongs}}
+		<p class="song">
+			{{snippet.title}} ({{formatDuration contentDetails.duration}}) 
+			<div class="inline songoptions hidden">
+				<a rel="external" href="http://youtu.be/{{_id}}" target="_blank"><span class="glyphicon glyphicon-link blue"></span></a>
+				<span data-action="remove" class="glyphicon glyphicon-remove"></span> 
+			</div>
+		</p>
+	{{/each}}
 </template>

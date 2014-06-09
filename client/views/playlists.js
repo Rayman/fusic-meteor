@@ -25,6 +25,15 @@ Session.set('active_tab', 'songs');
 Template.playlistTabs.helpers({
   isActiveTab: function(route) {
     return Session.equals("active_tab", route) ? "active" : "";
+  },
+  ownerName: function() {
+	var ownerId = this.owner;
+	console.log("owner: " + ownerId);
+	if (ownerId) {
+		var user =  Meteor.users.findOne({_id: ownerId});
+		if (user.username != null) { return user.username; }
+		else { return user.emails[0].address; } //fallback, just to have at least something displayed
+	}
   }
  });
 
@@ -53,6 +62,16 @@ Template.playlistTabs.events = {
       { $push: { songs: videoId} }
     );
     youtubePlayer.loadVideoById(videoId, 0, "large");
+  },
+  //Loved a song!
+  'click button#quickLove': function(e) {
+	e.stopPropagation();
+	console.log("add "+this.snippet.title+" to loved songs");
+	var user = Meteor.users; //loved songs are stored in users profile
+	user.update(
+                    { _id: Meteor.userId()	},
+                    { $addToSet : { 'profile.lovedSongs': this.id.videoId }}
+                  );
   },
   'click a[rel="external"]': function(e) {
     e.stopPropagation(); // prevent queueing
