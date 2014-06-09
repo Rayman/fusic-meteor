@@ -28,10 +28,26 @@ onYouTubeIframeAPIReady = function() {
 //  * * * * * * * * * * * * * * Callbacks  * * * * * * * * * * * * * * 
 
 function onPlayerReady(event) {
+	var list = Session.get("playlist");
+	youtubePlayer.loadVideoById(list[Session.get("playIndex")], 0, "large");
+	youtubePlayer.pauseVideo(); //start paused
 }
 
 function onPlayerStateChange(event) {
   $("#player-song-title").text(event.target.getVideoData().title);
+   if(event.data === 0) { //video ended, skip to next   
+
+	var i = Session.get("playIndex"); //get index from session vars
+	console.log("song "+i+" finished");
+	var list = Session.get("playlist"); //fetch current playlist order
+	if (i == list.length-1) { //just finished the last song
+		youtubePlayer.stopVideo(); 
+	}
+	i++;
+	Session.set("playIndex",i++); //update play Index
+
+	youtubePlayer.loadVideoById(list[i], 0, "large"); //load and play next video
+   }
 }
 
 var playerProgress = setInterval(function() {

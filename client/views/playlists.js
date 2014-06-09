@@ -11,6 +11,12 @@ Template.playlist.events = {
   }
 };
 
+//Callback to retrieve the actual playlist array in an accessible way
+Template.playlist.rendered =  function() {
+	Session.set("playlist",this.data.songs);
+	Session.set("playIndex",0);
+}
+
 Template.playlistEntry.song = function() {
   return Songs.findOne({_id: ""+this});
 }
@@ -46,6 +52,12 @@ Template.playlistTabs.events = {
   'click [data-action="remove"]' : function(e) {
     Songs.remove(this._id);
   },
+  'click [data-action="play"]' : function(e) {
+	//console.log(this);
+	var videoId = this+"";
+	Session.set("playIndex",Session.get("playlist").indexOf(videoId));
+	youtubePlayer.loadVideoById(videoId, 0, "large");
+  },
   'submit form.youtube-search': function (e) {
     e.preventDefault();
   },
@@ -61,7 +73,6 @@ Template.playlistTabs.events = {
       { _id: playlistId},
       { $push: { songs: videoId} }
     );
-    youtubePlayer.loadVideoById(videoId, 0, "large");
   },
   //Loved a song!
   'click button#quickLove': function(e) {
