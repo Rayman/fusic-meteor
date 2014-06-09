@@ -7,6 +7,9 @@
 .floatright {
 	float:right;
 }
+div.inline {
+	display:inline-block;
+}
 .overlay-container {
 	position:relative;
 }

@@ -38,15 +38,6 @@ Template.playlistTabs.songs = function() {
 	return Songs.find({playlist: Router.current().params['_id']});
 };
 
-//Format youtube duration to normal duration
-Template.searchResult.helpers({
-  calcTime: function(oldTime) {
-	//Format PT15M51S --> 15 minutes 51 seconds
-  var time = oldTime || "";
-	return time.replace("PT","").replace("H",":").replace("M",":").replace("S","");
-  }
-});
-
 Template.playlistTabs.events = {
   'click ul.playlist-tabs > li': function (e) {
     var li = $(e.currentTarget);

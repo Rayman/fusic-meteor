@@ -26,6 +26,18 @@ Router.map(function() {
     }
   });
 
-  this.route('loved');
+  
+  
+  this.route('loved', {
+    data: {
+		lovedSongs: function() {
+			//get current user
+			var user = Meteor.users.findOne({_id: Meteor.userId()});
+			//find song info in the cache for each song
+			return Songs.find({_id:{$in:user.profile.lovedSongs}});
+		}
+    }
+  });
+  
   this.route('friends');
 });
