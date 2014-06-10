@@ -98,8 +98,8 @@
     <div class="tab-pane {{isActiveTab 'stats'}}">
 		<p>Created: {{fromNow createdAt}}</p>
 		<p>Owner:  {{ownerName}}</p>
-	
-	
+
+
 	</div>
   </div>
 </template>
@@ -121,7 +121,7 @@
 <template name="searchResult">
   <li class="youtube-result list-group-item">
 	<div class="floatleft overlay-container" style="margin-right:20px">
-		<p class="duration-container">{{calcTime song.contentDetails.duration}}</p>
+		<p class="duration-container">{{formatDuration song.contentDetails.duration}}</p>
 		<img src="{{snippet.thumbnails.default.url}}" alt="thumbnail" />
 	</div>
 	<div>
@@ -149,7 +149,7 @@
 
 <template name="playlistEntry">
   <div class="col-md-10 songtitle">
-    <p><strong>{{song.snippet.title}}</strong> ({{calcTime song.contentDetails.duration}})</p>
+    <p><strong>{{song.snippet.title}}</strong> ({{formatDuration song.contentDetails.duration}})</p>
   </div>
 
   <div class="col-md-2">
