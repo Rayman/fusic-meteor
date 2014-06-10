@@ -15,3 +15,20 @@
 	font-size: 13px;
 	right: 0px;
 }
+
+#player-progressbar-container {
+	width: 100%;
+	position: absolute;
+}
+
+#player-progressbar-container-overlay {
+	width: 100%;
+	position: absolute;
+	z-index: 10000000;
+	cursor: pointer;
+	opacity: 0.0;
+}
+
+.active {
+	color: #2a6496;
+}

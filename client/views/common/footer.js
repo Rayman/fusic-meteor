@@ -35,21 +35,43 @@ function onPlayerReady(event) {
 
 function onPlayerStateChange(event) {
   $("#player-song-title").text(event.target.getVideoData().title);
-   if(event.data === 0) { //video ended, skip to next   
 
-	var i = Session.get("playIndex"); //get index from session vars
-	console.log("song "+i+" finished");
-	var list = Session.get("playlist"); //fetch current playlist order
-	if (i == list.length-1) { //just finished the last song
-		youtubePlayer.stopVideo(); 
-	}
-	i++;
-	Session.set("playIndex",i++); //update play Index
+  $(".player-control-button").removeClass("active");
 
-	youtubePlayer.loadVideoById(list[i], 0, "large"); //load and play next video
-   }
+  console.log("Player State: "+event.data);
+
+  switch (event.data) {
+    case -1: //unstarted
+      $("#player-stop").addClass("active");
+      break;
+    case 0: //ended
+      $("#player-stop").addClass("active");
+
+      var i = Session.get("playIndex"); //get index from session vars
+      console.log("song "+i+" finished");
+      var list = Session.get("playlist"); //fetch current playlist order
+      if (i == list.length-1) { //just finished the last song
+        youtubePlayer.stopVideo(); 
+      }
+      i++;
+      Session.set("playIndex",i++); //update play Index
+
+      youtubePlayer.loadVideoById(list[i], 0, "large"); //load and play next video
+      break;
+    case 1: //playing
+      $("#player-play").addClass("active");
+      break;
+    case 2: //paused
+      $("#player-pause").addClass("active");
+      break;
+    case 3: //buffering
+      break;
+    case 5: //video cued
+      break;
+  }
 }
 
+// Sync player status with youtube player
 var playerProgress = setInterval(function() {
   if(Session.equals('youtubePlayerInitialized', true)) {
     if (youtubePlayer.getCurrentTime) {
@@ -72,10 +94,9 @@ Template.player.events = {
   'click a#player-stop': function (e) {
     youtubePlayer.stopVideo();
   },
-  'click #player-progressbar-container': function (e) {
+  'click #player-progressbar-container-overlay': function (e) {
     var fraction = e.offsetX / $(e.target).width();
-    var time = youtubePlayer.getDuration()*fraction;
-    youtubePlayer.seekTo(time);
+    youtubePlayer.seekTo( youtubePlayer.getDuration() * fraction );
   },
 };
 
