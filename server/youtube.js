@@ -29,18 +29,8 @@ function callYoutubeAPI(module, fn, options) {
     }
 }
 
-//User Creation
-Accounts.onCreateUser(function(options, user) {
-  // accounts-password doesn't create a profile
-  user.profile = options.profile ? options.profile : {};
-
-  //empty array so that $addtoset can be used in mongo
-  user.profile.lovedSongs = [];
-  return user;
-});
-
 Meteor.methods({
-  youtube_search: function(options) { 
+  youtube_search: function(options) {
     //first get id's, then fetch additional info using youtube_videos_list method
     return callYoutubeAPI("search", "list", options);
   },
