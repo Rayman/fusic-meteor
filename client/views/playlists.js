@@ -7,7 +7,7 @@ Template.playlist.events = {
     var parent = $('.edittoggle');
     var out = parent.find('.collapse.in')
     parent.find('.collapse:not(.in)').collapse('show');
-    out.collapse('hide');    
+    out.collapse('hide');
   }
 };
 
@@ -19,6 +19,14 @@ Template.playlist.rendered =  function() {
 
 Template.playlistEntry.song = function() {
   return Songs.findOne({_id: ""+this});
+}
+
+Template.playlistEntry.isLoved = function() {
+	var videoId = this+"";
+	var user = Meteor.users.findOne({_id: Meteor.userId()});
+	var i = user.profile.lovedSongs.indexOf(videoId);
+	if (i<0) { return ""; } //not loved 
+	else { return "loved"; } //return classname
 }
 
 Template.updatePlaylistForm.editingDoc = function () {
@@ -48,9 +56,6 @@ Template.playlistTabs.events = {
     var li = $(e.currentTarget);
     var route = li.data('id');
     Session.set("active_tab", route);
-  },
-  'click [data-action="remove"]' : function(e) {
-    Songs.remove(this._id);
   },
   'click [data-action="play"]' : function(e) {
 	//console.log(this);
@@ -88,6 +93,42 @@ Template.playlistTabs.events = {
     e.stopPropagation(); // prevent queueing
     e.preventDefault(); // prevent linking in current window
     window.open(e.currentTarget.href, '_blank');
+  }
+};
+
+Template.songs.events = {
+  'click [data-action="remove"]' : function(e, template) {
+    var row = $(e.currentTarget).parents('div.row');
+    var index = $(e.delegateTarget).children('div.row').index(row);
+    console.log('removing song at index', index);
+
+    // removing a element at a position is impossible in mongodb,
+    // so just set the shole array
+    if (index >= 0) {
+      var songs = _.clone(template.data.songs); // clone is important!!!
+      songs.splice(index, 1); // remove 1 element at position index
+      Playlists.update({_id: template.data._id}, { $set : {"songs": songs}});
+    }
+  },
+  'click [data-action="lovesong"]' : function(e) {
+	//TODO: should find a way to merge this one with #quicklove from search results..
+	var videoId = this+"";
+	var user = Meteor.users.findOne({_id: Meteor.userId()});
+	
+	//Toggle depending on current state
+	if(user.profile.lovedSongs.indexOf(videoId) <0) { //not currently loved
+		console.log("add "+videoId+" to loved songs");
+		Meteor.users.update(
+						{ _id: Meteor.userId()	},
+						{ $addToSet : { 'profile.lovedSongs': videoId }}
+					  );
+	} else { //currently loved, remove it from lovedSongs
+		console.log("remove "+videoId+" from loved songs");
+		Meteor.users.update(
+                    { _id: Meteor.userId()	},
+                    { $pull : { 'profile.lovedSongs': videoId }}
+                  );	
+	}
   }
 };
 
