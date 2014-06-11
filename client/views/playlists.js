@@ -13,9 +13,19 @@ Template.playlist.events = {
 
 //Callback to retrieve the actual playlist array in an accessible way
 Template.playlist.rendered =  function() {
+	Session.set("playlistId",Router.current().params._id);
 	Session.set("playlist",this.data.songs);
 	Session.set("playIndex",0);
+	
+	//Keep checking for updates on playlist
+	Deps.autorun(function () {
+		var playlist = Playlists.find({_id: Session.get("playlistId")}).fetch()[0].songs;
+		Session.set("playlist", playlist);
+	});
 }
+
+
+
 
 Template.playlistEntry.song = function() {
   return Songs.findOne({_id: ""+this});
