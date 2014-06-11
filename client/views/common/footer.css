@@ -29,6 +29,6 @@
 	opacity: 0.0;
 }
 
-.active {
+#footer .active {
 	color: #2a6496;
 }
