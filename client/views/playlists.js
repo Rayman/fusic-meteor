@@ -7,7 +7,7 @@ Template.playlist.events = {
     var parent = $('.edittoggle');
     var out = parent.find('.collapse.in')
     parent.find('.collapse:not(.in)').collapse('show');
-    out.collapse('hide');    
+    out.collapse('hide');
   }
 };
 
@@ -49,9 +49,6 @@ Template.playlistTabs.events = {
     var route = li.data('id');
     Session.set("active_tab", route);
   },
-  'click [data-action="remove"]' : function(e) {
-    Songs.remove(this._id);
-  },
   'click [data-action="play"]' : function(e) {
 	//console.log(this);
 	var videoId = this+"";
@@ -89,6 +86,22 @@ Template.playlistTabs.events = {
     e.preventDefault(); // prevent linking in current window
     window.open(e.currentTarget.href, '_blank');
   }
+};
+
+Template.songs.events = {
+  'click [data-action="remove"]' : function(e, template) {
+    var row = $(e.currentTarget).parents('div.row');
+    var index = $(e.delegateTarget).children('div.row').index(row);
+    console.log('removing song at index', index);
+
+    // removing a element at a position is impossible in mongodb,
+    // so just set the shole array
+    if (index >= 0) {
+      var songs = _.clone(template.data.songs); // clone is important!!!
+      songs.splice(index, 1); // remove 1 element at position index
+      Playlists.update({_id: template.data._id}, { $set : {"songs": songs}});
+    }
+  },
 };
 
 // Youtube search results

@@ -143,7 +143,9 @@
 
 <template name="songs">
   {{#each songs}}
-    {{> playlistEntry}}
+    <div class="row">
+      {{> playlistEntry}}
+    </div>
   {{/each}}
 </template>
 
