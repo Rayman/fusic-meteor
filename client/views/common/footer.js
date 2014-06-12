@@ -112,3 +112,39 @@ String.prototype.toHHMMSS = function () {
     var time    = hours+':'+minutes+':'+seconds;
     return time;
 }
+
+Template.currentPlaylist.currentPlaylist = function () {
+  var user = Meteor.user();
+  if (!user) {
+    console.warn('user is not logged on!!!');
+    return;
+  }
+
+  var profile = user.profile;
+
+  if (!profile.playing) {
+    console.warn('not yet playing any song!!!');
+    return;
+  }
+
+  var playing = profile.playing;
+
+  var playlist = Playlists.findOne({_id: playing.playlist});
+  var ret = {
+    playlist: playlist,
+    playlistId: playing.playlist,
+    index: playing.playlistIndex,
+    modified: playing.modified,
+    status: playing.status,
+  };
+  console.log(ret);
+  return ret;
+};
+
+Template.queueSong.song = function() {
+  return Songs.findOne({_id: ""+this});
+};
+
+Template.queueSong.isCurrent = function (playlist, index) {
+  return playlist.songs[index] == ""+this;
+};
