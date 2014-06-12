@@ -54,6 +54,23 @@ span[data-action*="play"] {
 span[data-action*="play"]:hover {
 	color:rgb(96, 185, 96); 
 }
+span[data-action*="remove"]:hover {
+	color:rgb(196, 87, 87);
+}
+
+span[data-action*="lovesong"] {
+	-webkit-transition: all 0.25s;
+	-webkit-transition-timing-function: ease-out;
+	-webkit-transform: scale(1,1);
+	cursor:pointer;
+}
+
+span.loved,
+span[data-action*="lovesong"]:hover {
+	-webkit-transform: scale(2,2);
+	color:rgba(196,87,87,0.5);
+	
+}
 
 .red { 		color:rgb(196, 87, 87);		}
 .green { 	color:rgb(96, 185, 96); 	}

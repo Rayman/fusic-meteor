@@ -53,8 +53,8 @@ function onPlayerStateChange(event) {
       if (i == list.length-1) { //just finished the last song
         youtubePlayer.stopVideo(); 
       }
-      i++;
-      Session.set("playIndex",i++); //update play Index
+	  i++;
+      Session.set("playIndex",i); //update play Index
 
       youtubePlayer.loadVideoById(list[i], 0, "large"); //load and play next video
       break;

@@ -1,5 +1,4 @@
 <template name="playlists">
-  <div class="container">
 	<div class="panel panel-default">
 	  <div class="panel-heading">
 		<h3 class="panel-title">Newest playlists</h3>
@@ -12,7 +11,6 @@
 	</div>
 	<h2>Or add a new one:</h2>
     {{> insertPlaylistForm}}
-  </div>
 </template>
 
 <template name="insertPlaylistForm">
@@ -28,8 +26,6 @@
 </template>
 
 <template name="playlist">
-  <div class="container">
-
     <div class="row">
       <div class="col-md-4">
 
@@ -60,8 +56,6 @@
         {{> playlistTabs}}
       </div>
     </div>
-
-  </div>
 </template>
 
 <template name="updatePlaylistForm">
@@ -155,8 +149,8 @@
   </div>
 
   <div class="col-md-2">
-    <div class="col-md-4"><span data-action="play" class="glyphicon glyphicon-play {{song._id}}"></span></div>
-    <div class="col-md-4"><span class="glyphicon glyphicon-heart"></span></div>
+    <div class="col-md-4"><span data-action="play" class="glyphicon glyphicon-play"></span></div>
+    <div class="col-md-4"><span data-action="lovesong" class="glyphicon glyphicon-heart {{isLoved}}"></span></div>
     <div class="col-md-4"><span data-action="remove" class="glyphicon glyphicon-remove"></span></div>
   </div>
 </template>
