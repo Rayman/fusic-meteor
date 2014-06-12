@@ -16,7 +16,7 @@ Template.playlist.rendered =  function() {
 	Session.set("playlistId",Router.current().params._id);
 	Session.set("playlist",this.data.songs);
 	Session.set("playIndex",0);
-	
+
 	//Keep checking for updates on playlist
 	Deps.autorun(function () {
 		var playlist = Playlists.find({_id: Session.get("playlistId")}).fetch()[0].songs;
@@ -35,7 +35,7 @@ Template.playlistEntry.isLoved = function() {
 	var videoId = this+"";
 	var user = Meteor.users.findOne({_id: Meteor.userId()});
 	var i = user.profile.lovedSongs.indexOf(videoId);
-	if (i<0) { return ""; } //not loved 
+	if (i<0) { return ""; } //not loved
 	else { return "loved"; } //return classname
 }
 
@@ -67,7 +67,7 @@ Template.playlistTabs.events = {
     var route = li.data('id');
     Session.set("active_tab", route);
   },
-  'click [data-action="play"]' : function(e) {
+  'click [data-action="play"]' : function(e, template) {
 	//console.log(this);
 	var videoId = this+"";
 	Session.set("playIndex",Session.get("playlist").indexOf(videoId));
@@ -107,6 +107,27 @@ Template.playlistTabs.events = {
 };
 
 Template.songs.events = {
+  'click [data-action="play"]' : function(e, template) {
+    var row = $(e.currentTarget).parents('div.row');
+    var index = $(e.delegateTarget).children('div.row').index(row);
+    console.log('playing song at index', index);
+
+    // update the user's profile and the song will automatically play
+    var id = Meteor.userId();
+    var playlistId = template.data._id;
+    if (id) {
+      Meteor.users.update({_id: id}, { $set: {
+        'profile.playing': {
+          'playlist': playlistId,
+          'playlistIndex': index,
+          'status': 'playing',
+          'modified': new Date(),
+        }
+      }});
+    } else {
+      console.warn('user not logged in!!!');
+    }
+  },
   'click [data-action="remove"]' : function(e, template) {
     var row = $(e.currentTarget).parents('div.row');
     var index = $(e.delegateTarget).children('div.row').index(row);
@@ -124,20 +145,20 @@ Template.songs.events = {
 	//TODO: should find a way to merge this one with #quicklove from search results..
 	var videoId = this+"";
 	var user = Meteor.users.findOne({_id: Meteor.userId()});
-	
+
 	//Toggle depending on current state
 	if(user.profile.lovedSongs.indexOf(videoId) <0) { //not currently loved
 		console.log("add "+videoId+" to loved songs");
 		Meteor.users.update(
 						{ _id: Meteor.userId()	},
 						{ $addToSet : { 'profile.lovedSongs': videoId }}
-					  );
+		      );
 	} else { //currently loved, remove it from lovedSongs
 		console.log("remove "+videoId+" from loved songs");
 		Meteor.users.update(
                     { _id: Meteor.userId()	},
                     { $pull : { 'profile.lovedSongs': videoId }}
-                  );	
+                  );
 	}
   }
 };
