@@ -17,11 +17,15 @@ Template.playlistEntry.song = function() {
 
 Template.playlistEntry.isLoved = function() {
 	var videoId = this+"";
-	var user = Meteor.users.findOne({_id: Meteor.userId()});
+  var user = Meteor.user();
+  if (!user)
+    return;
 	var i = user.profile.lovedSongs.indexOf(videoId);
-	if (i<0) { return ""; } //not loved
-	else { return "loved"; } //return classname
-}
+	if (i<0)
+    return ""; //not loved
+	else
+    return "loved"; //return classname
+};
 
 Template.updatePlaylistForm.editingDoc = function () {
   return Playlists.findOne({_id: this._id});
@@ -35,13 +39,17 @@ Template.playlistTabs.helpers({
     return Session.equals("active_tab", route) ? "active" : "";
   },
   ownerName: function() {
-	var ownerId = this.owner;
-	console.log("owner: " + ownerId);
-	if (ownerId) {
-		var user =  Meteor.users.findOne({_id: ownerId});
-		if (user.username != null) { return user.username; }
-		else { return user.emails[0].address; } //fallback, just to have at least something displayed
-	}
+    var ownerId = this.owner;
+    if (!ownerId)
+      return;
+    var user = Meteor.user();
+    if (!user)
+      return;
+    if (user.username) {
+      return user.username;
+    } else {
+      return user.emails[0].address;
+    } //fallback, just to have at least something displayed
   }
  });
 
