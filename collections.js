@@ -35,7 +35,7 @@ Playlists = new Meteor.Collection('playlists', {
     title: {
       type: String,
       label: "Playlist title",
-      max: 255,
+      max: 100,
     },
     cover: {
       type: String,
@@ -52,7 +52,7 @@ Playlists = new Meteor.Collection('playlists', {
       type: String,
       label: "A brief description of your playlist",
       optional: true,
-      max: 1000
+      max: 500
     },
 
     songs: {
