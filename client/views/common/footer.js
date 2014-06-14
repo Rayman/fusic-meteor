@@ -74,6 +74,10 @@ Deps.autorun(function () {
   if (!user)
     return;
 
+  // start the youtube video on pause,
+  // on page load, both are undefined
+  var startPaused = (!lastPlaylistIndex && !lastPlaylistId);
+
   var playing = user.profile.playing;
   if (playing.playlist == lastPlaylistId &&
       playing.playlistIndex == lastPlaylistIndex) {
@@ -89,6 +93,11 @@ Deps.autorun(function () {
   //load and play next video
   console.log('playing youtube video: ', videoId);
   youtubePlayer.loadVideoById(videoId, 0, "large");
+
+  if (startPaused) {
+    console.log('starting paused');
+    youtubePlayer.pauseVideo();
+  }
 });
 
 // Sync player status with youtube player
