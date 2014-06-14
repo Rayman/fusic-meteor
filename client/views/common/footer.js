@@ -134,21 +134,30 @@ String.prototype.toHHMMSS = function () {
 }
 
 Template.currentPlaylist.currentPlaylist = function () {
-  var playing = getUserPlaying();
+  var user = Meteor.user();
+  if (!user) {
+    return;
+  }
+
+  var profile = user.profile;
+  if (!profile.playing) {
+    console.warn('not yet playing any song!!!');
+    return;
+  }
+
+  var playing = profile.playing;
   if (!playing) {
     return;
   }
 
   var playlist = Playlists.findOne({_id: playing.playlist});
-  var ret = {
+  return {
     playlist: playlist,
     playlistId: playing.playlist,
     index: playing.playlistIndex,
     modified: playing.modified,
     status: playing.status,
   };
-  //console.log(ret);
-  return ret;
 };
 
 Template.queueSong.song = function() {
@@ -158,20 +167,3 @@ Template.queueSong.song = function() {
 Template.queueSong.isCurrent = function (playlist, index) {
   return playlist.songs[index] == ""+this;
 };
-
-function getUserPlaying() {
-  var user = Meteor.user();
-  if (!user) {
-    console.warn('user is not logged on!!!');
-    return;
-  }
-
-  var profile = user.profile;
-
-  if (!profile.playing) {
-    console.warn('not yet playing any song!!!');
-    return;
-  }
-
-  return profile.playing;
-}
