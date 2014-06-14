@@ -9,8 +9,10 @@
 		 {{/each}}
 	  </div>
 	</div>
-	<h2>Or add a new one:</h2>
-    {{> insertPlaylistForm}}
+	<div class="col-md-4">
+		<h2><span class="glyphicon glyphicon-plus"></span> Or add a new one</h2>
+		{{> insertPlaylistForm}}
+	</div>
 </template>
 
 <template name="insertPlaylistForm">
@@ -63,9 +65,18 @@
 </template>
 
 <template name="playlistTabs">
+	  <form class="youtube-search">
+		<div class="input-group">
+		  <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+		  <input type="text" class="form-control youtube-query" placeholder="Search">
+		    <span class="input-group-btn">
+				<button class="btn btn-default" type="button" data-toggle="clearResults"><span class="glyphicon glyphicon-remove" ></span></button>
+			</span>
+		</div>
+	  </form>
+	  {{> searchResults}}
   <!-- Nav tabs -->
   <ul class="playlist-tabs nav nav-tabs">
-    <li class="{{isActiveTab 'search'   }}" data-id="search"   ><a>Search</a></li>
     <li class="{{isActiveTab 'songs'    }}" data-id="songs"    ><a>Songs</a></li>
     <li class="{{isActiveTab 'followers'}}" data-id="followers"><a>Followers</a></li>
     <li class="{{isActiveTab 'stats'    }}" data-id="stats"    ><a>Stats</a></li>
@@ -73,16 +84,6 @@
 
   <!-- Tab panes -->
   <div class="tab-content">
-    <div class="tab-pane {{isActiveTab 'search'}}">
-
-      <form class="youtube-search">
-        <div class="input-group">
-          <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
-          <input type="text" class="form-control youtube-query" placeholder="Search">
-        </div>
-      </form>
-      {{> searchResults}}
-    </div>
 
     <div class="tab-pane {{isActiveTab 'songs'}}">
       {{> songs}}
@@ -100,11 +101,14 @@
 
 <template name="searchResults">
   {{#if error}}
-    <h1>{{error}}</h1>
+	<div class="alert alert-info alert-dismissable">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		{{error}}
+	</div>
   {{/if}}
 
   {{#with result}}
-    <ul class="list-group">
+    <ul class="list-group" id="searchresults">
     {{#each items}}
       {{> searchResult}}
     {{/each}}
