@@ -80,6 +80,12 @@ Template.playlistTabs.events = {
     var input = $(e.currentTarget);
     youtubeSearch(input.val());
   },
+  'click button[data-toggle="clearResults"]': function(e) {
+	
+	$("input.youtube-query").val("");
+	searchResults = null;
+    searchResultsDependency.changed();
+  },
   'click .youtube-result': function (e, template) {
     var videoId = this.id.videoId;
     var playlistId = template.data._id;

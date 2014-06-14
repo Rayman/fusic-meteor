@@ -43,10 +43,21 @@ form.youtube-search {
 	cursor:pointer;
 }
 
+ul#searchresults {
+	position:absolute;
+	z-index:10;
+	left:4em;	
+}
+
 li.youtube-result {
 	overflow: auto;
 	cursor: pointer;
+	width:600px;
 }
+li.youtube-result:hover {
+	background-color:#eee;
+}
+
 span[data-action*="play"] {
 	color:black;
 	cursor:pointer;
