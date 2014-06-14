@@ -28,11 +28,8 @@ onYouTubeIframeAPIReady = function() {
 //  * * * * * * * * * * * * * * Callbacks  * * * * * * * * * * * * * * 
 
 function onPlayerReady(event) {
-	var list = Session.get("playlist");
-	youtubePlayer.loadVideoById(list[Session.get("playIndex")], 0, "large");
-	youtubePlayer.pauseVideo(); //start paused
+  // the footer is not yet loaded
 }
-
 function onPlayerStateChange(event) {
   $("#player-song-title").text(event.target.getVideoData().title);
 
@@ -47,16 +44,11 @@ function onPlayerStateChange(event) {
     case 0: //ended
       $("#player-stop").addClass("active");
 
-      var i = Session.get("playIndex"); //get index from session vars
-      console.log("song "+i+" finished");
-      var list = Session.get("playlist"); //fetch current playlist order
-      if (i == list.length-1) { //just finished the last song
-        youtubePlayer.stopVideo(); 
-      }
-	  i++;
-      Session.set("playIndex",i); //update play Index
-
-      youtubePlayer.loadVideoById(list[i], 0, "large"); //load and play next video
+      var id = Meteor.userId();
+      console.log('song ended');
+      Meteor.users.update({_id: id},
+        {$inc: {'profile.playing.playlistIndex': 1}}
+      );
       break;
     case 1: //playing
       $("#player-play").addClass("active");
@@ -70,6 +62,34 @@ function onPlayerStateChange(event) {
       break;
   }
 }
+
+// observe changes in the user.playing object
+var lastPlaylistIndex, lastPlaylistId;
+Deps.autorun(function () {
+  var userId = Meteor.userId();                                                             // 28
+  if (!userId)                                                                              // 29
+    return;
+
+  var user = Meteor.users.findOne(userId);
+  if (!user)
+    return;
+
+  var playing = user.profile.playing;
+  if (playing.playlist == lastPlaylistId &&
+      playing.playlistIndex == lastPlaylistIndex) {
+    console.log('not playing: same song');
+    return;
+  }
+  lastPlaylistIndex = playing.playlistIndex;
+  lastPlaylistId    = playing.playlist;
+
+  var playlist = Playlists.findOne({_id: playing.playlist});
+  var videoId = playlist.songs[playing.playlistIndex];
+
+  //load and play next video
+  console.log('playing youtube video: ', videoId);
+  youtubePlayer.loadVideoById(videoId, 0, "large");
+});
 
 // Sync player status with youtube player
 var playerProgress = setInterval(function() {
@@ -112,3 +132,38 @@ String.prototype.toHHMMSS = function () {
     var time    = hours+':'+minutes+':'+seconds;
     return time;
 }
+
+Template.currentPlaylist.currentPlaylist = function () {
+  var user = Meteor.user();
+  if (!user) {
+    return;
+  }
+
+  var profile = user.profile;
+  if (!profile.playing) {
+    console.warn('not yet playing any song!!!');
+    return;
+  }
+
+  var playing = profile.playing;
+  if (!playing) {
+    return;
+  }
+
+  var playlist = Playlists.findOne({_id: playing.playlist});
+  return {
+    playlist: playlist,
+    playlistId: playing.playlist,
+    index: playing.playlistIndex,
+    modified: playing.modified,
+    status: playing.status,
+  };
+};
+
+Template.queueSong.song = function() {
+  return Songs.findOne({_id: ""+this});
+};
+
+Template.queueSong.isCurrent = function (playlist, index) {
+  return playlist.songs[index] == ""+this;
+};

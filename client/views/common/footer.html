@@ -25,7 +25,9 @@
     <div id="player-youtube" class="col-md-2">
       <ul class="nav navbar-nav navbar-right">
         <li class="dropup">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-expand"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <span class="glyphicon glyphicon-expand"></span>
+          </a>
           <ul class="dropdown-menu">
             <li>
               <div id="youtube-embed">
@@ -33,7 +35,36 @@
             </li>
           </ul>
         </li>
+        <li class="dropup">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <span class="glyphicon glyphicon-music"></span>
+          </a>
+          {{> currentPlaylist}}
+        </li>
       </ul>
     </div>
   </div><!-- /.container-fluid -->
+</template>
+
+<template name="currentPlaylist">
+  <ul class="dropdown-menu">
+    {{#with currentPlaylist}}
+      {{#each playlist.songs}}
+        <li>
+          {{> queueSong}}
+        </li>
+        <li class="divider"></li>
+      {{/each}}
+    {{/with}}
+  </ul>
+</template>
+
+<template name="queueSong">
+  <a>
+    {{#if isCurrent ../playlist ../index}}
+      <b>{{song.snippet.title}}</b>
+    {{else}}
+      {{song.snippet.title}}
+    {{/if}}
+  </a>
 </template>
