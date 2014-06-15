@@ -6,3 +6,8 @@ Router.configure({
         'footer': { to: 'footer' }
     }
 });
+
+IronRouterProgress.configure({
+  enabled : true,
+  delay: 100,
+});
