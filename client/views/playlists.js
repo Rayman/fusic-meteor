@@ -12,14 +12,14 @@ Template.playlist.events = {
 };
 
 Template.playlistEntry.isLoved = function() {
-	var videoId = this+"";
+  var videoId = this._id;
   var user = Meteor.user();
   if (!user)
     return;
-	var i = user.profile.lovedSongs.indexOf(videoId);
-	if (i<0)
+  var i = user.profile.lovedSongs.indexOf(videoId);
+  if (i<0)
     return ""; //not loved
-	else
+  else
     return "loved"; //return classname
 };
 
@@ -121,24 +121,24 @@ Template.songs.events = {
     }
   },
   'click [data-action="lovesong"]' : function(e) {
-	//TODO: should find a way to merge this one with #quicklove from search results..
-	var videoId = this+"";
-	var user = Meteor.users.findOne({_id: Meteor.userId()});
+    //TODO: should find a way to merge this one with #quicklove from search results..
+    var videoId = this._id;
+    var user = Meteor.user();
 
-	//Toggle depending on current state
-	if(user.profile.lovedSongs.indexOf(videoId) <0) { //not currently loved
-		console.log("add "+videoId+" to loved songs");
-		Meteor.users.update(
-						{ _id: Meteor.userId()	},
-						{ $addToSet : { 'profile.lovedSongs': videoId }}
-		      );
-	} else { //currently loved, remove it from lovedSongs
-		console.log("remove "+videoId+" from loved songs");
-		Meteor.users.update(
-                    { _id: Meteor.userId()	},
-                    { $pull : { 'profile.lovedSongs': videoId }}
-                  );
-	}
+    //Toggle depending on current state
+    if(user.profile.lovedSongs.indexOf(videoId) <0) { //not currently loved
+      console.log("add "+videoId+" to loved songs");
+      Meteor.users.update(
+        { _id: Meteor.userId() },
+        { $addToSet : { 'profile.lovedSongs': videoId }}
+      );
+    } else { //currently loved, remove it from lovedSongs
+      console.log("remove "+videoId+" from loved songs");
+      Meteor.users.update(
+        { _id: Meteor.userId() },
+        { $pull : { 'profile.lovedSongs': videoId }}
+      );
+    }
   }
 };
 
