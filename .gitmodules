@@ -31,3 +31,6 @@
 [submodule "packages/moment"]
 	path = packages/moment
 	url = https://github.com/acreeger/meteor-moment.git
+[submodule "packages/iron-router-progress"]
+	path = packages/iron-router-progress
+	url = https://github.com/Multiply/iron-router-progress.git
