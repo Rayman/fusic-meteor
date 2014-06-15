@@ -88,6 +88,8 @@ Deps.autorun(function () {
   lastPlaylistId    = playing.playlist;
 
   var playlist = Playlists.findOne({_id: playing.playlist});
+  if (!playlist)
+    return;
   var videoId = playlist.songs[playing.playlistIndex];
 
   //load and play next video
