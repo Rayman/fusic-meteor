@@ -5,15 +5,11 @@ Template.playlist.selected = function () {
 Template.playlist.events = {
   'click [data-toggle="collapse"]': function (e) {
     var parent = $('.edittoggle');
-    var out = parent.find('.collapse.in')
+    var out = parent.find('.collapse.in');
     parent.find('.collapse:not(.in)').collapse('show');
     out.collapse('hide');
   }
 };
-
-Template.playlistEntry.song = function() {
-  return Songs.findOne({_id: ""+this});
-}
 
 Template.playlistEntry.isLoved = function() {
 	var videoId = this+"";
@@ -38,20 +34,11 @@ Template.playlistTabs.helpers({
   isActiveTab: function(route) {
     return Session.equals("active_tab", route) ? "active" : "";
   },
-  ownerName: function() {
-    var ownerId = this.owner;
-    if (!ownerId)
-      return;
-    var user = Meteor.user();
-    if (!user)
-      return;
-    if (user.username) {
-      return user.username;
-    } else {
-      return user.emails[0].address;
-    } //fallback, just to have at least something displayed
-  }
- });
+});
+
+Template.playlistTabs.owner = function () {
+  return Meteor.users.findOne({_id: this.owner});
+};
 
 Template.playlistTabs.events = {
   'click ul.playlist-tabs > li': function (e) {
@@ -229,6 +216,29 @@ Template.searchResults.error = function() {
   return searchError;
 };
 
-Template.searchResult.song = function() {
-  return Songs.findOne({_id: this.id.videoId});
-}
+Template.songs.songs = function() {
+  // get all users that play a song on this playlist
+  var users = Meteor.users.find({'profile.playing.playlist': this._id});
+  var indexes = _.groupBy(users.fetch(), function(u) {
+    return u.profile.playing.playlistIndex;
+  });
+
+  // find all songs for this playlist
+
+  // optimize this later with only 1 query
+  // var songs = Songs.find({_id: {$in: ids}});
+
+  var songs = this.songs.map(function (id, i) {
+    var song = Songs.findOne({_id: id});
+
+    // all users on this song
+    var songUsers = indexes[i];
+    song.users = songUsers;
+
+    //var i = users.profile.playing.playlistIndex;
+    //console.log(i);
+    return song;
+  });
+
+  return songs;
+};

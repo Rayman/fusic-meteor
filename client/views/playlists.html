@@ -92,7 +92,7 @@
     <div class="tab-pane {{isActiveTab 'followers'}}">followers</div>
     <div class="tab-pane {{isActiveTab 'stats'}}">
 		<p>Created: {{fromNow createdAt}}</p>
-		<p>Owner:  {{ownerName}}</p>
+		<p>Owner:  {{username owner}}</p>
 
 
 	</div>
@@ -149,7 +149,12 @@
 
 <template name="playlistEntry">
   <div class="col-md-10 songtitle">
-    <p><strong>{{song.snippet.title}}</strong> ({{formatDuration song.contentDetails.duration}})</p>
+    <p>
+      <strong>{{this.snippet.title}}</strong> ({{formatDuration this.contentDetails.duration}})
+      {{#each this.users}}
+        {{username this}}
+      {{/each}}
+    </p>
   </div>
 
   <div class="col-md-2">
