@@ -1,8 +1,8 @@
-// * * * * * * * * * * * * * * * PLAYER TEMPLATE CALLBACKS  * * * * * * * * * * * * * * 
+// * * * * * * * * * * * * * * * PLAYER TEMPLATE CALLBACKS  * * * * * * * * * * * * * *
 
 Template.player.created = function() {
   Session.set('youtubePlayerInitialized', false);
-};  
+};
 
 Template.player.rendered = function() {
   if (Session.equals('youtubePlayerInitialized', false)) {
@@ -10,7 +10,7 @@ Template.player.rendered = function() {
   }
 };
 
-// * * * * * * * * * * * * * * * YOUTUBE IFRAME PLAYER INITIALIZATION  * * * * * * * * * * * * * * 
+// * * * * * * * * * * * * * * * YOUTUBE IFRAME PLAYER INITIALIZATION  * * * * * * * * * * * * * *
 
 onYouTubeIframeAPIReady = function() {
   youtubePlayer = new YT.Player('youtube-embed', {
@@ -25,7 +25,7 @@ onYouTubeIframeAPIReady = function() {
   Session.set('youtubePlayerInitialized', true);
 };
 
-//  * * * * * * * * * * * * * * Callbacks  * * * * * * * * * * * * * * 
+//  * * * * * * * * * * * * * * Callbacks  * * * * * * * * * * * * * *
 
 function onPlayerReady(event) {
   // the footer is not yet loaded
@@ -71,7 +71,7 @@ Deps.autorun(function () {
     return;
 
   var user = Meteor.users.findOne(userId);
-  if (!user)
+  if (!user || !user.profile)
     return;
 
   // start the youtube video on pause,
@@ -113,7 +113,7 @@ var playerProgress = setInterval(function() {
   }
 }, 500);
 
-//  * * * * * * * * * * * * * * Player TEMPLATE Controls  * * * * * * * * * * * * * * 
+//  * * * * * * * * * * * * * * Player TEMPLATE Controls  * * * * * * * * * * * * * *
 
 Template.player.events = {
   'click a#player-play': function (e) {
