@@ -233,6 +233,8 @@ Template.songs.songs = function() {
 
   var songs = this.songs.map(function (id, i) {
     var song = Songs.findOne({_id: id});
+    if (!song) // not yet received by the pub/sub
+      return;
 
     // all users on this song
     var songUsers = indexes[i];
