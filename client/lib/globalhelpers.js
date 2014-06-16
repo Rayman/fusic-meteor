@@ -14,6 +14,8 @@ Handlebars.registerHelper('formatDuration', function(input){
 });
 
 Handlebars.registerHelper('username', function(user){
+  if (!user)
+    return;
   if (user.username)
     return user.username;
   if (user.emails) {
