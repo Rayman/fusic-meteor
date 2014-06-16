@@ -66,19 +66,19 @@ function onPlayerStateChange(event) {
 // observe changes in the user.playing object
 var lastPlaylistIndex, lastPlaylistId;
 Deps.autorun(function () {
-  var userId = Meteor.userId();                                                             // 28
-  if (!userId)                                                                              // 29
+
+  var user = Meteor.user();
+  if (!user || !user.profile)
     return;
 
-  var user = Meteor.users.findOne(userId);
-  if (!user || !user.profile)
+  var playing = user.profile.playing;
+  if (!playing)
     return;
 
   // start the youtube video on pause,
   // on page load, both are undefined
   var startPaused = (!lastPlaylistIndex && !lastPlaylistId);
 
-  var playing = user.profile.playing;
   if (playing.playlist == lastPlaylistId &&
       playing.playlistIndex == lastPlaylistIndex) {
     console.log('not playing: same song');
