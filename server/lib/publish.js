@@ -1,5 +1,9 @@
-Meteor.publish("playlists", function () {
+Meteor.publish("allplaylists", function () {
   return Playlists.find();
+});
+
+Meteor.publish("playlist", function (id) {
+  return Playlists.find({_id: id});
 });
 
 Meteor.publish("songs", function (ids) {
