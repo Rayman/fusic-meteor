@@ -54,7 +54,7 @@ Template.playlistTabs.events = {
     youtubeSearch(input.val());
   },
   'click button[data-toggle="clearResults"]': function(e) {
-	
+
 	$("input.youtube-query").val("");
 	searchResults = null;
     searchResultsDependency.changed();
@@ -217,6 +217,9 @@ Template.searchResults.error = function() {
 };
 
 Template.songs.songs = function() {
+  if (!this.songs)
+    return;
+
   // get all users that play a song on this playlist
   var users = Meteor.users.find({'profile.playing.playlist': this._id});
   var indexes = _.groupBy(users.fetch(), function(u) {
