@@ -64,7 +64,7 @@ function onPlayerStateChange(event) {
 }
 
 // observe changes in the user.playing object
-var lastPlaylistIndex, lastPlaylistId;
+var lastPlaylistIndex, lastPlaylistId, lastVideoId;
 Deps.autorun(function () {
 
   var user = Meteor.user();
@@ -77,29 +77,42 @@ Deps.autorun(function () {
 
   // start the youtube video on pause,
   // on page load, both are undefined
-  var startPaused = (!lastPlaylistIndex && !lastPlaylistId);
-
-  if (playing.playlist == lastPlaylistId &&
-      playing.playlistIndex == lastPlaylistIndex) {
-    console.log('not playing: same song');
+  /*
+  var startPaused = (!lastPlaylistIndex || !lastPlaylistId);
+  if (startPaused) {
+    console.log('starting paused');
+    youtubePlayer.pauseVideo();
     return;
   }
-  lastPlaylistIndex = playing.playlistIndex;
-  lastPlaylistId    = playing.playlist;
+  */
 
   var playlist = Playlists.findOne({_id: playing.playlist});
   if (!playlist)
     return;
+
   var videoId = playlist.songs[playing.playlistIndex];
+  if (!videoId)
+    return;
+
+  if (lastVideoId       == videoId /* &&
+      lastPlaylistId    == playing.playlist &&
+      lastPlaylistIndex == playing.playlistIndex */
+  ) {
+    console.log('not playing: same song');
+    return;
+  }
+  lastVideoId       = videoId;
+  lastPlaylistIndex = playing.playlistIndex;
+  lastPlaylistId    = playing.playlist;
+
+  if (typeof youtubePlayer == 'undefined') {
+    console.warn('youtubePlayer undefined');
+    return;
+  }
 
   //load and play next video
   console.log('playing youtube video: ', videoId);
   youtubePlayer.loadVideoById(videoId, 0, "large");
-
-  if (startPaused) {
-    console.log('starting paused');
-    youtubePlayer.pauseVideo();
-  }
 });
 
 // Sync player status with youtube player
