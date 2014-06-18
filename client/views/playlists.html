@@ -61,12 +61,15 @@
                 <span class="glyphicon glyphicon-play"></span> Play
               </button>
             {{/if}}
+            {{#if following}}
+            <button class="btn" data-action="unfollow">
+              <span class="glyphicon glyphicon-minus"></span> Unfollow
+            </button>
+            {{else}}
             <button class="btn" data-action="follow">
               <span class="glyphicon glyphicon-plus"></span> Follow
             </button>
-            <button class="btn" data-action="follow">
-              <span class="glyphicon glyphicon-minus"></span> Unfollow
-            </button>
+            {{/if}}
           </div>
 
         </div>

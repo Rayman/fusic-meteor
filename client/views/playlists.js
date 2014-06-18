@@ -18,6 +18,21 @@ Template.playlist.playing = function () {
   }
 };
 
+Template.playlist.following = function () {
+  // get all users that play a song on this playlist
+  var user = Meteor.user();
+  if (!user)
+    return;
+  if (user.profile &&
+      user.profile.following &&
+      user.profile.following.indexOf(this._id) != -1
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 Template.playlist.events = {
   'click [data-toggle="collapse"]': function (e) {
     var parent = $('.edittoggle');
