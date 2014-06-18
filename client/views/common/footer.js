@@ -72,7 +72,7 @@ Deps.autorun(function () {
     return;
 
   var playing = user.profile.playing;
-  if (!playing)
+  if (!playing || playing.status == 'pause')
     return;
 
   // start the youtube video on pause,
