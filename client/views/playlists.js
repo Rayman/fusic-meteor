@@ -33,6 +33,11 @@ Template.playlist.following = function () {
   }
 };
 
+Template.playlist.followers = function () {
+  var users = Meteor.users.find({
+    'profile.following': { $elemMatch: this._id }});
+};
+
 Template.playlist.events = {
   'click [data-toggle="collapse"]': function (e) {
     var parent = $('.edittoggle');
@@ -71,7 +76,33 @@ Template.playlist.events = {
       }
     );
     youtubePlayer.pauseVideo();
-  }
+  },
+  'click [data-action="follow"]': function () {
+    // addToSet
+    var userid = Meteor.userId();
+    if (!userid)
+      return;
+    Meteor.users.update(
+      {_id: userid},
+      { $addToSet: {
+          'profile.following'  : this._id,
+        }
+      }
+    );
+  },
+  'click [data-action="unfollow"]': function () {
+    // addToSet
+    var userid = Meteor.userId();
+    if (!userid)
+      return;
+    Meteor.users.update(
+      {_id: userid},
+      { $pullAll: {
+          'profile.following'  : [this._id],
+        }
+      }
+    );
+  },
 };
 
 Template.playlistEntry.isLoved = function() {
