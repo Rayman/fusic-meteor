@@ -51,6 +51,37 @@
             {{> updatePlaylistForm}}
           </div>
 
+          <div>
+            {{#if playing}}
+              <button class="btn btn-success" data-action="playlist-pause">
+                <span class="glyphicon glyphicon-pause"></span> Pause
+              </button>
+            {{else}}
+              <button class="btn btn-success" data-action="playlist-play">
+                <span class="glyphicon glyphicon-play"></span> Play
+              </button>
+            {{/if}}
+            {{#if following}}
+            <button class="btn" data-action="unfollow">
+              <span class="glyphicon glyphicon-minus"></span> Unfollow
+            </button>
+            {{else}}
+            <button class="btn" data-action="follow">
+              <span class="glyphicon glyphicon-plus"></span> Follow
+            </button>
+            {{/if}}
+          </div>
+
+          <h3>Followers:</h3>
+          <ul>
+            {{#each followers}}
+              <li>
+                {{username this}}
+              </li>
+            {{else}}
+              <li>Nobody</li>
+            {{/each}}
+          </ul>
         </div>
       </div>
 

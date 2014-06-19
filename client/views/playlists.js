@@ -2,13 +2,109 @@ Template.playlist.selected = function () {
   return Session.equals("playing_song", this._id) ? "selected" : '';
 };
 
+Template.playlist.playing = function () {
+  // get all users that play a song on this playlist
+  var user = Meteor.user();
+  if (!user)
+    return;
+  if (user.profile &&
+      user.profile.playing &&
+      user.profile.playing.status   == 'playing' &&
+      user.profile.playing.playlist == this._id
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+Template.playlist.following = function () {
+  // get all users that play a song on this playlist
+  var user = Meteor.user();
+  if (!user)
+    return;
+  if (user.profile &&
+      user.profile.following &&
+      user.profile.following.indexOf(this._id) != -1
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+Template.playlist.followers = function () {
+  var users = Meteor.users.find({
+    'profile.following': this._id
+  });
+  return users;
+};
+
 Template.playlist.events = {
   'click [data-toggle="collapse"]': function (e) {
     var parent = $('.edittoggle');
     var out = parent.find('.collapse.in');
     parent.find('.collapse:not(.in)').collapse('show');
     out.collapse('hide');
-  }
+  },
+  'click [data-action="playlist-play"]': function () {
+    var userid = Meteor.userId();
+    if (!userid)
+      return;
+    Meteor.users.update(
+      {_id: userid},
+      { $set: {
+          'profile.playing': {
+            'playlist': this._id,
+            'playlistIndex': 0,
+            'status': 'playing',
+            'modified': new Date(),
+          }
+        }
+      }
+    );
+    youtubePlayer.playVideo();
+  },
+  'click [data-action="playlist-pause"]': function () {
+    var userid = Meteor.userId();
+    if (!userid)
+      return;
+    Meteor.users.update(
+      {_id: userid},
+      { $set: {
+          'profile.playing.status'  : 'pause',
+          'profile.playing.modified': new Date(),
+        }
+      }
+    );
+    youtubePlayer.pauseVideo();
+  },
+  'click [data-action="follow"]': function () {
+    // addToSet
+    var userid = Meteor.userId();
+    if (!userid)
+      return;
+    Meteor.users.update(
+      {_id: userid},
+      { $addToSet: {
+          'profile.following'  : this._id,
+        }
+      }
+    );
+  },
+  'click [data-action="unfollow"]': function () {
+    // addToSet
+    var userid = Meteor.userId();
+    if (!userid)
+      return;
+    Meteor.users.update(
+      {_id: userid},
+      { $pullAll: {
+          'profile.following'  : [this._id],
+        }
+      }
+    );
+  },
 };
 
 Template.playlistEntry.isLoved = function() {
