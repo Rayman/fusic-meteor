@@ -71,8 +71,17 @@
             </button>
             {{/if}}
           </div>
-          {{followers}}
 
+          <h3>Followers:</h3>
+          <ul>
+            {{#each followers}}
+              <li>
+                {{username this}}
+              </li>
+            {{else}}
+              <li>Nobody</li>
+            {{/each}}
+          </ul>
         </div>
       </div>
 

@@ -35,7 +35,9 @@ Template.playlist.following = function () {
 
 Template.playlist.followers = function () {
   var users = Meteor.users.find({
-    'profile.following': { $elemMatch: this._id }});
+    'profile.following': this._id
+  });
+  return users;
 };
 
 Template.playlist.events = {
