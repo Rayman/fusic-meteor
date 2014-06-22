@@ -7,5 +7,6 @@ Template.home.events = {
 			Router.go('/playlist/'+id);
 		}
 	});
-  }, 
+  }
+
  };

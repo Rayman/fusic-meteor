@@ -12,6 +12,7 @@ Template.player.rendered = function() {
 
 // * * * * * * * * * * * * * * * YOUTUBE IFRAME PLAYER INITIALIZATION  * * * * * * * * * * * * * *
 
+youtubePlayer=null;
 onYouTubeIframeAPIReady = function() {
   youtubePlayer = new YT.Player('youtube-embed', {
     height: '480',
@@ -112,11 +113,13 @@ Deps.autorun(function () {
 
   //load and play next video
   console.log('playing youtube video: ', videoId);
+  
   youtubePlayer.loadVideoById(videoId, 0, "large");
 });
 
 // Sync player status with youtube player
 var playerProgress = setInterval(function() {
+  if(!youtubePlayer) {return;}
   if(Session.equals('youtubePlayerInitialized', true)) {
     if (youtubePlayer.getCurrentTime) {
       var percentage = 100*(youtubePlayer.getCurrentTime()/youtubePlayer.getDuration());

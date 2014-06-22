@@ -6,6 +6,21 @@ html {
 }
 body {
 }
+
+div.bgImg {
+	background-size: cover;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 0;
+}
+div.bgImg.home {
+	background-image: url('../../../img/sheep_cropped.jpg');
+}
+
+
 #footer {
   position: fixed;
   bottom: 0;
@@ -18,6 +33,6 @@ body {
 }
 
 #iron-router-progress {
-  background-color : rgb(170, 242, 0);
-  box-shadow       : 0 0 5px rgba(170, 242, 0, .5);
+  background-color : @brand-primary;
+  box-shadow       : 0 0 5px lighten(@brand-primary, 50%);
 }

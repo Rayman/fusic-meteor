@@ -1,16 +1,22 @@
 <template name="home">
-	<h1>Fusic</h1>
-	<h3>Collaborative social music thingy</h3>
-	{{#if currentUser}}
-	<p>Welcome back! {{username}}</p>
-	<p>To start a new playlist, just enter the name below and press Add!</p>
-		<form class="form-inline" role="form">
-		  <div class="form-group">
-			<input type="email" class="form-control" id="playlistName" placeholder="Playlist Name">
-		  </div>
-		<button type="submit" id="quickAdd" class="btn btn-primary btn-lg">Add</button>
-	</form>
-	 {{else}}
-	<p>Login to enjoy this website!</p>
-	{{/if}}
+<div class="row">
+	<div class="col-md-4 col-md-offset-4">
+		<div class="panel panel-default"><div class="panel-body">
+			<h1>Fusic</h1>
+			<h3>Collaborative social music thingy</h3>
+			{{#if currentUser}}
+			<p>Welcome back! {{username}}</p>
+			<p>To start a new playlist, just enter the name below and press Add!</p>
+				<form class="form-inline" role="form">
+				  <div class="form-group">
+					<input type="email" class="form-control" id="playlistName" placeholder="Playlist Name">
+				  </div>
+				<button type="submit" id="quickAdd" class="btn btn-primary btn-lg">Add</button>
+			</form>
+			 {{else}}
+			<p>Login to enjoy this website!</p>
+		  {{/if}}
+		</div></div>
+	</div>
+</div>
 </template>
