@@ -25,3 +25,10 @@ Handlebars.registerHelper('username', function(user){
       return;
   }
 });
+
+Handlebars.registerHelper('currentRoute', function() {
+	var currentRoute = Router.current();
+	if (!currentRoute) { return ''; } else {
+		return Router.current().route.name;
+	}
+});

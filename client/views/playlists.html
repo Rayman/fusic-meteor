@@ -9,11 +9,26 @@
 		 {{/each}}
 	  </div>
 	</div>
+	<a href="{{pathFor 'allplaylists'}}">View all playlists</a>
 	<div class="col-md-4">
 		<h2><span class="glyphicon glyphicon-plus"></span> Or add a new one</h2>
 		{{> insertPlaylistForm}}
 	</div>
 </template>
+
+<template name="allplaylists">
+	<div class="panel panel-default">
+	  <div class="panel-heading">
+		<h3 class="panel-title">All playlists</h3>
+	  </div>
+	  <div class="panel-body">
+		{{#each playlists}}
+			{{> playlistsEntry}}
+		 {{/each}}
+	  </div>
+	</div>
+</template>
+
 
 <template name="insertPlaylistForm">
   {{> quickForm collection="Playlists" id="insertPlaylistForm" type="insert" fields="title,cover,tags,description"}}

@@ -1,7 +1,9 @@
 <template name="footer">
+{{#if currentUser}}
   <div class="container">
     {{> player}}
   </div>
+{{/if}}
 </template>
 
 <template name="player">
