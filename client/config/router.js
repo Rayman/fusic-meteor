@@ -9,5 +9,6 @@ Router.configure({
 
 IronRouterProgress.configure({
   enabled : true,
-  delay: 100,
+  delay: 200,
+  spinner: false,
 });
