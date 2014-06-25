@@ -160,6 +160,26 @@ String.prototype.toHHMMSS = function () {
     return time;
 }
 
+// always subscribe to the current playing playlist
+Deps.autorun(function () {
+  var user = Meteor.user();
+
+  if (user &&
+      user.profile &&
+      user.profile.playing &&
+      user.profile.playing.playlist) {
+    Meteor.subscribe('playlist', user.profile.playing.playlist);
+
+    // subscribe to songs
+    var playlist = Playlists.findOne({_id: user.profile.playing.playlist});
+    if (playlist) {
+      var songs = playlist.songs;
+      check(songs, [String]);
+      Meteor.subscribe('songs', songs);
+    }
+  }
+});
+
 Template.currentPlaylist.currentPlaylist = function () {
   var user = Meteor.user();
   if (!user) {
