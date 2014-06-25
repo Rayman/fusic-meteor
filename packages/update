@@ -1,0 +1,14 @@
+#!/bin/bash
+
+read -p "This will checkout master && pull. Are you sure? " -n 1 -r
+echo    # (optional) move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+	for i in $(find -mindepth 1 -maxdepth 1 -type d)
+	do
+		cd $i
+		git checkout master
+		git pull --ff-only
+		cd ..
+	done
+fi
