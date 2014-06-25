@@ -66,6 +66,8 @@
             {{> updatePlaylistForm}}
           </div>
 
+          <br />
+
           <div>
             {{#if playing}}
               <button class="btn btn-success" data-action="playlist-pause">
@@ -95,6 +97,15 @@
               </li>
             {{else}}
               <li>Nobody</li>
+            {{/each}}
+          </ul>
+
+          <h3>Currently playing:</h3>
+          <ul>
+            {{#each players}}
+              <li>
+                {{username this}}
+              </li>
             {{/each}}
           </ul>
         </div>

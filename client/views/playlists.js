@@ -40,6 +40,13 @@ Template.playlist.followers = function () {
   return users;
 };
 
+Template.playlist.players = function () {
+  var users = Meteor.users.find({
+    'profile.playing.playlist': this._id,
+  });
+  return users;
+};
+
 Template.playlist.events = {
   'click [data-toggle="collapse"]': function (e) {
     var parent = $('.edittoggle');
