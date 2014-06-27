@@ -76,10 +76,33 @@ span[data-action*="lovesong"] {
 	cursor:pointer;
 }
 
+div.song{
+	padding-top:5px;
+	left:0%;
+	position:relative;
+	-webkit-transition: all 0.33s;
+	-webkit-transition-timing-function: ease-out;
+}
+div.song:hover {
+	background-color:#eee;
+}
+div.song:hover div.controls {
+	opacity:1;
+}
+div.controls {
+	opacity:0;
+}
+
+span[data-action*="lovesong"] {
+	color:white;
+	text-shadow:0px 0px 1px grey;
+}
+
 span.loved,
 span[data-action*="lovesong"]:hover {
-	-webkit-transform: scale(2,2);
+	-webkit-transform: scale(1.6,1.6);
 	color:rgba(196,87,87,0.5);
+	text-shadow:none;
 	
 }
 
