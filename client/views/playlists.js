@@ -47,6 +47,11 @@ Template.playlist.players = function () {
   return users;
 };
 
+//This should probably not run on the client
+Template.playlist.isOwner = function() {
+	return this.owner == Meteor.userId();
+};
+
 Template.playlist.events = {
   'click [data-toggle="collapse"]': function (e) {
     var parent = $('.edittoggle');
@@ -156,6 +161,13 @@ Template.playlistTabs.events = {
     var input = $(e.currentTarget);
     youtubeSearch(input.val());
   },
+  //hide/show results window
+  'focus input.youtube-query' : function(e) {
+	var results = $("#searchresults");
+	if(!results.is(":visible")) {
+		results.fadeIn('fast');
+	}
+  },
   'click button[data-toggle="clearResults"]': function(e) {
 
 	$("input.youtube-query").val("");
@@ -189,6 +201,7 @@ Template.playlistTabs.events = {
 };
 
 Template.songs.events = {
+
   'click [data-action="play"]' : function(e, template) {
     var row = $(e.currentTarget).parents('div.row');
     var index = $(e.delegateTarget).children('div.row').index(row);
@@ -214,14 +227,24 @@ Template.songs.events = {
     var row = $(e.currentTarget).parents('div.row');
     var index = $(e.delegateTarget).children('div.row').index(row);
     console.log('removing song at index', index);
+	
+	var songrow = $(row[0]);
+	//set styles
+	songrow.css("box-shadow","0px 0px 15px rgba(155, 155, 155, 0.55)");
+	songrow.css("left","125%");
+	
+	//animation takes 300 seconds
+	setTimeout(function(){
+		// removing a element at a position is impossible in mongodb,
+		// so just set the shole array
+		if (index >= 0) {
+		  var songs = _.clone(template.data.songs); // clone is important!!!
+		  songs.splice(index, 1); // remove 1 element at position index
+		  Playlists.update({_id: template.data._id}, { $set : {"songs": songs}});
+		}
+	},300);
+	
 
-    // removing a element at a position is impossible in mongodb,
-    // so just set the shole array
-    if (index >= 0) {
-      var songs = _.clone(template.data.songs); // clone is important!!!
-      songs.splice(index, 1); // remove 1 element at position index
-      Playlists.update({_id: template.data._id}, { $set : {"songs": songs}});
-    }
   },
   'click [data-action="lovesong"]' : function(e) {
     //TODO: should find a way to merge this one with #quicklove from search results..

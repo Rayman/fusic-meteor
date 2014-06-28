@@ -108,7 +108,24 @@
               </li>
             {{/each}}
           </ul>
+		  
+		  <h3>Stats</h3>
+			<p>Created: {{fromNow createdAt}}<br/>
+			Owner:  {{username owner}}</p>
         </div>
+		
+		{{#if isOwner}}
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+			<h3 class="panel-title">Owner's panel</h3>
+		  </div>
+		  <div class="panel-body">
+			<p>You are the owner of this playlist, so you can view fancy settings</p>
+			<p><button data-action="show-settings" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-cog"></span>Important settings</button></p>
+			<p><button data-action="remove-playlist" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span>Delete playlist</button></p>
+		  </div>
+		</div>
+		{{/if}}
       </div>
 
       <div class="col-md-8">
@@ -122,6 +139,7 @@
 </template>
 
 <template name="playlistTabs">
+	<div id="searchArea">
 	  <form class="youtube-search">
 		<div class="input-group">
 		  <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
@@ -132,28 +150,9 @@
 		</div>
 	  </form>
 	  {{> searchResults}}
-  <!-- Nav tabs -->
-  <ul class="playlist-tabs nav nav-tabs">
-    <li class="{{isActiveTab 'songs'    }}" data-id="songs"    ><a>Songs</a></li>
-    <li class="{{isActiveTab 'followers'}}" data-id="followers"><a>Followers</a></li>
-    <li class="{{isActiveTab 'stats'    }}" data-id="stats"    ><a>Stats</a></li>
-  </ul>
-
-  <!-- Tab panes -->
-  <div class="tab-content">
-
-    <div class="tab-pane {{isActiveTab 'songs'}}">
-      {{> songs}}
-    </div>
-
-    <div class="tab-pane {{isActiveTab 'followers'}}">followers</div>
-    <div class="tab-pane {{isActiveTab 'stats'}}">
-		<p>Created: {{fromNow createdAt}}</p>
-		<p>Owner:  {{username owner}}</p>
-
-
 	</div>
-  </div>
+
+    {{> songs}}
 </template>
 
 <template name="searchResults">
@@ -198,15 +197,19 @@
 
 <template name="songs">
   {{#each songs}}
-    <div class="row">
+    <div class="row song">
       {{> playlistEntry}}
     </div>
   {{/each}}
 </template>
 
 <template name="playlistEntry">
-  <div class="col-md-10 songtitle">
+  <div class="col-md-1">
+  	  <span data-action="lovesong" class="glyphicon glyphicon-heart {{isLoved}}"></span>
+  </div>
+  <div class="col-md-9 songtitle">
     <p>
+
       <strong>{{this.snippet.title}}</strong> ({{formatDuration this.contentDetails.duration}})
       {{#each this.users}}
         {{username this}}
@@ -214,9 +217,9 @@
     </p>
   </div>
 
-  <div class="col-md-2">
+  <div class="col-md-2 controls">
+	<div class="col-md-4">&nbsp;</div>
     <div class="col-md-4"><span data-action="play" class="glyphicon glyphicon-play"></span></div>
-    <div class="col-md-4"><span data-action="lovesong" class="glyphicon glyphicon-heart {{isLoved}}"></span></div>
     <div class="col-md-4"><span data-action="remove" class="glyphicon glyphicon-remove"></span></div>
   </div>
 </template>
