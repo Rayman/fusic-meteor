@@ -18,13 +18,14 @@ Template.playlist.playing = function () {
   }
 };
 Template.playlist.songCount = function() {
-	return this.songs.length;
-}
+  return this.songs ? this.songs.length : 0;
+};
 
 Template.playlist.totalDuration = function() { //PT4M9S
-	
-	var seconds =0;
-	
+  if (!this.songs)
+    return 0;
+
+	var seconds = 0;
 	this.songs.forEach(function(id) {
 		var song = Songs.findOne({_id: id});
 		var duration = song.contentDetails.duration;
