@@ -17,6 +17,26 @@ Template.playlist.playing = function () {
     return false;
   }
 };
+Template.playlist.songCount = function() {
+	return this.songs.length;
+}
+
+Template.playlist.totalDuration = function() { //PT4M9S
+	
+	var seconds =0;
+	
+	this.songs.forEach(function(id) {
+		var song = Songs.findOne({_id: id});
+		var duration = song.contentDetails.duration;
+		var r= /PT((\d+)H)?(\d+)M(\d+)S/.exec(duration);
+		seconds+=parseInt(r[2])*3600 || 0;
+		seconds+=parseInt(r[3])*60 || 0;
+		seconds+=parseInt(r[4]) || 0;
+	});
+	console.log("total seconds: " + seconds);
+	return moment.duration(seconds,'seconds').humanize();
+}
+
 
 Template.playlist.following = function () {
   // get all users that play a song on this playlist
@@ -119,7 +139,7 @@ Template.playlist.events = {
   },
 };
 
-Template.playlistEntry.isLoved = function() {
+Template.loveSong.isLoved = function() {
   var videoId = this._id;
   var user = Meteor.user();
   if (!user)
@@ -197,14 +217,20 @@ Template.playlistTabs.events = {
     e.stopPropagation(); // prevent queueing
     e.preventDefault(); // prevent linking in current window
     window.open(e.currentTarget.href, '_blank');
+  },
+  'click [data-action="show-list"]' : function() {
+	Session.set("songView","list");
+  },
+  'click [data-action="show-grid"]' : function() {
+  	Session.set("songView","grid");
   }
 };
 
 Template.songs.events = {
 
   'click [data-action="play"]' : function(e, template) {
-    var row = $(e.currentTarget).parents('div.row');
-    var index = $(e.delegateTarget).children('div.row').index(row);
+    var row = $(e.currentTarget).parents('div.song');
+    var index = $(e.delegateTarget).children('div.song').index(row);
     console.log('playing song at index', index);
 
     // update the user's profile and the song will automatically play
@@ -224,8 +250,8 @@ Template.songs.events = {
     }
   },
   'click [data-action="remove"]' : function(e, template) {
-    var row = $(e.currentTarget).parents('div.row');
-    var index = $(e.delegateTarget).children('div.row').index(row);
+    var row = $(e.currentTarget).parents('div.song');
+    var index = $(e.delegateTarget).children('div.song').index(row);
     console.log('removing song at index', index);
 	
 	var songrow = $(row[0]);
@@ -373,3 +399,6 @@ Template.songs.songs = function() {
 
   return songs;
 };
+Template.songs.rendered = function() {
+	Session.setDefault("listview","list");
+}
