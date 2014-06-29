@@ -21,23 +21,21 @@ Template.playlist.songCount = function() {
   return this.songs ? this.songs.length : 0;
 };
 
-Template.playlist.totalDuration = function() { //PT4M9S
-  if (!this.songs)
-    return 0;
+Template.playlist.totalDuration = function() {
+  //duration format: PT4M9S
+  var songs = Songs.find({_id: {$in: this.songs || []}});
 
-	var seconds = 0;
-	this.songs.forEach(function(id) {
-		var song = Songs.findOne({_id: id});
-		var duration = song.contentDetails.duration;
-		var r= /PT((\d+)H)?(\d+)M(\d+)S/.exec(duration);
-		seconds+=parseInt(r[2])*3600 || 0;
-		seconds+=parseInt(r[3])*60 || 0;
-		seconds+=parseInt(r[4]) || 0;
-	});
-	console.log("total seconds: " + seconds);
-	return moment.duration(seconds,'seconds').humanize();
-}
+  var durations = songs.map(function(song){
+    var duration = song.contentDetails.duration;
+    return moment.duration(duration);
+  });
 
+  var sum = _.reduce(durations, function(memo, duration){
+    return memo.add(duration);
+  }, moment.duration());
+
+	return sum.humanize();
+};
 
 Template.playlist.following = function () {
   // get all users that play a song on this playlist

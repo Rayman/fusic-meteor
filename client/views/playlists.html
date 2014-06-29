@@ -109,11 +109,14 @@
             {{/each}}
           </ul>
 		  
-		  <h3>Stats</h3>
-			<p>Created: {{fromNow createdAt}}<br/>
-			Owner:  {{username owner}}<br/>
-			{{songCount}} songs with a total length of {{totalDuration}}
-			</p>
+          <h3>Stats</h3>
+          <p>Created: {{fromNow createdAt}}<br/>
+            Owner:  {{username owner}}<br/>
+            {{songCount}} songs
+            {{#if songCount}}
+              with a total length of {{totalDuration}}
+            {{/if}}
+          </p>
         </div>
 		
 		{{#if isOwner}}
