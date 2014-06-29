@@ -111,7 +111,9 @@
 		  
 		  <h3>Stats</h3>
 			<p>Created: {{fromNow createdAt}}<br/>
-			Owner:  {{username owner}}</p>
+			Owner:  {{username owner}}<br/>
+			{{songCount}} songs with a total length of {{totalDuration}}
+			</p>
         </div>
 		
 		{{#if isOwner}}
@@ -139,18 +141,27 @@
 </template>
 
 <template name="playlistTabs">
-	<div id="searchArea">
-	  <form class="youtube-search">
-		<div class="input-group">
-		  <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
-		  <input type="text" class="form-control youtube-query" placeholder="Search">
-		    <span class="input-group-btn">
-				<button class="btn btn-default" type="button" data-toggle="clearResults"><span class="glyphicon glyphicon-remove" ></span></button>
-			</span>
+	<div class="row" id="searchArea">
+		<div class="col-md-10">
+		  <form class="youtube-search">
+			<div class="input-group">
+			  <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+			  <input type="text" class="form-control youtube-query" placeholder="Search">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button" data-toggle="clearResults"><span class="glyphicon glyphicon-remove" ></span></button>
+				</span>
+			</div>
+		  </form>
 		</div>
-	  </form>
-	  {{> searchResults}}
+		<div class="col-md-2">
+			<div class="btn-group">
+				<button data-action="show-list" type="button" class="btn btn-default {{#if sessionIs 'songView' 'list'}}active{{/if}}"><span class="glyphicon glyphicon-list"></span></button>
+				<button data-action="show-grid" type="button" class="btn btn-default {{#if sessionIs 'songView' 'grid'}}active{{/if}}"><span class="glyphicon glyphicon-picture"></span></button>
+			</div>
+		</div>
+		{{> searchResults}}
 	</div>
+	
 
     {{> songs}}
 </template>
@@ -197,15 +208,32 @@
 
 <template name="songs">
   {{#each songs}}
+	{{#if sessionIs 'songView' 'list'}}
     <div class="row song">
       {{> playlistEntry}}
     </div>
+	{{else}}
+		{{> playlistGridEntry}}
+	{{/if}}
   {{/each}}
+</template>
+
+<template name="playlistGridEntry">
+	<div class="col-md-4 grid song">
+		<div class="thumb" style="background-image:url('{{this.snippet.thumbnails.high.url}}')" >
+			<span class="title">{{this.snippet.title}}</span>
+			<span class="length label label-info">({{formatDuration this.contentDetails.duration}})</span>
+			<div class="controls">
+				{{> playlistEntryControls}}
+				{{>loveSong}}
+			</div>
+		</div>	
+	</div>
 </template>
 
 <template name="playlistEntry">
   <div class="col-md-1">
-  	  <span data-action="lovesong" class="glyphicon glyphicon-heart {{isLoved}}"></span>
+	{{>loveSong}}
   </div>
   <div class="col-md-9 songtitle">
     <p>
@@ -219,7 +247,15 @@
 
   <div class="col-md-2 controls">
 	<div class="col-md-4">&nbsp;</div>
+	{{> playlistEntryControls}}
+  </div>
+</template>
+
+<template name="playlistEntryControls">
     <div class="col-md-4"><span data-action="play" class="glyphicon glyphicon-play"></span></div>
     <div class="col-md-4"><span data-action="remove" class="glyphicon glyphicon-remove"></span></div>
-  </div>
+</template>
+
+<template name="loveSong">
+  	  <span data-action="lovesong" class="glyphicon glyphicon-heart {{isLoved}}"></span>
 </template>

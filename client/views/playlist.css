@@ -47,6 +47,7 @@ ul#searchresults {
 	position:absolute;
 	z-index:10;
 	left:4em;	
+	top:33px;
 }
 
 li.youtube-result {
@@ -59,7 +60,6 @@ li.youtube-result:hover {
 }
 
 span[data-action*="play"] {
-	color:black;
 	cursor:pointer;
 }
 span[data-action*="play"]:hover {
@@ -86,11 +86,55 @@ div.song{
 div.song:hover {
 	background-color:#eee;
 }
+div.song.grid:hover {
+	background-color:transparent;
+}
 div.song:hover div.controls {
 	opacity:1;
 }
 div.controls {
 	opacity:0;
+}
+
+div.song .thumb {
+	position:relative;
+	height: 200px;
+	background-size: cover;
+	color: white;
+	font-size: 12px;
+	font-weight: bold;
+	margin: 1em 0;
+	padding: 5%;
+	background-color: rgb(109, 109, 109);
+	overflow: hidden;
+	border-radius: 5%;
+	border: 1px solid grey;
+	opacity: 0.75;
+}
+div.songthumb:hover {
+	opacity:1;
+}
+
+div.song .thumb span.length {
+	padding: 5px;
+	border-radius: 3px;
+	position: absolute;
+	top: 0px;
+	right: 0;
+}
+div.song .thumb span.title {
+	font-size:1.5em;
+	text-shadow:0px 0px 5px black;
+}
+div.song .thumb div.controls {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	background-color: rgba(255, 255, 255, 0.6);
+	padding:5px;
+	font-size: 1.5em;
+	width: 100%;
+
 }
 
 span[data-action*="lovesong"] {

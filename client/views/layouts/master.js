@@ -1,0 +1,17 @@
+//Global events that should happen throughout all templates or respond to complete website --> Shouldn't be responsive
+
+//example, make sure search result box hides when user clicks anywhere,
+//not just within the current template
+Template.masterLayout.rendered = function() {
+	//hiding results appropriately
+  $('body').on('mouseup', function() {
+	var search = $("#searchArea");
+	var results = $("#searchresults");
+    if (!search.is(event.target) // if the target of the click isn't the container...
+        && search.has(event.target).length === 0  // ... nor a descendant of the container
+		&& results.is(':visible')) //and results are currently visible
+	{
+        results.fadeOut('fast');
+    }
+  });
+}

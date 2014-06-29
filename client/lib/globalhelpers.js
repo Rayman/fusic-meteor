@@ -32,3 +32,7 @@ Handlebars.registerHelper('currentRoute', function() {
 		return Router.current().route.name;
 	}
 });
+
+Handlebars.registerHelper('sessionIs', function(p1, p2) {
+    return Session.get(p1) === p2;
+});
