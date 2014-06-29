@@ -214,16 +214,11 @@ Template.playlistTabs.events = {
                     { $addToSet : { 'profile.lovedSongs': this.id.videoId }}
                   );
   },
-  'click a[rel="external"]': function(e) {
-    e.stopPropagation(); // prevent queueing
-    e.preventDefault(); // prevent linking in current window
-    window.open(e.currentTarget.href, '_blank');
-  },
   'click [data-action="show-list"]' : function() {
-	Session.set("songView","list");
+    Session.set("songView","list");
   },
   'click [data-action="show-grid"]' : function() {
-  	Session.set("songView","grid");
+    Session.set("songView","grid");
   }
 };
 
