@@ -9,8 +9,13 @@ Handlebars.registerHelper('fromNow', function(input){
 
 Handlebars.registerHelper('formatDuration', function(input){
   //Format PT15M51S --> 15 minutes 51 seconds
-  var time = input || "";
-  return time.replace("PT","").replace("H",":").replace("M",":").replace("S","");
+  var duration = moment.duration(input || 0);
+  var time = moment.utc(duration.asMilliseconds());
+  if (duration.asHours() >= 1) {
+    return time.format('HH:mm:ss');
+  } else {
+    return time.format('mm:ss');
+  }
 });
 
 Handlebars.registerHelper('username', function(user){
