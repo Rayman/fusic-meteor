@@ -34,3 +34,6 @@
 [submodule "packages/iron-router-progress"]
 	path = packages/iron-router-progress
 	url = https://github.com/Multiply/iron-router-progress.git
+[submodule "packages/youtube-api"]
+	path = packages/youtube-api
+	url = git@github.com:daltonrenaldo/youtube-api.git

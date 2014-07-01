@@ -1,4 +1,4 @@
-var Youtube = Meteor.require('youtube-api');
+var Youtube = YoutubeApi; // meteor package
 var YOUTUBE_ACCESS_TOKEN = 'AIzaSyAK-DHrYPbww17dc-dK_HhUwmLhFjMynj0';
 var Future = Npm.require('fibers/future');
 
