@@ -195,14 +195,14 @@ Template.playlistTabs.events = {
     searchResultsDependency.changed();
   },
   'click .youtube-result': function (e, template) {
-    var videoId = this.id.videoId;
+    var videoId = this.id;
     var playlistId = template.data._id;
     console.log('queue video:', videoId, 'to playlist', playlistId);
-	var songObject = { 
-		"added" : new Date(),
-		"author" : Meteor.userId(),
-		"songId" : videoId
-	}
+    var songObject = {
+      "added" : new Date(),
+      "author" : Meteor.userId(),
+      "songId" : videoId
+    };
     Playlists.update(
       { _id: playlistId},
       { $push: { songs: songObject} }
@@ -253,12 +253,12 @@ Template.songs.events = {
     var row = $(e.currentTarget).parents('div.song');
     var index = $(e.delegateTarget).children('div.song').index(row);
     console.log('removing song at index', index);
-	
+
 	var songrow = $(row[0]);
 	//set styles
 	songrow.css("box-shadow","0px 0px 15px rgba(155, 155, 155, 0.55)");
 	songrow.css("left","125%");
-	
+
 	//animation takes 300 seconds
 	setTimeout(function(){
 		// removing a element at a position is impossible in mongodb,
@@ -269,7 +269,7 @@ Template.songs.events = {
 		  Playlists.update({_id: template.data._id}, { $set : {"songs": songs}});
 		}
 	},300);
-	
+
 
   },
   'click [data-action="lovesong"]' : function(e) {
@@ -333,7 +333,7 @@ youtubeSearchQuery = function(options) {
       console.log('Youtube search API result:', data);
     }
     searchError   = error;
-	searchResults = data;
+    searchResults = data; // TODO: search result data != videoQuery data
     searchResultsDependency.changed();
 
     // query for more details (needs optimization)
@@ -343,7 +343,7 @@ youtubeSearchQuery = function(options) {
     youtubeVideoQuery({
       'part': 'snippet,contentDetails,statistics',
       'id': ids,
-    })
+    });
   });
 };
 
@@ -355,8 +355,8 @@ youtubeVideoQuery = function(options) {
       console.log('Youtube list API error:', error);
     } else {
       console.log('Youtube list API result:', data);
-	  searchResults = data;
-	  searchResultsDependency.changed();
+      searchResults = data; // TODO: search result data != videoQuery data
+      searchResultsDependency.changed();
     }
   });
 };
@@ -387,7 +387,7 @@ Template.songs.songs = function() {
   // var songs = Songs.find({_id: {$in: ids}});
 
   var songs = this.songs.map(function (entry, i) {
-	
+
     var song = Songs.findOne({_id: entry.songId});
     if (!song) // not yet received by the pub/sub
       return;
@@ -395,10 +395,10 @@ Template.songs.songs = function() {
     // all users on this song
     var songUsers = indexes[i];
     song.users = songUsers;
-	
-	//extra info
-	song.author = entry.author;
-	song.added = entry.added;
+
+    //extra info
+    song.author = Meteor.users.findOne({_id: entry.author});
+    song.added = entry.added;
 
     //var i = users.profile.playing.playlistIndex;
     //console.log(i);
@@ -409,4 +409,4 @@ Template.songs.songs = function() {
 };
 Template.songs.rendered = function() {
 	Session.setDefault("listview","list");
-}
+};
