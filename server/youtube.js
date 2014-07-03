@@ -49,16 +49,18 @@ Meteor.methods({
         etag     : item.etag
       };
       if (item.snippet) {
-        console.log('updating cache for video:', item.id);
         doc.snippet        = item.snippet;
         doc.contentDetails = item.contentDetails;
         doc.statistics     = item.statistics;
 
-        Songs.update(
+        var r = Songs.update(
           { _id: doc._id },
           doc,
           { upsert: true }
         );
+        
+		console.log('updating cache for video:', item.id, ' -> ',r,' rows affected');
+		
       }
     }
 

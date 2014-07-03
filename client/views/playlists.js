@@ -42,6 +42,7 @@ Template.playlist.following = function () {
   var user = Meteor.user();
   if (!user)
     return;
+    return;
   if (user.profile &&
       user.profile.following &&
       user.profile.following.indexOf(this._id) != -1
@@ -197,9 +198,14 @@ Template.playlistTabs.events = {
     var videoId = this.id.videoId;
     var playlistId = template.data._id;
     console.log('queue video:', videoId, 'to playlist', playlistId);
+	var songObject = { 
+		"added" : new Date(),
+		"author" : Meteor.userId(),
+		"songId" : videoId
+	}
     Playlists.update(
       { _id: playlistId},
-      { $push: { songs: videoId} }
+      { $push: { songs: songObject} }
     );
   },
   //Loved a song!
@@ -297,7 +303,7 @@ function youtubeSearch(value) {
   clearTimeout(searchTimer);
   searchTimer = setTimeout(function() {
     if (!value) {
-      searchResults = null;
+      SsearchResults = null;
       searchError = 'Please search for something';
       searchResultsDependency.changed();
       return;
@@ -312,8 +318,9 @@ function youtubeSearch(value) {
   },searchDelay);
 }
 
-var searchResults;
+
 var searchError;
+var searchResults;
 var searchResultsDependency = new Deps.Dependency();
 
 youtubeSearchQuery = function(options) {
@@ -321,12 +328,12 @@ youtubeSearchQuery = function(options) {
 
   Meteor.call('youtube_search', options, function(error, data) {
     if (error) {
-      console.log('Youtube API error:', error);
+      console.log('Youtube search API error:', error);
     } else {
-      console.log('Youtube API result:', data);
+      console.log('Youtube search API result:', data);
     }
     searchError   = error;
-    searchResults = data;
+	searchResults = data;
     searchResultsDependency.changed();
 
     // query for more details (needs optimization)
@@ -345,9 +352,11 @@ youtubeVideoQuery = function(options) {
 
   Meteor.call('youtube_videos_list', options, function(error, data) {
     if (error) {
-      console.log('Youtube API error:', error);
+      console.log('Youtube list API error:', error);
     } else {
-      console.log('Youtube API result:', data);
+      console.log('Youtube list API result:', data);
+	  searchResults = data;
+	  searchResultsDependency.changed();
     }
   });
 };
@@ -377,14 +386,19 @@ Template.songs.songs = function() {
   // optimize this later with only 1 query
   // var songs = Songs.find({_id: {$in: ids}});
 
-  var songs = this.songs.map(function (id, i) {
-    var song = Songs.findOne({_id: id});
+  var songs = this.songs.map(function (entry, i) {
+	
+    var song = Songs.findOne({_id: entry.songId});
     if (!song) // not yet received by the pub/sub
       return;
 
     // all users on this song
     var songUsers = indexes[i];
     song.users = songUsers;
+	
+	//extra info
+	song.author = entry.author;
+	song.added = entry.added;
 
     //var i = users.profile.playing.playlistIndex;
     //console.log(i);
