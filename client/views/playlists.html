@@ -108,7 +108,7 @@
               </li>
             {{/each}}
           </ul>
-		  
+
           <h3>Stats</h3>
           <p>Created: {{fromNow createdAt}}<br/>
             Owner:  {{username owner}}<br/>
@@ -118,7 +118,7 @@
             {{/if}}
           </p>
         </div>
-		
+
 		{{#if isOwner}}
 		<div class="panel panel-default">
 		  <div class="panel-heading">
@@ -164,7 +164,7 @@
 		</div>
 		{{> searchResults}}
 	</div>
-	
+
 
     {{> songs}}
 </template>
@@ -230,7 +230,7 @@
 				{{> playlistEntryControls}}
 				{{>loveSong}}
 			</div>
-		</div>	
+		</div>
 	</div>
 </template>
 
@@ -246,7 +246,7 @@
         {{username this}}
       {{/each}}
     </p>
-	<p>Added by {{username this.author}} {{fromNow this.added}}</p>
+	<p>Added by <a>{{username this.author}}</a> {{fromNow this.added}}</p>
   </div>
 
   <div class="col-md-2 controls">
