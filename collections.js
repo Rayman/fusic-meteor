@@ -56,10 +56,23 @@ Playlists = new Meteor.Collection('playlists', {
     },
 
     songs: {
-      type: [String],
+      type: [Object],
       optional: true,
       max: 2000
+    },
+	
+	"songs.$.author": {
+        type: String,	//userId 
+		optional: true,
+    },
+    "songs.$.added": {
+        type: Date, 	//Date Object
+    },
+	"songs.$.songId": {
+        type: String,	//song Id	
     }
+	
+	
   }
 });
 

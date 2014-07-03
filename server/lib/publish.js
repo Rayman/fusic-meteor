@@ -11,7 +11,10 @@ Meteor.publish("playlist", function (id) {
   return Playlists.find({_id: id});
 });
 
-Meteor.publish("songs", function (ids) {
-  check(ids, [String]);
-  return Songs.find({_id: {$in: ids}});
+Meteor.publish("songs", function (songs) {
+  if(Match.test(songs,[Object])) { //this is the new style playlist object
+    var ids = _.pluck(songs, 'songId');
+    return Songs.find({_id: {$in: ids}});
+   }
+
 });

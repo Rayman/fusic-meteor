@@ -44,7 +44,7 @@
 
 <template name="playlist">
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-4 hidden-xs">
 
         <div class="edittoggle collapse-group">
           <a href="" data-toggle="collapse">edit <span class="glyphicon glyphicon-edit"></span></a>
@@ -189,7 +189,7 @@
 <template name="searchResult">
   <li class="youtube-result list-group-item">
 	<div class="floatleft overlay-container" style="margin-right:20px">
-		<p class="duration-container">{{formatDuration song.contentDetails.duration}}</p>
+		<p class="duration-container">{{formatDuration contentDetails.duration}}</p>
 		<img src="{{snippet.thumbnails.default.url}}" alt="thumbnail" />
 	</div>
 	<div>
@@ -200,9 +200,9 @@
 		<button type="submit" id="quickLove" class="btn btn-danger btn-xs floatright">
 			<span class="glyphicon glyphicon-heart"></span>
 		</button>
-		<span class="glyphicon glyphicon-thumbs-up green bold"></span> {{song.statistics.likeCount}}
-		<span class="glyphicon glyphicon-thumbs-down red bold"></span> {{song.statistics.dislikeCount}}
-		<a rel="external" href="http://youtu.be/{{id.videoId}}">
+		<span class="glyphicon glyphicon-thumbs-up green bold"></span> {{statistics.likeCount}}
+		<span class="glyphicon glyphicon-thumbs-down red bold"></span> {{statistics.dislikeCount}}
+		<a rel="external" href="http://youtu.be/{{id}}">
 			<span class="glyphicon glyphicon-link"></span>
 		</a>
 	</div>
@@ -222,7 +222,7 @@
 </template>
 
 <template name="playlistGridEntry">
-	<div class="col-md-4 grid song">
+	<div class="col-md-4 col-xs-6 grid song">
 		<div class="thumb" style="background-image:url('{{this.snippet.thumbnails.high.url}}')" >
 			<span class="title">{{this.snippet.title}}</span>
 			<span class="length label label-info">({{formatDuration this.contentDetails.duration}})</span>
@@ -246,6 +246,7 @@
         {{username this}}
       {{/each}}
     </p>
+	<p>Added by {{username this.author}} {{fromNow this.added}}</p>
   </div>
 
   <div class="col-md-2 controls">
@@ -255,7 +256,7 @@
 </template>
 
 <template name="playlistEntryControls">
-    <div class="col-md-4"><span data-action="play" class="glyphicon glyphicon-play"></span></div>
+    <div class="col-md-4 col-sm-"><span data-action="play" class="glyphicon glyphicon-play"></span></div>
     <div class="col-md-4"><span data-action="remove" class="glyphicon glyphicon-remove"></span></div>
 </template>
 

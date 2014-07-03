@@ -91,7 +91,7 @@ Deps.autorun(function () {
   if (!playlist)
     return;
 
-  var videoId = playlist.songs[playing.playlistIndex];
+  var videoId = playlist.songs[playing.playlistIndex].songId;
   if (!videoId)
     return;
 
@@ -113,8 +113,9 @@ Deps.autorun(function () {
 
   //load and play next video
   console.log('playing youtube video: ', videoId);
-  
-  youtubePlayer.loadVideoById(videoId, 0, "large");
+  if (youtubePlayer) {
+	youtubePlayer.loadVideoById(videoId, 0, "large");
+  }
 });
 
 // Sync player status with youtube player
@@ -174,7 +175,7 @@ Deps.autorun(function () {
     var playlist = Playlists.findOne({_id: user.profile.playing.playlist});
     if (playlist) {
       var songs = playlist.songs;
-      check(songs, [String]);
+      check(songs, [Object]);
       Meteor.subscribe('songs', songs);
     }
   }
