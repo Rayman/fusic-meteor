@@ -92,6 +92,13 @@ div.song.grid:hover {
 div.song:hover div.controls {
 	opacity:1;
 }
+
+div.song p.meta {
+  font-size: 0.75em;
+  margin: 0 0;
+  color: #666;
+}
+
 div.controls {
 	opacity:0;
 }

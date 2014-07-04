@@ -27,7 +27,30 @@ div.bgImg.home {
   width: 100%;
   /* Set the fixed height of the footer here */
   background-color: @gray-lighter;
+  padding:0.5em;
+  z-index:20;
 }
+
+footer #ytplayer {
+  position:relative;
+}
+footer #ytdropdown {
+  position: absolute;
+  left: -480px;
+}
+
+footer .progress {
+  margin-bottom:0px;
+}
+
+footer button.btn {
+  border: none;
+  background-color: inherit;
+}
+footer button.btn:hover {
+  color: @brand-primary;
+}
+
 #main {
   margin-bottom: 60px;
 }
