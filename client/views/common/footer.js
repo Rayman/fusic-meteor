@@ -176,7 +176,7 @@ Deps.autorun(function () {
     if (playlist) {
       var songs = playlist.songs;
       songs = _.pluck(songs, 'songId');
-      check(songs, [string]);
+      check(songs, [String]);
       Meteor.subscribe('songs', songs);
     }
   }
