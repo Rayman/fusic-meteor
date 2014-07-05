@@ -408,5 +408,5 @@ Template.songs.songs = function() {
   return songs;
 };
 Template.songs.rendered = function() {
-	Session.setDefault("listview","list");
+	Session.setDefault("songView","list");
 };

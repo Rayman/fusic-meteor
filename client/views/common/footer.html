@@ -7,49 +7,60 @@
 </template>
 
 <template name="player">
-  <div id="player" class="container-fluid row">
-    <div id="player-controls" class="col-md-2">
-      <ul class="nav navbar-nav">
-        <li><a href="#" class="player-control-button" id="player-play"><span class="glyphicon glyphicon-play"></span></a></li>
-        <li><a href="#" class="player-control-button" id="player-pause"><span class="glyphicon glyphicon-pause"></span></a></li>
-        <li><a href="#" class="player-control-button active" id="player-stop"><span class="glyphicon glyphicon-stop"></span></a></li>
-      </ul>
-    </div>
-    <div id="player-progress" class="col-md-8">
-      <div class="nav navbar-text progress" id="player-progressbar-container-overlay"></div>
-      <div class="nav navbar-text progress" id="player-progressbar-container">
-        <span id="player-song-title">This is the most awesome song ever - Awesomeness</span>
-        <span id="player-song-duration">13:37</span>
-        <div class="progress-bar progress-bar" id="player-progressbar" role="progressbar">
+  <div id="player" class="container">
+    <div class="row">
+    
+      <!-- play/pause button, 1 wide -->
+      <div class="col-md-1 col-xs-1">
+      {{#if sessionIs 'playerState' 'playing'}}
+        <button class="player-control-button btn btn-default btn-xs" id="player-pause"><span class="glyphicon glyphicon-pause"></span></button>
+      {{else}}
+        <button class="btn btn-default btn-xs" id="player-play"><span class="glyphicon glyphicon-play"></span></button>
+      {{/if}}
+      </div>
+      
+      <!-- stop button, 1 wide -->
+      <div class="col-md-1 col-xs-1">
+        <button class="btn btn-default btn-xs player-control-button" id="player-stop"><span class="glyphicon glyphicon-stop"></span></button>
+      </div>
+      
+      <!-- progress bar 8 wide -->
+      <div id="player-progress" class="col-md-8 col-xs-8">
+        <div class="progress" id="player-progressbar-container">
+          <span id="player-song-title">This is the most awesome song ever - Awesomeness</span>
+          <span id="player-song-duration">13:37</span>
+          <div class="progress-bar progress-bar" id="player-progressbar" role="progressbar">
+          </div>
         </div>
       </div>
-    </div>
-    <div id="player-youtube" class="col-md-2">
-      <ul class="nav navbar-nav navbar-right">
-        <li class="dropup">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+      
+      <!-- player toggle button; 1 wide -->
+      <div id="player-youtube" class="col-md-1 col-xs-1">
+        <div class="dropup" id="ytplayer">
+          <button class="btn btn-default btn-xs" data-toggle="dropdown">
             <span class="glyphicon glyphicon-expand"></span>
-          </a>
-          <ul class="dropdown-menu">
-            <li>
-              <div id="youtube-embed">
-              </div>
-            </li>
+          </button>
+          <ul class="dropdown-menu" id="ytdropdown">
+            <li><div id="youtube-embed"></div></li>
           </ul>
-        </li>
-        <li class="dropup">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        </div>
+      </div>
+      
+      <!-- playlist toggle, 1 wide -->
+      <div class="col-md-1 col-xs-1">
+        <div class="dropup">
+          <button href="#" class="btn btn-default btn-xs" data-toggle="dropdown">
             <span class="glyphicon glyphicon-music"></span>
-          </a>
+          </button>
           {{> currentPlaylist}}
-        </li>
-      </ul>
-    </div>
+        </div>
+      </div>
+    </div><!-- /.row -->
   </div><!-- /.container-fluid -->
 </template>
 
 <template name="currentPlaylist">
-  <ul class="dropdown-menu">
+  <ul class="dropdown-menu" id="playerSongList">
     {{#with currentPlaylist}}
       {{#each playlist.songs}}
         <li>

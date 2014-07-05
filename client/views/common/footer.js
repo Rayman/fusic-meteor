@@ -41,10 +41,11 @@ function onPlayerStateChange(event) {
   switch (event.data) {
     case -1: //unstarted
       $("#player-stop").addClass("active");
+      Session.set("playerState","stopped");
       break;
     case 0: //ended
       $("#player-stop").addClass("active");
-
+      Session.set("playerState","stopped");
       var id = Meteor.userId();
       console.log('song ended');
       Meteor.users.update({_id: id},
@@ -53,9 +54,11 @@ function onPlayerStateChange(event) {
       break;
     case 1: //playing
       $("#player-play").addClass("active");
+      Session.set("playerState","playing");
       break;
     case 2: //paused
       $("#player-pause").addClass("active");
+      Session.set("playerState","paused");
       break;
     case 3: //buffering
       break;
@@ -133,13 +136,13 @@ var playerProgress = setInterval(function() {
 //  * * * * * * * * * * * * * * Player TEMPLATE Controls  * * * * * * * * * * * * * *
 
 Template.player.events = {
-  'click a#player-play': function (e) {
+  'click #player-play': function (e) {
     youtubePlayer.playVideo();
   },
-  'click a#player-pause': function (e) {
+  'click #player-pause': function (e) {
     youtubePlayer.pauseVideo();
   },
-  'click a#player-stop': function (e) {
+  'click #player-stop': function (e) {
     youtubePlayer.stopVideo();
   },
   'click #player-progressbar-container-overlay': function (e) {
@@ -210,9 +213,10 @@ Template.currentPlaylist.currentPlaylist = function () {
 };
 
 Template.queueSong.song = function() {
-  return Songs.findOne({_id: ""+this});
+  var id = this.songId;
+  return Songs.findOne({_id: id});
 };
 
 Template.queueSong.isCurrent = function (playlist, index) {
-  return playlist.songs[index] == ""+this;
+  return playlist.songs[index].songId == ""+this.songId;
 };
