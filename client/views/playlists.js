@@ -71,6 +71,10 @@ Template.playlist.isOwner = function() {
 	return this.owner == Meteor.userId();
 };
 
+Template.playlist.owner = function () {
+  return Meteor.users.findOne({_id: this.owner});
+};
+
 Template.playlist.events = {
   'click [data-toggle="collapse"]': function (e) {
     var parent = $('.edittoggle');
@@ -162,10 +166,6 @@ Template.playlistTabs.helpers({
     return Session.equals("active_tab", route) ? "active" : "";
   },
 });
-
-Template.playlistTabs.owner = function () {
-  return Meteor.users.findOne({_id: this.owner});
-};
 
 Template.playlistTabs.events = {
   'click ul.playlist-tabs > li': function (e) {
