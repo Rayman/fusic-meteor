@@ -109,7 +109,7 @@
             {{/each}}
           </ul>
         </div>
-        
+
         <div class="panel panel-default">
           <div class="panel-heading">
           <h3 class="panel-title">Stats</h3>
@@ -124,7 +124,7 @@
             </p>
           </div>
         </div>
-        
+
 		{{#if isOwner}}
 		<div class="panel panel-default">
 		  <div class="panel-heading">
@@ -246,10 +246,11 @@
   </div>
   <div class="col-md-9 col-xs-9 songtitle">
     <p>
-
-      <strong>{{this.snippet.title}}</strong> ({{formatDuration this.contentDetails.duration}})
+      <strong>{{this.snippet.title}}</strong>
+      <a rel="external" href="http://youtu.be/{{_id}}"><span class="glyphicon glyphicon-link"></span></a>
+      ({{formatDuration this.contentDetails.duration}})
       {{#each this.users}}
-        {{username this}}
+        <span class="glyphicon glyphicon-headphones"></span> <a>{{username this}}</a>
       {{/each}}
     </p>
 	<p class="meta">Added by <a>{{username this.author}}</a> {{fromNow this.added}}</p>
