@@ -112,7 +112,7 @@
 
         <div class="panel panel-default">
           <div class="panel-heading">
-          <h3 class="panel-title">Stats</h3>
+            <h3 class="panel-title">Stats</h3>
           </div>
           <div class="panel-body">
             <p>Created: {{fromNow createdAt}}<br/>
@@ -121,6 +121,7 @@
               {{#if songCount}}
                 with a total length of {{totalDuration}}
               {{/if}}
+              {{> contributionChart}}
             </p>
           </div>
         </div>
@@ -147,6 +148,10 @@
 
 <template name="updatePlaylistForm">
   {{> quickForm collection="Playlists" doc=editingDoc id="updatePlaylistForm" type="update" fields="title,cover,tags,description"}}
+</template>
+
+<template name="contributionChart">
+  <svg></svg>
 </template>
 
 <template name="playlistTabs">
