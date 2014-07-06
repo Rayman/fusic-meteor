@@ -11,12 +11,14 @@
     <div class="row">
     
       <!-- play/pause button, 1 wide -->
-      <div class="col-md-1 col-xs-1">
+      <div class="col-md-2 col-xs-2">
+        <button class="player-control-button btn btn-default btn-xs" id="player-previous"><span class="glyphicon glyphicon-step-backward"></span></button>
       {{#if sessionIs 'playerState' 'playing'}}
         <button class="player-control-button btn btn-default btn-xs" id="player-pause"><span class="glyphicon glyphicon-pause"></span></button>
       {{else}}
         <button class="btn btn-default btn-xs" id="player-play"><span class="glyphicon glyphicon-play"></span></button>
       {{/if}}
+        <button class="player-control-button btn btn-default btn-xs" id="player-next"><span class="glyphicon glyphicon-step-forward"></span></button>
       </div>
       
       <!-- stop button, 1 wide -->
@@ -25,7 +27,7 @@
       </div>
       
       <!-- progress bar 8 wide -->
-      <div id="player-progress" class="col-md-8 col-xs-8">
+      <div id="player-progress" class="col-md-7 col-xs-7">
         <div class="progress" id="player-progressbar-container">
           <span id="player-song-title">This is the most awesome song ever - Awesomeness</span>
           <span id="player-song-duration">13:37</span>
@@ -35,8 +37,8 @@
       </div>
       
       <!-- player toggle button; 1 wide -->
-      <div id="player-youtube" class="col-md-1 col-xs-1">
-        <div class="dropup" id="ytplayer">
+      <div id="player-youtube" class="col-md-2 col-xs-2">
+        <div class="dropup inline" id="ytplayer">
           <button class="btn btn-default btn-xs" data-toggle="dropdown">
             <span class="glyphicon glyphicon-expand"></span>
           </button>
@@ -44,15 +46,26 @@
             <li><div id="youtube-embed"></div></li>
           </ul>
         </div>
-      </div>
-      
-      <!-- playlist toggle, 1 wide -->
-      <div class="col-md-1 col-xs-1">
-        <div class="dropup">
+
+        <div class="dropup inline">
           <button href="#" class="btn btn-default btn-xs" data-toggle="dropdown">
             <span class="glyphicon glyphicon-music"></span>
           </button>
           {{> currentPlaylist}}
+        </div>
+        
+        <div class="dropup inline">
+          <button href="#" class="btn btn-default btn-xs" data-toggle="dropdown">
+            <span class="glyphicon glyphicon-volume-down"></span>
+          </button>
+          <ul class="dropdown-menu"><li>
+            <div id="volumecontrol">
+              <div class="track">
+                <div class="bar" style="width:0px"></div>
+                <div class="thumb" style="left:0px"></div>
+              </div>
+            </div>
+          </li></ul>
         </div>
       </div>
     </div><!-- /.row -->

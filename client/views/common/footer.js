@@ -8,6 +8,42 @@ Template.player.rendered = function() {
   if (Session.equals('youtubePlayerInitialized', false)) {
     $.getScript('https://www.youtube.com/iframe_api', function () {});
   }
+  
+  var isDragging = false;
+ 
+  
+  var setVolume = function(volume) {
+    var vol = (volume/100) *  $("div.track").width();
+    $("div.bar").width(vol);
+    $("div.thumb").css("left",vol-($("div.thumb").width()/2)+"px");
+    if(youtubePlayer) {
+      youtubePlayer.setVolume(volume);
+    }
+  }
+  
+  var defaultVolume = 75;
+  setVolume(defaultVolume);
+ 
+  
+  $("div.thumb").mousedown(function() {
+      $(window).mousemove(function(e) {
+          isDragging = true;
+            var parentOffset = $("div.track").offset(); 
+            var relX = e.pageX - parentOffset.left;
+            var trackWidth = $("div.track").width();
+            var volume = (relX /trackWidth )*100;
+            if (volume >= 100) {  volume=100; }
+            if (volume <= 0) { volume=0; }        
+            setVolume(volume);
+
+          //$(window).unbind("mousemove");
+      });
+  });
+  $(window).mouseup(function() {
+      var wasDragging = isDragging;
+      isDragging = false;
+      $(window).unbind("mousemove");
+  });
 };
 
 // * * * * * * * * * * * * * * * YOUTUBE IFRAME PLAYER INITIALIZATION  * * * * * * * * * * * * * *
@@ -94,6 +130,9 @@ Deps.autorun(function () {
   if (!playlist)
     return;
 
+  Session.set("playlistIndex",playing.playlistIndex);
+  Session.set("playlist",playlist);
+  
   var videoId = playlist.songs[playing.playlistIndex].songId;
   if (!videoId)
     return;
@@ -145,10 +184,30 @@ Template.player.events = {
   'click #player-stop': function (e) {
     youtubePlayer.stopVideo();
   },
-  'click #player-progressbar-container-overlay': function (e) {
+  'click #player-progressbar-container': function (e) {
     var fraction = e.offsetX / $(e.target).width();
     youtubePlayer.seekTo( youtubePlayer.getDuration() * fraction );
   },
+  'click #player-next': function(e) {
+      console.log('next song');
+      var list = Session.get("playlist");
+      if(Session.get("playlistIndex") < list.songs.length-1) {
+      
+        var id = Meteor.userId();
+        Meteor.users.update({_id: id},
+          {$inc: {'profile.playing.playlistIndex': 1}}
+        );
+      }
+  },
+  'click #player-previous': function(e) {
+      console.log('previous song');
+      if (Session.get("playlistIndex")>0) {
+        var id = Meteor.userId();
+        Meteor.users.update({_id: id},
+          {$inc: {'profile.playing.playlistIndex': -1}}
+        );
+      }
+  },  
 };
 
 String.prototype.toHHMMSS = function () {
