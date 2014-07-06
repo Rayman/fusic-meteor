@@ -22,8 +22,8 @@ Template.playlist.songCount = function() {
 };
 
 Template.playlist.totalDuration = function() {
-  //duration format: PT4M9S
-  var songs = Songs.find({_id: {$in: this.songs || []}});
+  var songIds = _.pluck(this.songs, 'songId');
+  var songs = Songs.find({_id: {$in: songIds || []}});
 
   var durations = songs.map(function(song){
     var duration = song.contentDetails.duration;
