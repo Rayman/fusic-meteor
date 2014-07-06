@@ -42,7 +42,6 @@ Template.playlist.following = function () {
   var user = Meteor.user();
   if (!user)
     return;
-    return;
   if (user.profile &&
       user.profile.following &&
       user.profile.following.indexOf(this._id) != -1
