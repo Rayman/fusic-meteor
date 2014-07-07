@@ -132,7 +132,9 @@ Deps.autorun(function () {
 
   Session.set("playlistIndex",playing.playlistIndex);
   Session.set("playlist",playlist);
-  
+
+  if (!playlist.songs[playing.playlistIndex])
+    return;
   var videoId = playlist.songs[playing.playlistIndex].songId;
   if (!videoId)
     return;
@@ -277,5 +279,7 @@ Template.queueSong.song = function() {
 };
 
 Template.queueSong.isCurrent = function (playlist, index) {
+  if (!playlist.songs[index])
+    return;
   return playlist.songs[index].songId == ""+this.songId;
 };
