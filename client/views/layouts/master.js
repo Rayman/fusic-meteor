@@ -2,13 +2,13 @@
 
 //example, make sure search result box hides when user clicks anywhere,
 //not just within the current template
-Template.masterLayout.rendered = function() {
+Template.masterLayout.rendered = function () {
   //hiding results appropriately
-  $(document.body).on('mouseup', function() {
+  $(document.body).on('mouseup', function (e) {
   var search = $("#searchArea");
   var results = $("#searchresults");
-    if (!search.is(event.target) && // if the target of the click isn't the container...
-        search.has(event.target).length === 0 &&  // ... nor a descendant of the container
+    if (!search.is(e.target) && // if the target of the click isn't the container...
+        search.has(e.target).length === 0 &&  // ... nor a descendant of the container
         results.is(':visible') //and results are currently visible
     ) {
       results.fadeOut('fast');
