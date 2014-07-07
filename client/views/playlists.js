@@ -427,13 +427,12 @@ Template.songs.songs = function() {
   });
 
   // find all songs for this playlist
-
-  // optimize this later with only 1 query
-  // var songs = Songs.find({_id: {$in: ids}});
+  var ids = _.pluck(this.songs, 'songId')
+  var songDB = _.indexBy(Songs.find({_id: {$in: ids}}).fetch(), '_id');
 
   var songs = this.songs.map(function (entry, i) {
 
-    var song = Songs.findOne({_id: entry.songId});
+    var song = songDB[entry.songId];
     if (!song) // not yet received by the pub/sub
       return;
 
@@ -445,8 +444,6 @@ Template.songs.songs = function() {
     song.author = Meteor.users.findOne({_id: entry.author});
     song.added = entry.added;
 
-    //var i = users.profile.playing.playlistIndex;
-    //console.log(i);
     return song;
   });
 
