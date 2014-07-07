@@ -8,10 +8,10 @@ Template.player.rendered = function() {
   if (Session.equals('youtubePlayerInitialized', false)) {
     $.getScript('https://www.youtube.com/iframe_api', function () {});
   }
-  
+
   var isDragging = false;
- 
-  
+
+
   var setVolume = function(volume) {
     var vol = (volume/100) *  $("div.track").width();
     $("div.bar").width(vol);
@@ -20,20 +20,20 @@ Template.player.rendered = function() {
       youtubePlayer.setVolume(volume);
     }
   }
-  
+
   var defaultVolume = 75;
   setVolume(defaultVolume);
- 
-  
+
+
   $("div.thumb").mousedown(function() {
       $(window).mousemove(function(e) {
           isDragging = true;
-            var parentOffset = $("div.track").offset(); 
+            var parentOffset = $("div.track").offset();
             var relX = e.pageX - parentOffset.left;
             var trackWidth = $("div.track").width();
             var volume = (relX /trackWidth )*100;
             if (volume >= 100) {  volume=100; }
-            if (volume <= 0) { volume=0; }        
+            if (volume <= 0) { volume=0; }
             setVolume(volume);
 
           //$(window).unbind("mousemove");
@@ -174,6 +174,36 @@ var playerProgress = setInterval(function() {
   }
 }, 500);
 
+
+var checkInterval = 2; // seconds
+var currentUrl;
+var playingDuration = 0; // seconds
+var playReported = false;
+setInterval(function() {
+  if(!youtubePlayer || !youtubePlayer.getPlayerState)
+    return;
+
+  if (youtubePlayer.getVideoUrl() != currentUrl) {
+    // new song
+    currentUrl = youtubePlayer.getVideoUrl();
+    playReported = false;
+    playingDuration = 0;
+  } else {
+    if (youtubePlayer.getPlayerState() == 1) { // playing
+      playingDuration += checkInterval;
+
+      if (playReported)
+        return;
+      if (playingDuration > 240 || playingDuration/youtubePlayer.getDuration() > 0.5) {
+        console.log('this sound has been played enough to count for a play');
+        playReported = true;
+
+        // report here to server
+      }
+    }
+  }
+}, checkInterval * 1000);
+
 //  * * * * * * * * * * * * * * Player TEMPLATE Controls  * * * * * * * * * * * * * *
 
 Template.player.events = {
@@ -194,7 +224,7 @@ Template.player.events = {
       console.log('next song');
       var list = Session.get("playlist");
       if(Session.get("playlistIndex") < list.songs.length-1) {
-      
+
         var id = Meteor.userId();
         Meteor.users.update({_id: id},
           {$inc: {'profile.playing.playlistIndex': 1}}
@@ -209,7 +239,7 @@ Template.player.events = {
           {$inc: {'profile.playing.playlistIndex': -1}}
         );
       }
-  },  
+  },
 };
 
 String.prototype.toHHMMSS = function () {
