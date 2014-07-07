@@ -195,10 +195,22 @@ setInterval(function() {
       if (playReported)
         return;
       if (playingDuration > 240 || playingDuration/youtubePlayer.getDuration() > 0.5) {
-        console.log('this sound has been played enough to count for a play');
         playReported = true;
 
-        // report here to server
+        var user = Meteor.user();
+        if (user &&
+            user.profile &&
+            user.profile.playing &&
+            user.profile.playing.playlist) {
+          var playlist = Playlists.findOne({_id: user.profile.playing.playlist});
+          if (!playlist)
+            return;
+
+          var songId = playlist.songs[user.profile.playing.playlistIndex].songId;
+
+          console.log('this sound has been played enough to count for a play');
+          PlayCounts.insert({songId: songId});
+        }
       }
     }
   }
