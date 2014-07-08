@@ -6,3 +6,7 @@ Template.header.rendered = function() {
 	}, 3000);
 
 }
+
+Template._loginButtonsAdditionalLoggedInDropdownActions.user = function(){
+  return Meteor.userId();
+}

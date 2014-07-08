@@ -1,0 +1,84 @@
+<template name="userProfile">
+<div class="row">
+  <div class="col-md-4">
+    <div class="col-md-6">
+      {{{avatar this._id}}}
+    </div>
+    {{#if isOwner}}
+      <div class="col-md-12">
+        <p><button data-action="edit-avatar" class="btn btn-primary {{#if sessionIs 'showEditAvatarBar' true}}active{{/if}}" role="button"><span class="glyphicon glyphicon-pencil"></span></button></p>
+        {{#if sessionIs 'showEditAvatarBar' true}}
+          {{>editAvatar}}
+        {{/if}}
+      </div>
+    {{/if}}
+    
+    <div class="col-md-12">
+      <h2>Friends</h2>
+    </div>
+    
+  </div>
+  {{#if isOwner}}
+    <div class="col-md-8">
+      {{#unless this.username}}
+        {{>setUsernameDialog}}
+      {{/unless}}
+      <h1>Hey {{this.username}},</h1>
+      <p>This is your personal profile page! {{id}}</p>
+      <p>We're all really happy that you're already a member since {{fromNow createdAt}}. 
+        On top of that, you have already liked {{loveCount}} songs, keep up the good work! 
+      </p>
+      
+      <h2>Your playlists</h2>
+      <p>If we are correct, these are playlists made by you</p>
+      {{#each userPlaylists}}
+          {{>userPlaylist}}
+      {{/each}}
+    </div>
+  {{else}}
+    <div class="col-md-8">
+      <h1>{{this.username}}</h1>
+      <p>Joined: {{fromNow createdAt}}</p>
+      <p>Likes {{loveCount}} songs</p>
+    </div>
+  {{/if}}
+</div>
+</template>
+
+<template name="userPlaylist">
+  <div class="row">
+    <div class="col-md-6"><a href="{{pathFor 'playlist'}}">{{title}}</a></div>
+    <div class="col-md-3">{{songCount}}</div>
+    <div class="col-md-3">created {{fromNow createdAt}}</div>
+  </div>
+</template>
+
+<template name="setUsernameDialog">
+<div class="alert alert-warning alert-dismissible" role="alert">
+  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+  <strong>Thats weird</strong> It looks like you havent set a username yet! Please do so.
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="input-group">
+        <input type="text" class="form-control" id="new-username">
+        <span class="input-group-btn">
+          <button data-action="set-username" class="btn btn-default" type="button">Set!</button>
+        </span>
+      </div><!-- /input-group -->
+    </div>
+  </div>
+</div>
+</template>
+
+<template name="editAvatar">
+<div class="row">
+  <div class="col-md-12">
+    <div class="input-group">
+      <input type="text" class="form-control" id="avatarUrl">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button" data-action="update-avatar">Ok</button>
+      </span>
+    </div><!-- /input-group -->
+  </div>
+</div>
+</template>
