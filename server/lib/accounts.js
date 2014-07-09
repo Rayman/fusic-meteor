@@ -5,6 +5,11 @@ Accounts.onCreateUser(function(options, user) {
 
   //empty array so that $addtoset can be used in mongo
   user.profile.lovedSongs = [];
+  //url to avatar
+  user.profile.avatar = null; 
+  //array object for friends
+  user.profile.friends = [];
+  
   return user;
 });
 
