@@ -37,7 +37,7 @@ Handlebars.registerHelper('avatar', function(id){
   var url="/img/avatar.jpg"
   if (avatar) {
     var url=avatar;
-  } 
+  }
   return '<img class="img-circle img-responsive avatar" src="'+url+'">';
 });
 

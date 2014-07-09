@@ -93,7 +93,7 @@
           <ul>
             {{#each followers}}
               <li>
-                <a href="/profile/{{this._id}}">{{username this}}</a>
+                {{> userLink}}
               </li>
             {{else}}
               <li>Nobody</li>
@@ -104,7 +104,7 @@
           <ul>
             {{#each players}}
               <li>
-                <a href="/profile/{{this._id}}">{{username this}}</a>
+                {{> userLink}}
               </li>
             {{/each}}
           </ul>
@@ -116,7 +116,7 @@
           </div>
           <div class="panel-body">
             <p>Created: {{fromNow createdAt}}<br/>
-              Owner:  {{username owner}}<br/>
+              Owner: {{#with owner}}{{> userLink}}{{/with}}<br/>
               {{songCount}} songs
               {{#if songCount}}
                 with a total length of {{totalDuration}}
@@ -255,10 +255,11 @@
       <a rel="external" href="http://youtu.be/{{_id}}"><span class="glyphicon glyphicon-link"></span></a>
       ({{formatDuration this.contentDetails.duration}})
       {{#each this.users}}
-        <span class="glyphicon glyphicon-headphones"></span> <a>{{username this}}</a>
+        <span class="glyphicon glyphicon-headphones"></span>
+        {{> userLink}}
       {{/each}}
     </p>
-	<p class="meta">Added by <a>{{username this.author}}</a> {{fromNow this.added}}</p>
+	<p class="meta">Added by {{#with this.author}}{{> userLink}}{{/with}} {{fromNow this.added}}</p>
   </div>
 
   <div class="col-md-2 col-xs-2 controls">

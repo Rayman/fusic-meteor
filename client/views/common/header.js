@@ -8,5 +8,5 @@ Template.header.rendered = function() {
 }
 
 Template._loginButtonsAdditionalLoggedInDropdownActions.user = function(){
-  return Meteor.userId();
+  return Meteor.user();
 }
