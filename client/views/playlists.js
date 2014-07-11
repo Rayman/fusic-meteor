@@ -76,6 +76,9 @@ Template.playlist.owner = function () {
 };
 
 Template.contributionChart.rendered = function () {
+  if (!this.data)
+    return;
+
   var width = 300,
       height = 200,
       radius = Math.min(width, height) / 2;
