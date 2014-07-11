@@ -1,13 +1,5 @@
-Template.userProfile.userPlaylists = function() {
-  return Playlists.find({});
-}
-
 Template.userProfile.isOwner = function() {
   return Meteor.userId() == this._id;
-}
-
-Template.userProfile.loveCount = function() {
-  return this.profile.lovedSongs.length;
 }
 
 Template.userProfile.rendered = function() {
@@ -23,7 +15,7 @@ Template.userProfile.events = {
           {$set: {'username':newname}});
 
   },
-  'click [data-action="edit-avatar"]': function() {  
+  'click [data-action="edit-avatar"]': function() {
     Session.set("showEditAvatarBar",!Session.get("showEditAvatarBar"));
   }
 }
@@ -40,7 +32,7 @@ Template.userPlaylist.songCount = function() {
 
 Template.editAvatar.events = {
   'click [data-action="update-avatar"]': function() {
-    var avatar = $("input#avatarUrl").val();    
+    var avatar = $("input#avatarUrl").val();
     check(avatar,String);
     Meteor.users.update(
           {_id:  Meteor.userId()},

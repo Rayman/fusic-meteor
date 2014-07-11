@@ -2,7 +2,7 @@
 <div class="row">
   <div class="col-md-4">
     <div class="col-md-6">
-      {{{avatar this._id}}}
+      {{{avatar _id}}}
     </div>
     {{#if isOwner}}
       <div class="col-md-12">
@@ -12,11 +12,11 @@
         {{/if}}
       </div>
     {{/if}}
-    
+
     <div class="col-md-12">
       <h2>Friends</h2>
     </div>
-    
+
   </div>
   {{#if isOwner}}
     <div class="col-md-8">
@@ -25,10 +25,10 @@
       {{/unless}}
       <h1>Hey {{this.username}},</h1>
       <p>This is your personal profile page! {{id}}</p>
-      <p>We're all really happy that you're already a member since {{fromNow createdAt}}. 
-        On top of that, you have already liked {{loveCount}} songs, keep up the good work! 
+      <p>We're all really happy that you're already a member since {{fromNow createdAt}}.
+        On top of that, you have already liked {{profile.lovedSongs.length}} songs, keep up the good work!
       </p>
-      
+
       <h2>Your playlists</h2>
       <p>If we are correct, these are playlists made by you</p>
       {{#each userPlaylists}}
