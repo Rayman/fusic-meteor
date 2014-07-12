@@ -13,8 +13,11 @@
       </div>
     {{/if}}
 
-    <div class="col-md-12">
-      <h2>Friends</h2>
+    <div class="col-md-9">
+      <h2>Friends <span class="badge">{{this.profile.friends.length}}</span></h2>
+      {{#each userFriends}}
+        <div class="avatar" style="background-image:url('{{this.profile.avatar}}')"></div>
+      {{/each}}
     </div>
 
   </div>
@@ -40,6 +43,7 @@
       <h1>{{this.username}}</h1>
       <p>Joined: {{fromNow createdAt}}</p>
       <p>Likes {{loveCount}} songs</p>
+      {{>addRemoveFriend}}
     </div>
   {{/if}}
 </div>
@@ -81,4 +85,26 @@
     </div><!-- /input-group -->
   </div>
 </div>
+</template>
+
+<template name="addRemoveFriend">
+  <div class="button-group">
+    {{#if isFriend}}
+      <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+        <span class="glyphicon glyphicon-ok"></span>
+        <span class="glyphicon glyphicon-user"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><a data-action="remove-friend"><span class="glyphicon glyphicon-trash"></span>Remove friend</a></li>
+      </ul>
+    {{else}}
+      <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        <span class="glyphicon glyphicon-user"></span>
+        <span class="glyphicon glyphicon-plus"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><a data-action="add-friend"><span class="glyphicon glyphicon-plus"></span> Add as friend</a></li>
+      </ul>
+    {{/if}}
+  </div>
 </template>
