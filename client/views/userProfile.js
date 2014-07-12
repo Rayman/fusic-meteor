@@ -9,6 +9,13 @@ Template.userProfile.rendered = function() {
 Template.userProfile.userFriends = function() {
   return Meteor.users.find({_id: {$in: this.profile.friends}});
 }
+Template.userProfile.avatarUrl = function() {
+  if(this.profile.avatar) { 
+    return this.profile.avatar;
+  } else {
+    return "/img/avatar.jpg";
+  }
+}
 
 Template.userProfile.events = {
   'click [data-action="set-username"]': function() {
