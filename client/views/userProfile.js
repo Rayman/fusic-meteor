@@ -6,6 +6,17 @@ Template.userProfile.rendered = function() {
   Session.setDefault("showEditAvatarBar",false);
 }
 
+Template.userProfile.userFriends = function() {
+  return Meteor.users.find({_id: {$in: this.profile.friends}});
+}
+Template.userProfile.avatarUrl = function() {
+  if(this.profile.avatar) { 
+    return this.profile.avatar;
+  } else {
+    return "/img/avatar.jpg";
+  }
+}
+
 Template.userProfile.events = {
   'click [data-action="set-username"]': function() {
     var newname = $("input#new-username").val();
@@ -17,6 +28,9 @@ Template.userProfile.events = {
   },
   'click [data-action="edit-avatar"]': function() {
     Session.set("showEditAvatarBar",!Session.get("showEditAvatarBar"));
+  },
+  'click div.avatar': function() {
+    Router.go('userProfile', {_id: this._id});
   }
 }
 
@@ -38,5 +52,24 @@ Template.editAvatar.events = {
           {_id:  Meteor.userId()},
           {$set: {'profile.avatar':avatar}});
     Session.set("showEditAvatarBar",false);
+  }
+}
+
+Template.addRemoveFriend.isFriend = function() {
+  return _.contains(Meteor.user().profile.friends,this._id);
+}
+
+Template.addRemoveFriend.events = {
+  'click [data-action="add-friend"]': function() {
+    Meteor.users.update(
+      { _id: Meteor.userId() },
+      { $addToSet : { 'profile.friends': this._id }}
+    );
+  },
+  'click [data-action="remove-friend"]': function() {
+    Meteor.users.update(
+      { _id: Meteor.userId() },
+      { $pull : { 'profile.friends': this._id }}
+    );
   }
 }
