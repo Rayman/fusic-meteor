@@ -23,9 +23,6 @@ Template.userProfile.events = {
   'click [data-action="edit-avatar"]': function() {
     Session.set("showEditAvatarBar",!Session.get("showEditAvatarBar"));
   },
-  'click div.avatar': function() {
-    Router.go('userProfile', {_id: this._id});
-  }
 };
 
 Template.userPlaylist.songCount = function() {
