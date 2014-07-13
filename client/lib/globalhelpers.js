@@ -31,18 +31,13 @@ Handlebars.registerHelper('username', function(user){
   }
 });
 
-//avatar as responsive image
-Handlebars.registerHelper('avatar', function(id){
-  if(Meteor.users.findOne(id) == null) { return; }
-  var avatar = Meteor.users.findOne(id).profile.avatar;
-  var url="/img/avatar.jpg"
-  if (avatar) {
-    var url=avatar;
+Template.userProfile.avatarUrl = function() {
+  if(this.profile.avatar) {
+    return this.profile.avatar;
+  } else {
+    return "/img/avatar.jpg";
   }
-  return '<img class="img-circle img-responsive avatar" src="'+url+'">';
-});
-
-
+};
 
 Handlebars.registerHelper('currentRoute', function() {
 	var currentRoute = Router.current();
