@@ -79,12 +79,7 @@
 <template name="editAvatar">
 <div class="row">
   <div class="col-md-12">
-    <div class="input-group">
-      <input type="text" class="form-control" id="avatarUrl">
-      <span class="input-group-btn">
-        <button class="btn btn-default" type="button" data-action="update-avatar">Ok</button>
-      </span>
-    </div><!-- /input-group -->
+    {{> quickForm collection=users doc=currentAvatar id="updateAvatar" type="update" fields="profile.avatar" buttonContent="Ok!"}}
   </div>
 </div>
 </template>
