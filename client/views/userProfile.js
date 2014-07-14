@@ -35,16 +35,14 @@ Template.userPlaylist.songCount = function() {
   }
 };
 
-Template.editAvatar.events = {
-  'click [data-action="update-avatar"]': function() {
-    var avatar = $("input#avatarUrl").val();
-    check(avatar,String);
-    Meteor.users.update(
-          {_id:  Meteor.userId()},
-          {$set: {'profile.avatar':avatar}});
-    Session.set("showEditAvatarBar",false);
-  }
+Template.editAvatar.currentAvatar = function () {
+  return Meteor.user();
 };
+
+Template.editAvatar.users = function () {
+  return Meteor.users;
+};
+
 
 Template.addRemoveFriend.isFriend = function() {
   return _.contains(Meteor.user().profile.friends,this._id);
