@@ -48,7 +48,8 @@ UserProfile = new SimpleSchema({
     },
     playing: {
       optional:true,
-      type: [Object]
+      type: Object,
+      blackbox:true,
     }
     
     
