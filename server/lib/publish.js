@@ -20,7 +20,7 @@ Meteor.publish("songs", function (ids) {
 
 //Playlists from one user, including private ones
 Meteor.publish("playlistsByUser", function(userId) {
-    return  Playlists.find({owner:userId, privacy : 'private'},
+    return  Playlists.find({owner:userId},
               { sort: {createdAt: 1},
                 fields: { 'title':1,
                           'createdAt':1,
