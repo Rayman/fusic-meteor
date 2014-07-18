@@ -1,9 +1,18 @@
+Template.userProfile.created = function() {
+  Meteor.call('getPrivatePlaylists', function(error,result) {
+    if(error) { console.log(error); return; }
+    Session.set("privatePlaylists", result);
+  });
+  
+  Session.setDefault("showEditAvatarBar",false);
+}
+
 Template.userProfile.isOwner = function() {
   return Meteor.userId() == this._id;
 };
 
-Template.userProfile.rendered = function() {
-  Session.setDefault("showEditAvatarBar",false);
+Template.userProfile.privatePlaylists = function() {
+  return Session.get("privatePlaylists");
 };
 
 Template.userProfile.userFriends = function() {

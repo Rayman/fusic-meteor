@@ -21,3 +21,26 @@ Meteor.users.allow({
   },
   fetch: ['username']
 });
+
+Playlists.allow({
+  //Everyone can create new playlists
+  insert: function(userId, doc) {
+    return true;
+  },
+  //only check if we're updating songs; if so, find out if this allowed
+  update: function (userId, doc, fields, modifier) {
+  	if( _.contains(fields, 'songs')) {
+      if(doc.privacy == "public") { return true; }
+      else if((doc.privacy == "viewonly" || doc.privacy == "private") && doc.owner == userId) { return true; }
+      else { return false; }
+    }  
+    //for now, other fields can be edited without problems...
+    return true;
+  },
+  //only remove if owner equals user id
+  remove: function (userId, doc) {
+    return doc.owner == userId;
+  },
+  //important fields for permissions
+  fetch: ['owner','privacy']
+ });

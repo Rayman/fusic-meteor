@@ -31,6 +31,14 @@ Handlebars.registerHelper('username', function(user){
   }
 });
 
+Handlebars.registerHelper('privacyIcon', function(playlist) {
+  var icon = "globe";
+  if(this.privacy == "viewonly")  { icon = "eye-open"; }
+  if(this.privacy == "private")   { icon = "lock"; }
+
+  return '<span class="glyphicon glyphicon-'+ icon +'"></span>';
+});
+
 Template.userProfile.avatarUrl = function() {
   if(this.profile.avatar) {
     return this.profile.avatar;

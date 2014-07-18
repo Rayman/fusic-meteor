@@ -3,8 +3,9 @@ Meteor.publish("allusers", function () {
                            {fields: {'username': 1, 'profile': 1, 'createdAt':1}});
 });
 
+//In all playlists view, hide the private ones
 Meteor.publish("allplaylists", function () {
-  return Playlists.find();
+  return Playlists.find({'privacy' : { $ne: 'private'}});
 });
 
 Meteor.publish("playlist", function (id) {
@@ -17,9 +18,9 @@ Meteor.publish("songs", function (ids) {
   return Songs.find({_id: {$in: ids}});
 });
 
-//Playlists from one user
+//Playlists from one user, including private ones
 Meteor.publish("playlistsByUser", function(userId) {
-    return  Playlists.find({owner:userId},
+    return  Playlists.find({owner:userId, privacy : 'private'},
               { sort: {createdAt: 1},
                 fields: { 'title':1,
                           'createdAt':1,
