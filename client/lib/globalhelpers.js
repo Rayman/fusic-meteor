@@ -39,13 +39,13 @@ Handlebars.registerHelper('privacyIcon', function(playlist) {
   return '<span class="glyphicon glyphicon-'+ icon +'"></span>';
 });
 
-Template.userProfile.avatarUrl = function() {
-  if(this.profile.avatar) {
-    return this.profile.avatar;
+Handlebars.registerHelper('avatarUrl', function(user) {
+  if(user.profile.avatar) {
+    return user.profile.avatar;
   } else {
     return "/img/avatar.jpg";
   }
-};
+});
 
 Handlebars.registerHelper('currentRoute', function() {
 	var currentRoute = Router.current();
@@ -57,3 +57,8 @@ Handlebars.registerHelper('currentRoute', function() {
 Handlebars.registerHelper('sessionIs', function(p1, p2) {
     return Session.get(p1) === p2;
 });
+
+
+Template.circleAvatar.rendered = function() {
+    $('div.avatar').tooltip();
+}

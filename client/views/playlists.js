@@ -19,15 +19,28 @@ Template.insertPlaylistForm.events = {
   }
 }
 
+Template.playlistsEntry.events = {
+  'click .playlist-container' : function(e,template) {
+    Router.go('/playlist/'+this._id);
+  }
+}
+
 
 Template.playlist.rendered = function() {
   AutoForm.hooks({ 
     removeButton: { //on successful remove, go back to playlist page
-          onSuccess: function(operation, result, template) {
-            Router.go('playlists');
-          } 
-        }
-    });
+      onSuccess: function(operation, result, template) {
+        Router.go('playlists');
+      } 
+    },
+    updatePlaylistForm: { //on successful edit, collapse back out
+      onSuccess: function(operation, result, template) {
+        $('#playlistInfo').collapse('show');
+        $('#updatePlaylistForm').collapse('hide');
+        
+      }
+    }
+  });
 }
 
 Template.playlist.selected = function () {

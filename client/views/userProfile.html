@@ -2,7 +2,7 @@
 <div class="row">
   <div class="col-md-4">
     <div class="col-md-6">
-      <img class="img-circle img-responsive avatar" src="{{avatarUrl profile.avatar}}">
+      <img class="img-circle img-responsive avatar" src="{{avatarUrl this}}">
     </div>
     {{#if isOwner}}
       <div class="col-md-12">
@@ -16,9 +16,7 @@
     <div class="col-md-9">
       <h2>Friends <span class="badge">{{this.profile.friends.length}}</span></h2>
       {{#each userFriends}}
-        <a href="{{pathFor 'userProfile'}}">
-          <div class="avatar" style="background-image:url('{{avatarUrl}}')"></div>
-        </a>
+        {{>circleAvatar}}
       {{/each}}
     </div>
 

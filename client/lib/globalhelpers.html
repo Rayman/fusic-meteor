@@ -1,3 +1,10 @@
 <template name="userLink">
   <a href="{{pathFor 'userProfile'}}">{{username this}}</a>
 </template>
+
+<!-- create circular user avatar from user object  -->
+<template name="circleAvatar">
+  <a href="{{pathFor 'userProfile'}}">
+    <div data-toggle="tooltip" title="{{this.username}}" class="avatar" style="background-image:url('{{avatarUrl this}}')"></div>
+  </a>
+</template>

@@ -10,6 +10,7 @@
 div.inline {
 	display:inline-block;
 }
+
 .overlay-container {
 	position:relative;
 }
@@ -21,6 +22,8 @@ div.inline {
 	background-color: rgba(117, 226, 226, 0.83);
 	padding: 4px;
 }
+
+
 
 .playlist-container:hover {
 	background-color: #eee;
@@ -58,6 +61,9 @@ li.youtube-result {
 li.youtube-result:hover {
 	background-color:#eee;
 }
+
+
+
 
 span[data-action*="play"] {
 	cursor:pointer;
