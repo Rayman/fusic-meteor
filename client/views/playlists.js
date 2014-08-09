@@ -1,3 +1,48 @@
+Template.insertPlaylistForm.rendered = function() {
+  Session.setDefault('playlistPrivacy','public');
+  this.find('[data-schema-key=privacy]').value = 'public';
+  $("button").tooltip();
+  AutoForm.hooks({ 
+    insertPlaylistForm: {
+     onSuccess: function(operation, result, template) {
+        Router.go('/playlist/'+result);
+     } 
+    }
+  });
+}
+
+Template.insertPlaylistForm.events = {
+  'click #privacyToggle button' : function(e,template) {
+    var btn = e.currentTarget;
+    Session.set('playlistPrivacy',btn.getAttribute("data-action"));
+    template.find('[data-schema-key=privacy]').value = btn.getAttribute("data-action");
+  }
+}
+
+Template.playlistsEntry.events = {
+  'click .playlist-container' : function(e,template) {
+    Router.go('/playlist/'+this._id);
+  }
+}
+
+
+Template.playlist.rendered = function() {
+  AutoForm.hooks({ 
+    removeButton: { //on successful remove, go back to playlist page
+      onSuccess: function(operation, result, template) {
+        Router.go('playlists');
+      } 
+    },
+    updatePlaylistForm: { //on successful edit, collapse back out
+      onSuccess: function(operation, result, template) {
+        $('#playlistInfo').collapse('show');
+        $('#updatePlaylistForm').collapse('hide');
+        
+      }
+    }
+  });
+}
+
 Template.playlist.selected = function () {
   return Session.equals("playing_song", this._id) ? "selected" : '';
 };
@@ -17,6 +62,7 @@ Template.playlist.playing = function () {
     return false;
   }
 };
+
 Template.playlist.songCount = function() {
   return this.songs ? this.songs.length : 0;
 };
@@ -204,6 +250,10 @@ Template.loveSong.isLoved = function() {
 };
 
 Template.updatePlaylistForm.editingDoc = function () {
+  return Playlists.findOne({_id: this._id});
+};
+
+Template.ownerPanel.editingDoc = function () {
   return Playlists.findOne({_id: this._id});
 };
 

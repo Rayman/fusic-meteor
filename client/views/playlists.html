@@ -1,15 +1,19 @@
 <template name="playlists">
-	<div class="panel panel-default">
-	  <div class="panel-heading">
-		<h3 class="panel-title">Newest playlists</h3>
-	  </div>
-	  <div class="panel-body">
-		{{#each playlists}}
-			{{> playlistsEntry}}
-		 {{/each}}
-	  </div>
-	</div>
-	<a href="{{pathFor 'allplaylists'}}">View all playlists</a>
+	<div class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+      <h3 class="panel-title">Newest playlists</h3>
+      </div>
+      <div class="panel-body">
+      {{#each playlists}}
+        {{> playlistsEntry}}
+       {{/each}}
+      </div>
+    </div>
+  </div>
+	<div class="col-md-4">
+    <a href="{{pathFor 'allplaylists'}}" class="btn btn-info btn-lg" role="button">View all playlists</a>
+  </div>
 	<div class="col-md-4">
 		<h2><span class="glyphicon glyphicon-plus"></span> Or add a new one</h2>
 		{{> insertPlaylistForm}}
@@ -31,7 +35,25 @@
 
 
 <template name="insertPlaylistForm">
-  {{> quickForm collection="Playlists" id="insertPlaylistForm" type="insert" fields="title,cover,tags,description"}}
+{{#autoForm collection="Playlists" id="insertPlaylistForm" type="insert" }}
+  {{> afQuickField name="title"}}
+  {{> afQuickField name="cover"}}
+  {{> afQuickField name="tags" }}
+  {{> afFieldInput name="privacy" type="hidden"}}
+  <label class="control-label" for="privacy">Privacy Setting</label>
+  <div class="btn-group btn-group-md" id="privacyToggle">
+      <button data-action="public" data-toggle="tooltip" data-placement="bottom" title="Your playlist will be viewable and editable by everyone" type="button" class="btn btn-default {{#if sessionIs 'playlistPrivacy' 'public'}}active{{/if}}">
+        <span class="glyphicon glyphicon glyphicon-globe"></span> Public
+      </button> 
+      <button data-action="viewonly" data-toggle="tooltip" data-placement="bottom" title="Only you can edit your playlist, the rest can view and listen" type="button" class="btn btn-default {{#if sessionIs 'playlistPrivacy' 'viewonly'}}active{{/if}}">
+        <span class="glyphicon glyphicon glyphicon-eye-open"></span> View only 
+      </button>
+      <button data-action="private" data-toggle="tooltip" data-placement="bottom" title="This playlist will only be visible by you" type="button" class="btn btn-default {{#if sessionIs 'playlistPrivacy' 'private'}}active{{/if}}">
+        <span class="glyphicon glyphicon-lock"></span> Private
+      </button>
+  </div>
+  <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Add!</button>
+{{/autoForm}}
 </template>
 
 <template name="playlistsEntry">
@@ -47,10 +69,13 @@
       <div class="col-md-4 hidden-xs">
 
         <div class="edittoggle collapse-group">
-          <a href="" data-toggle="collapse">edit <span class="glyphicon glyphicon-edit"></span></a>
-          <div class="collapse in">
+          <div id="playlistInfo" class="collapse in">
+            <h1 id="playlistName">
+              <small>{{{privacyIcon this}}}</small>
+              &nbsp;{{title}}&nbsp;
+              <a id="editToggle" data-toggle="collapse"><span class="glyphicon glyphicon-edit"></span></a>
+            </h1>
 
-            <h1>{{title}}</h1>
             {{#if description}}
               <p class="lead">{{description}}</p>
             {{/if}}
@@ -62,52 +87,44 @@
 
           </div>
 
-          <div class="collapse">
+          <div id="updatePlaylistForm" class="collapse">
+            <a href="" data-toggle="collapse"><span class="glyphicon glyphicon-remove"></span></a>
             {{> updatePlaylistForm}}
           </div>
 
-          <br />
-
-          <div>
-            {{#if playing}}
-              <button class="btn btn-success" data-action="playlist-pause">
-                <span class="glyphicon glyphicon-pause"></span> Pause
-              </button>
-            {{else}}
-              <button class="btn btn-success" data-action="playlist-play">
-                <span class="glyphicon glyphicon-play"></span> Play
-              </button>
-            {{/if}}
-            {{#if following}}
-            <button class="btn" data-action="unfollow">
-              <span class="glyphicon glyphicon-minus"></span> Unfollow
+          <br />        
+        </div>
+        
+        <div>
+          {{#if playing}}
+            <button class="btn btn-success" data-action="playlist-pause">
+              <span class="glyphicon glyphicon-pause"></span> Pause
             </button>
-            {{else}}
-            <button class="btn" data-action="follow">
-              <span class="glyphicon glyphicon-plus"></span> Follow
+          {{else}}
+            <button class="btn btn-success" data-action="playlist-play">
+              <span class="glyphicon glyphicon-play"></span> Play
             </button>
-            {{/if}}
+          {{/if}}
+          {{#if following}}
+          <button class="btn" data-action="unfollow">
+            <span class="glyphicon glyphicon-minus"></span> Unfollow
+          </button>
+          {{else}}
+          <button class="btn" data-action="follow">
+            <span class="glyphicon glyphicon-plus"></span> Follow
+          </button>
+          {{/if}}
+        </div>
+        
+        <div class="row">
+          <div class="col-md-9">
+            <h3>Followers</h3>
+              {{#each followers}}
+                {{>circleAvatar this}}
+              {{else}}
+                <p>None yet</p>
+              {{/each}}
           </div>
-
-          <h3>Followers:</h3>
-          <ul>
-            {{#each followers}}
-              <li>
-                {{> userLink}}
-              </li>
-            {{else}}
-              <li>Nobody</li>
-            {{/each}}
-          </ul>
-
-          <h3>Currently playing:</h3>
-          <ul>
-            {{#each players}}
-              <li>
-                {{> userLink}}
-              </li>
-            {{/each}}
-          </ul>
         </div>
 
         <div class="panel panel-default">
@@ -127,16 +144,7 @@
         </div>
 
 		{{#if isOwner}}
-		<div class="panel panel-default">
-		  <div class="panel-heading">
-			<h3 class="panel-title">Owner's panel</h3>
-		  </div>
-		  <div class="panel-body">
-        <p>You are the owner of this playlist, so you can view fancy settings</p>
-        <p><button data-action="show-settings" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-cog"></span>Important settings</button></p>
-        <p><button data-action="remove-playlist" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span>Delete playlist</button></p>
-		  </div>
-		</div>
+      {{>ownerPanel}}
 		{{/if}}
       </div>
 
@@ -147,7 +155,22 @@
 </template>
 
 <template name="updatePlaylistForm">
-  {{> quickForm collection="Playlists" doc=editingDoc id="updatePlaylistForm" type="update" fields="title,cover,tags,description"}}
+  {{> quickForm collection="Playlists" doc=editingDoc id="updatePlaylistForm" type="update" fields="title,cover,tags,description" buttonContent="Update"}}
+</template>
+
+<template name="ownerPanel">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+    <h3 class="panel-title">Owner's panel</h3>
+    </div>
+    <div class="panel-body">
+      <p>You are the owner of this playlist, so you can view fancy settings</p>
+      <p><button data-action="show-settings" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-cog"></span>Important settings</button></p>
+      {{#afDeleteButton collection="Playlists" doc=editingDoc id="removeButton"}}
+        <span class="glyphicon glyphicon-trash"></span> Delete playlist
+      {{/afDeleteButton}}
+    </div>
+  </div>
 </template>
 
 <template name="contributionChart">
@@ -175,8 +198,6 @@
 		</div>
 		{{> searchResults}}
 	</div>
-
-
     {{> songs}}
 </template>
 

@@ -2,7 +2,7 @@
 <div class="row">
   <div class="col-md-4">
     <div class="col-md-6">
-      <img class="img-circle img-responsive avatar" src="{{avatarUrl profile.avatar}}">
+      <img class="img-circle img-responsive avatar" src="{{avatarUrl this}}">
     </div>
     {{#if isOwner}}
       <div class="col-md-12">
@@ -16,9 +16,7 @@
     <div class="col-md-9">
       <h2>Friends <span class="badge">{{this.profile.friends.length}}</span></h2>
       {{#each userFriends}}
-        <a href="{{pathFor 'userProfile'}}">
-          <div class="avatar" style="background-image:url('{{avatarUrl}}')"></div>
-        </a>
+        {{>circleAvatar}}
       {{/each}}
     </div>
 
@@ -34,9 +32,17 @@
         On top of that, you have already liked {{profile.lovedSongs.length}} songs, keep up the good work!
       </p>
 
-      <h2>Your playlists</h2>
-      <p>If we are correct, these are playlists made by you</p>
+      <h2>Public playlists</h2>
+      <p>If we are correct, these are playlists made by you and visible by everyone</p>
       {{#each userPlaylists}}
+          {{>userPlaylist}}
+      {{/each}}
+      <h3>Private playlists</h3>
+      {{#if privatePlaylists}}<p>Additionally, you have some private playlists</p>
+      {{else}}
+      <p>You have no private playlists yet</p>
+      {{/if}}
+      {{#each privatePlaylists}}
           {{>userPlaylist}}
       {{/each}}
     </div>
@@ -53,7 +59,7 @@
 
 <template name="userPlaylist">
   <div class="row">
-    <div class="col-md-6"><a href="{{pathFor 'playlist'}}">{{title}}</a></div>
+    <div class="col-md-6">{{{privacyIcon this}}}&nbsp;<a href="{{pathFor 'playlist'}}">{{title}}</a></div>
     <div class="col-md-3">{{songCount}}</div>
     <div class="col-md-3">created {{fromNow createdAt}}</div>
   </div>
