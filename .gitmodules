@@ -37,3 +37,12 @@
 [submodule "packages/youtube-api"]
 	path = packages/youtube-api
 	url = https://github.com/daltonrenaldo/youtube-api.git
+[submodule "packages/iron-layout"]
+	path = packages/iron-layout
+	url = https://github.com/EventedMind/iron-layout.git
+[submodule "packages/iron-dynamic-template"]
+	path = packages/iron-dynamic-template
+	url = https://github.com/EventedMind/iron-dynamic-template.git
+[submodule "packages/iron-core"]
+	path = packages/iron-core
+	url = https://github.com/EventedMind/iron-core.git
