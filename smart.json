@@ -1,0 +1,12 @@
+{
+  "packages": {
+    "accounts-ui-bootstrap-3": {},
+    "less-bootstrap-3": {},
+    "autoform": {},
+    "iron-router": {},
+    "iron-router-progress": {},
+    "iron-router-active": {},
+    "youtube-api": {}
+    "assert": {},
+  }
+}
