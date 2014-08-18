@@ -6,7 +6,7 @@
     "iron-router": {},
     "iron-router-progress": {},
     "iron-router-active": {},
-    "youtube-api": {}
+    "youtube-api": {},
     "assert": {},
   }
 }
