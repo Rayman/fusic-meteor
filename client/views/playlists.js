@@ -452,7 +452,8 @@ youtubeVideoQuery = function(options) {
     if (error) {
       console.log('Youtube list API error:', error);
     } else {
-      console.log('Youtube list API result:', data);
+      //console.log('Youtube list API result:', data);
+      //console.log(data.snippet.title);
       searchResults = data; // TODO: search result data != videoQuery data
       searchResultsDependency.changed();
     }

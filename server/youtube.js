@@ -59,7 +59,7 @@ Meteor.methods({
           { upsert: true }
         );
         
-		console.log('updating cache for video:', item.id, ' -> ',r,' rows affected');
+		//console.log('updating cache for video:', item.id, ' -> ',r,' rows affected');
 		
       }
     }

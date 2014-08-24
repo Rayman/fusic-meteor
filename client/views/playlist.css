@@ -165,4 +165,14 @@ span[data-action*="lovesong"]:hover {
 
 .red { 		color:rgb(196, 87, 87);		}
 .green { 	color:rgb(96, 185, 96); 	}
-.bold { 	font-weight:bold;			}
+.bold { 	font-weight:bold;			    }
+
+.suggestion-row.list-group-item {
+  padding:3px 3px;
+}
+.suggestion-row .glyphicon {
+  opacity:0;
+}
+.suggestion-row:hover .glyphicon {
+  opacity:1;
+}
