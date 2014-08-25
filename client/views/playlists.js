@@ -2,14 +2,14 @@ Template.insertPlaylistForm.rendered = function() {
   Session.setDefault('playlistPrivacy','public');
   this.find('[data-schema-key=privacy]').value = 'public';
   $("button").tooltip();
-  AutoForm.hooks({ 
+  AutoForm.hooks({
     insertPlaylistForm: {
-     onSuccess: function(operation, result, template) {
+      onSuccess: function(operation, result, template) {
         Router.go('/playlist/'+result);
-     } 
+      }
     }
   });
-}
+};
 
 Template.insertPlaylistForm.events = {
   'click #privacyToggle button' : function(e,template) {
@@ -17,31 +17,30 @@ Template.insertPlaylistForm.events = {
     Session.set('playlistPrivacy',btn.getAttribute("data-action"));
     template.find('[data-schema-key=privacy]').value = btn.getAttribute("data-action");
   }
-}
+};
 
 Template.playlistsEntry.events = {
   'click .playlist-container' : function(e,template) {
     Router.go('/playlist/'+this._id);
   }
-}
+};
 
 
 Template.playlist.rendered = function() {
-  AutoForm.hooks({ 
+  AutoForm.hooks({
     removeButton: { //on successful remove, go back to playlist page
       onSuccess: function(operation, result, template) {
         Router.go('playlists');
-      } 
+      }
     },
     updatePlaylistForm: { //on successful edit, collapse back out
       onSuccess: function(operation, result, template) {
         $('#playlistInfo').collapse('show');
         $('#updatePlaylistForm').collapse('hide');
-        
       }
     }
   });
-}
+};
 
 Template.playlist.selected = function () {
   return Session.equals("playing_song", this._id) ? "selected" : '';
@@ -362,9 +361,9 @@ Template.songs.events = {
 		// removing a element at a position is impossible in mongodb,
 		// so just set the shole array
 		if (index >= 0) {
-		  var songs = _.clone(template.data.songs); // clone is important!!!
-		  songs.splice(index, 1); // remove 1 element at position index
-		  Playlists.update({_id: template.data._id}, { $set : {"songs": songs}});
+      var songs = _.clone(template.data.songs); // clone is important!!!
+      songs.splice(index, 1); // remove 1 element at position index
+      Playlists.update({_id: template.data._id}, { $set : {"songs": songs}});
 		}
 	},300);
 
@@ -452,7 +451,6 @@ youtubeVideoQuery = function(options) {
     if (error) {
       console.log('Youtube list API error:', error);
     } else {
-      console.log('Youtube list API result:', data);
       searchResults = data; // TODO: search result data != videoQuery data
       searchResultsDependency.changed();
     }
@@ -480,7 +478,7 @@ Template.songs.songs = function() {
   });
 
   // find all songs for this playlist
-  var ids = _.pluck(this.songs, 'songId')
+  var ids = _.pluck(this.songs, 'songId');
   var songDB = _.indexBy(Songs.find({_id: {$in: ids}}).fetch(), '_id');
 
   var songs = this.songs.map(function (entry, i) {
