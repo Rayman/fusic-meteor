@@ -18,8 +18,10 @@ Meteor.methods({
     return result.data.response;
   },
   
-  hotRightNow: function() {
-    var url = "http://developer.echonest.com/api/v4/playlist/static?api_key="+ECHONEST_KEY+"&type=genre-radio&genre=current&results=10&bucket=song_hotttnesss";
+  hotRightNow: function(genre) {
+    //default genre
+    genre = typeof genre !== 'undefined' ? genre : 'current';
+    var url = "http://developer.echonest.com/api/v4/playlist/static?api_key="+ECHONEST_KEY+"&type=genre-radio&genre="+genre+"&results=10&bucket=song_hotttnesss";
     try {
       var result = HTTP.get(url);
     } catch(e) {
