@@ -1,13 +1,14 @@
 // * * * * * * * * * * * * * * * PLAYER TEMPLATE CALLBACKS  * * * * * * * * * * * * * *
 
-Template.player.created = function() {
-  Session.set('youtubePlayerInitialized', false);
-};
-
 Template.player.rendered = function() {
+  
   if (Session.equals('youtubePlayerInitialized', false)) {
     $.getScript('https://www.youtube.com/iframe_api', function () {});
   }
+  if($('div#youtube-embed').length == 1 && YT.loaded==1) { //if placeholder is (still) in place and YT api is available, re-init player
+    initPlayer();
+  }
+
 
   var isDragging = false;
 
@@ -44,23 +45,26 @@ Template.player.rendered = function() {
       isDragging = false;
       $(window).unbind("mousemove");
   });
-};
+}
 
 // * * * * * * * * * * * * * * * YOUTUBE IFRAME PLAYER INITIALIZATION  * * * * * * * * * * * * * *
 
+Session.set('youtubePlayerInitialized', false);
 youtubePlayer=null;
-onYouTubeIframeAPIReady = function() {
+initPlayer = function() {
   youtubePlayer = new YT.Player('youtube-embed', {
     height: '480',
     width: '640',
-    videoId: 'M7lc1UVf-VE',
+    videoId: '',
     events: {
       'onReady': onPlayerReady,
       'onStateChange': onPlayerStateChange
     }
   });
   Session.set('youtubePlayerInitialized', true);
-};
+}
+onYouTubeIframeAPIReady = initPlayer;
+
 
 //  * * * * * * * * * * * * * * Callbacks  * * * * * * * * * * * * * *
 
