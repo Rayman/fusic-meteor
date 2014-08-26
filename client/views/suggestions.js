@@ -1,11 +1,14 @@
 var refreshSuggestions = function() {
-    Meteor.call('hotRightNow', function(error,result) {
+    Meteor.call('hotRightNow', Session.get("suggestion-genre"), function(error,result) {
     if(error) { console.log(error); return; }
     Session.set("suggestions", result);
   });
 }
 
-Template.suggestions.created = refreshSuggestions;
+Template.suggestions.created = function() {
+  Session.set("suggestion-genre","current");
+  refreshSuggestions();
+}
 
 Template.suggestions.songs = function() {
     return Session.get('suggestions');
@@ -13,6 +16,15 @@ Template.suggestions.songs = function() {
 
 Template.suggestions.events = {
   'click button#refreshSuggestions' : refreshSuggestions,
+  
+  'click .suggestion-genres li' : function(e) {
+    var genre = e.target.text.toLowerCase();
+    Session.set("suggestion-genre",genre);
+    console.log(e);
+    $(".suggestion-genres li").removeClass("active");
+    $(e.currentTarget).addClass("active");
+    refreshSuggestions();
+  },
   
   'click #addSong': function (e,template) {
     var playlistId = Router.current().params._id;
