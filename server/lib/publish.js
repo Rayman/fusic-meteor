@@ -1,6 +1,8 @@
 Meteor.publish("allusers", function () {
-  return Meteor.users.find({},
-                           {fields: {'username': 1, 'profile': 1, 'createdAt':1}});
+  return Meteor.users.find(
+    {},
+    { fields: {'username': 1, 'profile': 1, 'createdAt':1} }
+  );
 });
 
 //In all playlists view, hide the private ones
@@ -20,12 +22,15 @@ Meteor.publish("songs", function (ids) {
 
 //Playlists from one user, including private ones
 Meteor.publish("playlistsByUser", function(userId) {
-    return  Playlists.find({owner:userId},
-              { sort: {createdAt: 1},
-                fields: { 'title':1,
-                          'createdAt':1,
-                          'songs':1
-                }
-              } 
-            );
+  return  Playlists.find(
+    {owner:userId},
+    {
+      sort: {createdAt: 1},
+      fields: {
+        'title': 1,
+        'createdAt': 1,
+        'songs': 1
+      }
+    }
+  );
 });
