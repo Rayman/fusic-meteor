@@ -1,18 +1,18 @@
-<template name="masterLayout">
-<body>
-	<div class="bgImg {{currentRoute}}"></div>
-	<div class="container">
-		<header>
-			{{> yield region='header'}}
-		</header>
-		<div class="row" id="main">
-				<div class="col-md-12">
-					{{> yield}}
-				</div>
-		</div>
-	</div>
-	<footer id="footer">
-		{{> yield region='footer'}}
-	</footer>
-</body>
+<template name="MasterLayout">
+  <body>
+    <div class="bgImg {{currentRoute}}"></div>
+    <div class="container">
+      <header>
+        {{> yield region='header'}}
+      </header>
+      <div class="row" id="main">
+          <div class="col-md-12">
+            {{> yield}}
+          </div>
+      </div>
+    </div>
+    <footer id="footer">
+      {{> yield region='footer'}}
+    </footer>
+  </body>
 </template>

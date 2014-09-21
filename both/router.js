@@ -1,6 +1,7 @@
 Router.configure({
-  layoutTemplate: 'masterLayout',
-  notFoundTemplate: 'notFound',
+  layoutTemplate: 'MasterLayout',
+  loadingTemplate: 'Loading',
+  notFoundTemplate: 'NotFound',
   yieldTemplates: {
     'header': { to: 'header' },
     'footer': { to: 'footer' }

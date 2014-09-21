@@ -2,7 +2,7 @@
 
 //example, make sure search result box hides when user clicks anywhere,
 //not just within the current template
-Template.masterLayout.rendered = function () {
+Template.MasterLayout.rendered = function () {
   //hiding results appropriately
   $(document.body).on('mouseup', function (e) {
   var search = $("#searchArea");
