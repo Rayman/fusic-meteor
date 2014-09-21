@@ -52,6 +52,7 @@ nemo64:bootstrap@3.2.1
 npm-bcrypt@0.7.7
 observe-sequence@1.0.2
 ordered-dict@1.0.0
+peerlibrary:assert@0.2.5
 random@1.0.0
 reactive-dict@1.0.2
 reactive-var@1.0.1
