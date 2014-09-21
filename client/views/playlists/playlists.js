@@ -140,8 +140,10 @@ Template.contributionChart.rendered = function () {
 
   var groups = _.groupBy(this.data.songs, 'author');
   var users = _.map(groups, function (songs, author) {
+    var user = Meteor.users.findOne({_id: author});
+    user = user ? user.username : "";
     return {
-      name: Meteor.users.findOne({_id: author}).username,
+      name: user,
       amount: songs.length,
     };
   });
