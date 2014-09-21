@@ -23,15 +23,15 @@ Router.map(function() {
       playlists: function() {
         return Playlists.find({},{sort: {createdAt: -1}, limit: 5});
       }
-    },
+    }
   });
 
   this.route('allplaylists', {
-	data: {
-	      playlists: function() {
+    data: {
+      playlists: function() {
         return Playlists.find({},{sort: {createdAt: -1}});
       }
-	},
+    }
   });
 
   this.route('playlist', {
@@ -48,7 +48,7 @@ Router.map(function() {
       //add another subscription to waiting list
       this.subscribe('songs', songs);
     },
-    loadingTemplate: 'playlist',
+    //loadingTemplate: 'playlist',
     notFoundTemplate: 'playlistNotFound',
     data: function() {
       //return all current client side playlists (just one ;)
@@ -76,8 +76,7 @@ Router.map(function() {
   this.route('userProfile', {
     path:'/profile/:_id',
     waitOn: function() {
-      return
-        Meteor.subscribe('playlistsByUser', this.params._id);
+      return Meteor.subscribe('playlistsByUser', this.params._id);
     },
     data: function () {
       var user = Meteor.users.findOne(this.params._id);
