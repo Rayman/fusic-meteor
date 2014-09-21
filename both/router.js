@@ -8,6 +8,12 @@ Router.configure({
   }
 });
 
+// enable hooks
+if (Meteor.isClient) {
+  Router.onBeforeAction('dataNotFound');
+  Router.onBeforeAction('loading');
+}
+
 // global configuration
 Router.waitOn(function() {
   return [Meteor.subscribe('allplaylists'),
@@ -37,19 +43,20 @@ Router.map(function() {
 
   this.route('playlist', {
     path: '/playlist/:_id',
-    waitOn: function() {
-      return Meteor.subscribe('playlist',this.params._id);
-    },
     onBeforeAction: function() {
+      console.log("subscribe to playlist", this.params._id);
+      this.subscribe('playlist', this.params._id);
       var playlist = this.data();
-      if (!playlist)
+      if (!playlist) {
+        console.warn("no playlist");
         return;
+      }
       var songs = playlist.songs || [];
       songs = _.pluck(songs, 'songId');
       //add another subscription to waiting list
       this.subscribe('songs', songs);
     },
-    //loadingTemplate: 'playlist',
+    loadingTemplate: 'playlist',
     notFoundTemplate: 'playlistNotFound',
     data: function() {
       //return all current client side playlists (just one ;)
