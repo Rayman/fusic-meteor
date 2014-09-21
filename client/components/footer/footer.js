@@ -1,11 +1,12 @@
 // * * * * * * * * * * * * * * * PLAYER TEMPLATE CALLBACKS  * * * * * * * * * * * * * *
 
 Template.player.rendered = function() {
-  
+
   if (Session.equals('youtubePlayerInitialized', false)) {
     $.getScript('https://www.youtube.com/iframe_api', function () {});
   }
-  if($('div#youtube-embed').length == 1 && YT.loaded==1) { //if placeholder is (still) in place and YT api is available, re-init player
+  if ($('div#youtube-embed').length == 1  &&
+      typeof YT != 'undefined' && YT.loaded==1) { //if placeholder is (still) in place and YT api is available, re-init player
     initPlayer();
   }
 
@@ -17,10 +18,10 @@ Template.player.rendered = function() {
     var vol = (volume/100) *  $("div.track").width();
     $("div.bar").width(vol);
     $("div.thumb").css("left",vol-($("div.thumb").width()/2)+"px");
-    if(youtubePlayer) {
+    if(youtubePlayer && youtubePlayer.setVolume) {
       youtubePlayer.setVolume(volume);
     }
-  }
+  };
 
   var defaultVolume = 75;
   setVolume(defaultVolume);
