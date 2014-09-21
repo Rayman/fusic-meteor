@@ -417,6 +417,7 @@ var searchResultsDependency = new Deps.Dependency();
 
 youtubeSearchQuery = function(options) {
   options = options || {};
+  var currentSearchTimer = searchTimer;
 
   Meteor.call('youtube_search', options, function(error, data) {
     if (error) {
@@ -427,6 +428,11 @@ youtubeSearchQuery = function(options) {
     searchError   = error;
     searchResults = data; // TODO: search result data != videoQuery data
     searchResultsDependency.changed();
+
+    if (currentSearchTimer != searchTimer) {
+      console.warn('cancel video query');
+      return;
+    }
 
     // query for more details (needs optimization)
     var ids = _.pluck(_.pluck(data.items, 'id'), 'videoId');
