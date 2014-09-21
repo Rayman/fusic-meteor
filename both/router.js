@@ -1,3 +1,12 @@
+Router.configure({
+  layoutTemplate: 'masterLayout',
+  notFoundTemplate: 'notFound',
+  yieldTemplates: {
+    'header': { to: 'header' },
+    'footer': { to: 'footer' }
+  }
+});
+
 // global configuration
 Router.waitOn(function() {
   return [Meteor.subscribe('allplaylists'),
