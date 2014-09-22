@@ -44,9 +44,9 @@
   <div class="btn-group btn-group-md" id="privacyToggle">
       <button data-action="public" data-toggle="tooltip" data-placement="bottom" title="Your playlist will be viewable and editable by everyone" type="button" class="btn btn-default {{#if sessionIs 'playlistPrivacy' 'public'}}active{{/if}}">
         <span class="glyphicon glyphicon glyphicon-globe"></span> Public
-      </button> 
+      </button>
       <button data-action="viewonly" data-toggle="tooltip" data-placement="bottom" title="Only you can edit your playlist, the rest can view and listen" type="button" class="btn btn-default {{#if sessionIs 'playlistPrivacy' 'viewonly'}}active{{/if}}">
-        <span class="glyphicon glyphicon glyphicon-eye-open"></span> View only 
+        <span class="glyphicon glyphicon glyphicon-eye-open"></span> View only
       </button>
       <button data-action="private" data-toggle="tooltip" data-placement="bottom" title="This playlist will only be visible by you" type="button" class="btn btn-default {{#if sessionIs 'playlistPrivacy' 'private'}}active{{/if}}">
         <span class="glyphicon glyphicon-lock"></span> Private
@@ -92,9 +92,9 @@
             {{> updatePlaylistForm}}
           </div>
 
-          <br />        
+          <br />
         </div>
-        
+
         <div>
           {{#if playing}}
             <button class="btn btn-success" data-action="playlist-pause">
@@ -115,7 +115,7 @@
           </button>
           {{/if}}
         </div>
-        
+
         <div class="row">
           <div class="col-md-9">
             <h3>Followers</h3>
@@ -142,7 +142,7 @@
             </p>
           </div>
         </div>
-        
+
         {{>suggestions}}
 
 		{{#if isOwner}}
@@ -167,10 +167,15 @@
     </div>
     <div class="panel-body">
       <p>You are the owner of this playlist, so you can view fancy settings</p>
-      <p><button data-action="show-settings" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-cog"></span>Important settings</button></p>
-      {{#afDeleteButton collection="Playlists" doc=editingDoc id="removeButton"}}
+      <p>
+        <button data-action="show-settings" class="btn btn-info btn-sm">
+          <span class="glyphicon glyphicon-cog"></span> Important settings
+        </button>
+      </p>
+      {{#quickRemoveButton collection="Playlists" _id=this._id
+          onError=onError onSuccess=onSuccess beforeRemove=beforeRemove}}
         <span class="glyphicon glyphicon-trash"></span> Delete playlist
-      {{/afDeleteButton}}
+      {{/quickRemoveButton}}
     </div>
   </div>
 </template>

@@ -21,11 +21,6 @@ Template.insertPlaylistForm.events = {
 
 Template.playlist.rendered = function() {
   AutoForm.hooks({
-    removeButton: { //on successful remove, go back to playlist page
-      onSuccess: function(operation, result, template) {
-        Router.go('playlists');
-      }
-    },
     updatePlaylistForm: { //on successful edit, collapse back out
       onSuccess: function(operation, result, template) {
         $('#playlistInfo').collapse('show');
@@ -33,6 +28,30 @@ Template.playlist.rendered = function() {
       }
     }
   });
+};
+
+// Playlist remove callbacks
+
+Template.ownerPanel.onSuccess = function () {
+  return function (result) {
+    console.warn('playlist removed!!!', result);
+  };
+};
+
+Template.ownerPanel.onError = function () {
+  return function (error) {
+    console.warn('playlist not removed!!!', error);
+  };
+};
+
+Template.ownerPanel.beforeRemove = function () {
+  return function (collection, id) {
+    var doc = collection.findOne(id);
+    if (confirm('Really delete "' + doc.name + '"?')) {
+      Router.go('playlists');
+      this.remove();
+    }
+  };
 };
 
 Template.playlist.selected = function () {
@@ -244,10 +263,6 @@ Template.loveSong.isLoved = function() {
 };
 
 Template.updatePlaylistForm.editingDoc = function () {
-  return Playlists.findOne({_id: this._id});
-};
-
-Template.ownerPanel.editingDoc = function () {
   return Playlists.findOne({_id: this._id});
 };
 

@@ -2,6 +2,7 @@ accounts-base@1.1.0
 accounts-password@1.0.1
 aldeed:autoform@2.0.2
 aldeed:collection2@2.0.1
+aldeed:delete-button@1.0.0
 aldeed:simple-schema@1.0.3
 application-configuration@1.0.2
 autoupdate@1.1.0

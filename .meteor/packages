@@ -17,4 +17,5 @@ less
 peerlibrary:assert
 d3
 http
+aldeed:delete-button
 
