@@ -28,7 +28,7 @@ Router.map(function() {
   this.route('playlists', {
     data: {
       playlists: function() {
-        return Playlists.find({},{sort: {createdAt: -1}, limit: 5});
+        return Playlists.find({privacy:{$ne:'private'}},{sort: {createdAt: -1}, limit: 5});
       }
     }
   });
@@ -36,7 +36,7 @@ Router.map(function() {
   this.route('allplaylists', {
     data: {
       playlists: function() {
-        return Playlists.find({},{sort: {createdAt: -1}});
+        return Playlists.find({privacy:{$ne:'private'}},{sort: {createdAt: -1}});
       }
     }
   });
