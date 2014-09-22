@@ -59,7 +59,7 @@
 <template name="playlistsEntry">
   <div class="floatleft playlist-container">
     <img height="50px" src="{{cover}}" /><br/>
-    <a href="{{pathFor 'playlist'}}">{{title}}</a>
+    <h5>{{title}}</h5>
 	<p>{{fromNow createdAt }}</p>
   </div>
 </template>
@@ -172,7 +172,7 @@
           <span class="glyphicon glyphicon-cog"></span> Important settings
         </button>
       </p>
-      {{#quickRemoveButton collection="Playlists" _id=this._id
+      {{#quickRemoveButton collection="Playlists" class="btn btn-danger btn-sm" _id=this._id
           onError=onError onSuccess=onSuccess beforeRemove=beforeRemove}}
         <span class="glyphicon glyphicon-trash"></span> Delete playlist
       {{/quickRemoveButton}}
@@ -186,7 +186,19 @@
 
 <template name="playlistTabs">
 	<div class="row" id="searchArea">
-		<div class="col-md-10">
+		<div class="col-md-1">
+			<div class="dropdown">
+				<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+					<span class="glyphicon glyphicon-heart"></span><span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" role="menu">
+					{{#each lovedSongs}}
+						<li><a class="loved" href="#">{{this.snippet.title}}</a></li>
+					{{/each}}
+				</ul>
+			</div>
+		</div>
+		<div class="col-md-9">
 		  <form class="youtube-search">
 			<div class="input-group">
 			  <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
@@ -205,17 +217,16 @@
 		</div>
 		{{> searchResults}}
 	</div>
+		{{#if error}}
+		<div class="alert alert-info alert-dismissable">
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+			{{error}}
+		</div>
+		{{/if}}
     {{> songs}}
 </template>
 
 <template name="searchResults">
-  {{#if error}}
-	<div class="alert alert-info alert-dismissable">
-		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-		{{error}}
-	</div>
-  {{/if}}
-
   {{#with result}}
     <ul class="list-group" id="searchresults">
     {{#each items}}
