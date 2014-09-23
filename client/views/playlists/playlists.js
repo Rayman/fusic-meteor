@@ -19,6 +19,12 @@ Template.insertPlaylistForm.events = {
   }
 };
 
+Template.playlistsEntry.events = {
+  'click .playlist-container' : function(e,template) {
+    Router.go('playlist',{_id:this._id});
+  }
+}
+
 Template.playlist.rendered = function() {
   AutoForm.hooks({
     updatePlaylistForm: { //on successful edit, collapse back out
@@ -31,7 +37,6 @@ Template.playlist.rendered = function() {
 };
 
 // Playlist remove callbacks
-
 Template.ownerPanel.onSuccess = function () {
   return function (result) {
     console.warn('playlist removed!!!', result);
@@ -296,15 +301,16 @@ Template.playlistTabs.events = {
 	}
   },
   'click button[data-toggle="clearResults"]': function(e) {
-
-	$("input.youtube-query").val("");
-	searchResults = null;
+	  $("input.youtube-query").val("");
+	  searchResults = null;
     searchResultsDependency.changed();
+    $("input.youtube-query").focus();
   },
-  'click .youtube-result': function (e, template) {
-    var videoId = this.id;
+  'click .youtube-result, click a.loved': function (e, template) {
+    var videoId = (this.id != undefined) ? this.id : this._id;
     var playlistId = template.data._id;
     console.log('queue video:', videoId, 'to playlist', playlistId);
+    $("input.youtube-query").focus();
     var songObject = {
       "added" : new Date(),
       "author" : Meteor.userId(),
@@ -398,6 +404,10 @@ Template.songs.events = {
         { $pull : { 'profile.lovedSongs': videoId }}
       );
     }
+    //update lovedsongs session variable
+    Meteor.call('getLovedSongs',function(error,data) {
+      Session.set("lovedSongs",data);
+    });
   }
 };
 
@@ -478,7 +488,7 @@ Template.searchResults.result = function() {
   return searchResults;
 };
 
-Template.searchResults.error = function() {
+Template.playlistTabs.error = function() {
   Deps.depend(searchResultsDependency);
   return searchError;
 };
@@ -516,6 +526,17 @@ Template.songs.songs = function() {
 
   return songs;
 };
+
+Template.playlistTabs.rendered = function() {
+  Meteor.call('getLovedSongs',function(error,data) {
+    Session.set("lovedSongs",data);
+  });
+}
+Template.playlistTabs.lovedSongs = function() {
+  return Session.get("lovedSongs");
+};
+
+
 Template.songs.rendered = function() {
 	Session.setDefault("songView","list");
 };
