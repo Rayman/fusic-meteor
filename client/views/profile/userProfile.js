@@ -3,7 +3,7 @@ Template.userProfile.created = function() {
     if(error) { console.log(error); return; }
     Session.set("privatePlaylists", result);
   });
-  
+
   Session.setDefault("showEditAvatarBar",false);
 }
 
@@ -68,6 +68,36 @@ Template.addRemoveFriend.events = {
     Meteor.users.update(
       { _id: Meteor.userId() },
       { $pull : { 'profile.friends': this._id }}
+    );
+  }
+};
+
+Template.syncMusic.isLinked = function() {
+  if(Meteor.user().profile.playing.linked != undefined) {
+    return this._id == Meteor.user().profile.playing.linked;
+  } else { return false; }
+};
+Template.syncMusic.isPlaying = function() {
+  return this.profile.playing.time > 0;
+};
+
+
+Template.syncMusic.events = {
+  'click #attachtoUser' : function() {
+    console.log(this.profile.playing);
+    if(this.profile.playing.time > 0) {
+      var linkObj = this.profile.playing;
+      linkObj.linked = this._id;
+      Meteor.users.update({_id: Meteor.userId()},
+        {$set: {'profile.playing': linkObj }}
+      );
+    } else {
+      console.log("This user isn't listening to a song right now");
+    }
+  },
+  'click #detachfromUser' : function() {
+    Meteor.users.update({_id: Meteor.userId()},
+      {$unset: {'profile.playing.linked': "" }}
     );
   }
 };
