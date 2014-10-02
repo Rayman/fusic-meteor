@@ -72,19 +72,22 @@ Template.addRemoveFriend.events = {
   }
 };
 
-Template.syncMusic.isLinked = function() {
-  if(Meteor.user().profile.playing.linked != undefined) {
-    return this._id == Meteor.user().profile.playing.linked;
-  } else { return false; }
-};
-Template.syncMusic.isPlaying = function() {
-  return this.profile.playing.time > 0;
-};
 
+Template.syncMusic.syncValid = function() {
+  if (this.profile.playing.linked != undefined) {
+    if (this.profile.playing.linked == Meteor.userId()) { return false; }
+  }
+  if (this.profile.playing.time > 0 ){ return true; }
+  return false;
+};
 
 Template.syncMusic.events = {
   'click #attachtoUser' : function() {
     console.log(this.profile.playing);
+    if(this.profile.playing.linked == Meteor.userId()) {
+      console.log("This user is synced with you, you cant sync back");
+      return;
+    }
     if(this.profile.playing.time > 0) {
       var linkObj = this.profile.playing;
       linkObj.linked = this._id;

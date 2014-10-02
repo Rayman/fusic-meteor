@@ -183,20 +183,21 @@ var playerProgress = setInterval(function() {
       $("#player-progressbar").width(percentage + "%");
       $("#player-song-duration").text((youtubePlayer.getDuration()-youtubePlayer.getCurrentTime()).toString().toHHMMSS());
 
-
-      if(Meteor.user().profile.playing.linked != undefined) { //if linked, sync play info from link user
-        var linkUser = Meteor.users.findOne({_id: Meteor.user().profile.playing.linked});
-        Meteor.users.update({_id: Meteor.userId()},
-          {$set: {'profile.playing.time': linkUser.profile.playing.time,
-                  'profile.playing.playlist': linkUser.profile.playing.playlist,
-                  'profile.playing.playlistIndex' : linkUser.profile.playing.playlistIndex,
-                  'profile.playing.status' : linkUser.profile.playing.status
-          }}
-        );
-      } else { //if not linked, sync one's own YT player time back to user profile
-        Meteor.users.update({_id: Meteor.userId()},
-          {$set: {'profile.playing.time': youtubePlayer.getCurrentTime() }}
-        );
+      if(Meteor.user()) {
+        if(Meteor.user().profile.playing.linked != undefined) { //if linked, sync play info from link user
+          var linkUser = Meteor.users.findOne({_id: Meteor.user().profile.playing.linked});
+          Meteor.users.update({_id: Meteor.userId()},
+            {$set: {'profile.playing.time': linkUser.profile.playing.time,
+                    'profile.playing.playlist': linkUser.profile.playing.playlist,
+                    'profile.playing.playlistIndex' : linkUser.profile.playing.playlistIndex,
+                    'profile.playing.status' : linkUser.profile.playing.status
+            }}
+          );
+        } else { //if not linked, sync one's own YT player time back to user profile
+          Meteor.users.update({_id: Meteor.userId()},
+            {$set: {'profile.playing.time': youtubePlayer.getCurrentTime() }}
+          );
+        }
       }
     }
   }
