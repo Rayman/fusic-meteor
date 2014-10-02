@@ -154,11 +154,6 @@ PlaylistsSchema = new SimpleSchema({
     allowedValues: ['public', 'viewonly', 'private'],
     defaultValue: 'public'
   },
-  playhead: { //for remembering "where the players head went, even after logging out"
-    optional:true,
-    type:Object,
-    blackbox: true
-  },
   songs: {
     type: [Object],
     optional: true,

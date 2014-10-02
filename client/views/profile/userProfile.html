@@ -115,8 +115,12 @@
 
 <template name="syncMusic">
   {{#if isLinked}}
-    <button class="btn btn-danger" id="detachfromUser"><span class="glyphicon glyphicon-magnet"></span> Unsync with this user</button>
+    <button class="btn btn-danger" id="detachfromUser">
+      <span class="glyphicon glyphicon-magnet"></span> Unsync with this user
+    </button>
   {{else}}
-    <button class="btn btn-default {{#unless syncValid}}disabled{{/unless}}" id="attachtoUser"><span class="glyphicon glyphicon-magnet"></span> Sync with this user</button>
+    <button class="btn btn-default {{#unless syncValid}}disabled{{/unless}}" id="attachtoUser">
+      <span class="glyphicon glyphicon-magnet"></span> Sync with this user
+    </button>
   {{/if}}
 </template>
