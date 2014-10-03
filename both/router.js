@@ -88,6 +88,8 @@ Router.map(function() {
     },
     data: function () {
       var user = Meteor.users.findOne(this.params._id);
+      if (!user)
+        return;
 
       var playlists = Playlists.find( {owner: this.params._id});
       user.userPlaylists = playlists;
