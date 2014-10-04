@@ -9,29 +9,23 @@
 <template name="player">
   <div id="player" class="container">
     <div class="row">
-      {{#unless isLinked}}
-        <!-- play/pause button, 1 wide -->
-        <div class="col-md-2 col-xs-2">
-          <button class="player-control-button btn btn-default btn-xs" id="player-previous"><span class="glyphicon glyphicon-step-backward"></span></button>
-        {{#if sessionIs 'playerState' 'playing'}}
-          <button class="player-control-button btn btn-default btn-xs" id="player-pause"><span class="glyphicon glyphicon-pause"></span></button>
-        {{else}}
-          <button class="btn btn-default btn-xs" id="player-play"><span class="glyphicon glyphicon-play"></span></button>
-        {{/if}}
-          <button class="player-control-button btn btn-default btn-xs" id="player-next"><span class="glyphicon glyphicon-step-forward"></span></button>
-        </div>
-
-        <!-- stop button, 1 wide -->
-        <div class="col-md-1 col-xs-1">
-          <button class="btn btn-default btn-xs player-control-button" id="player-stop"><span class="glyphicon glyphicon-stop"></span></button>
-        </div>
+    
+      <!-- play/pause button, 1 wide -->
+      <div class="col-md-2 col-xs-2">
+        <button class="player-control-button btn btn-default btn-xs" id="player-previous"><span class="glyphicon glyphicon-step-backward"></span></button>
+      {{#if sessionIs 'playerState' 'playing'}}
+        <button class="player-control-button btn btn-default btn-xs" id="player-pause"><span class="glyphicon glyphicon-pause"></span></button>
       {{else}}
-        <div class="col-md-3 col-xs-1">
-          <p>Linked to {{#with userFromId isLinked}}{{> userLink}}{{/with}}
-          <button class="btn btn-default btn-xs" id="detachfromUser"><span class="glyphicon glyphicon-remove"></span></button></p>
-        </div>
-      {{/unless}}
-
+        <button class="btn btn-default btn-xs" id="player-play"><span class="glyphicon glyphicon-play"></span></button>
+      {{/if}}
+        <button class="player-control-button btn btn-default btn-xs" id="player-next"><span class="glyphicon glyphicon-step-forward"></span></button>
+      </div>
+      
+      <!-- stop button, 1 wide -->
+      <div class="col-md-1 col-xs-1">
+        <button class="btn btn-default btn-xs player-control-button" id="player-stop"><span class="glyphicon glyphicon-stop"></span></button>
+      </div>
+      
       <!-- progress bar 8 wide -->
       <div id="player-progress" class="col-md-7 col-xs-7">
         <div class="progress" id="player-progressbar-container">
@@ -41,7 +35,7 @@
           </div>
         </div>
       </div>
-
+      
       <!-- player toggle button; 1 wide -->
       <div id="player-youtube" class="col-md-2 col-xs-2">
         <div class="dropup inline" id="ytplayer">
@@ -59,7 +53,7 @@
           </button>
           {{> currentPlaylist}}
         </div>
-
+        
         <div class="dropup inline">
           <button href="#" class="btn btn-default btn-xs" data-toggle="dropdown">
             <span class="glyphicon glyphicon-volume-down"></span>

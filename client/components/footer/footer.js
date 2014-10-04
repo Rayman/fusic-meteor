@@ -90,8 +90,7 @@ function onPlayerStateChange(event) {
       var id = Meteor.userId();
       console.log('song ended');
       Meteor.users.update({_id: id},
-        {$inc: {'profile.playing.playlistIndex': 1},
-        $set: {'profile.playing.time':0}}
+        {$inc: {'profile.playing.playlistIndex': 1}}
       );
       break;
     case 1: //playing
@@ -131,21 +130,6 @@ Deps.autorun(function () {
     return;
   }
   */
-  if (typeof youtubePlayer == 'undefined') {
-    console.warn('youtubePlayer undefined');
-    return;
-  }
-
-  //if all variables stay the same, means no song has been skipped,
-  //means that we have to check if time has changed (via user-sync feature)
-  var time =0;
-  if(playing.playlist == lastPlaylistId &&
-    playing.playlistIndex == lastPlaylistIndex) {
-     if(Math.abs(playing.time - youtubePlayer.getCurrentTime()) > 1 &&  //some difference is allowed
-        youtubePlayer.getPlayerState() == 1) {                          //and if already playing this exact video
-        youtubePlayer.seekTo(playing.time+0.5); //there will always be lag, this is just a static amount to compensate a little
-     }
-  } else {time = playing.time+0.5;}
 
   var playlist = Playlists.findOne({_id: playing.playlist});
   if (!playlist)
@@ -160,17 +144,26 @@ Deps.autorun(function () {
   if (!videoId)
     return;
 
-  if (lastVideoId  != videoId) {
-    lastVideoId       = videoId;
-    lastPlaylistIndex = playing.playlistIndex;
-    lastPlaylistId    = playing.playlist;
+  if (lastVideoId       == videoId /* &&
+      lastPlaylistId    == playing.playlist &&
+      lastPlaylistIndex == playing.playlistIndex */
+  ) {
+    console.log('not playing: same song');
+    return;
+  }
+  lastVideoId       = videoId;
+  lastPlaylistIndex = playing.playlistIndex;
+  lastPlaylistId    = playing.playlist;
 
-    //load and play next video
-    console.log('playing youtube video: ', videoId, 'at ', time);
-    if (youtubePlayer) {
-    youtubePlayer.loadVideoById(videoId, time, "large"); //zero if completely different video,
-    }
+  if (typeof youtubePlayer == 'undefined') {
+    console.warn('youtubePlayer undefined');
+    return;
+  }
 
+  //load and play next video
+  console.log('playing youtube video: ', videoId);
+  if (youtubePlayer) {
+	youtubePlayer.loadVideoById(videoId, 0, "large");
   }
 });
 
@@ -182,23 +175,6 @@ var playerProgress = setInterval(function() {
       var percentage = 100*(youtubePlayer.getCurrentTime()/youtubePlayer.getDuration());
       $("#player-progressbar").width(percentage + "%");
       $("#player-song-duration").text((youtubePlayer.getDuration()-youtubePlayer.getCurrentTime()).toString().toHHMMSS());
-
-      if(Meteor.user()) {
-        if(Meteor.user().profile.playing.linked != undefined) { //if linked, sync play info from link user
-          var linkUser = Meteor.users.findOne({_id: Meteor.user().profile.playing.linked});
-          Meteor.users.update({_id: Meteor.userId()},
-            {$set: {'profile.playing.time': linkUser.profile.playing.time,
-                    'profile.playing.playlist': linkUser.profile.playing.playlist,
-                    'profile.playing.playlistIndex' : linkUser.profile.playing.playlistIndex,
-                    'profile.playing.status' : linkUser.profile.playing.status
-            }}
-          );
-        } else { //if not linked, sync one's own YT player time back to user profile
-          Meteor.users.update({_id: Meteor.userId()},
-            {$set: {'profile.playing.time': youtubePlayer.getCurrentTime() }}
-          );
-        }
-      }
     }
   }
 }, 500);

@@ -21,9 +21,6 @@ Handlebars.registerHelper('formatDuration', function(input){
 Handlebars.registerHelper('username', function(user){
   if (!user)
     return;
-  if(typeof user == "string") {
-    return Meteor.users.findOne({_id:user}).username;
-  }
   if (user.username)
     return user.username;
   if (user.emails) {
@@ -32,12 +29,6 @@ Handlebars.registerHelper('username', function(user){
     else
       return;
   }
-});
-
-Handlebars.registerHelper('userFromId', function(user) {
-  if(typeof user == "string") {
-    return Meteor.users.findOne({_id:user});
-  } return;
 });
 
 Handlebars.registerHelper('privacyIcon', function(playlist) {
@@ -65,12 +56,6 @@ Handlebars.registerHelper('currentRoute', function() {
 
 Handlebars.registerHelper('sessionIs', function(p1, p2) {
     return Session.get(p1) === p2;
-});
-
-Handlebars.registerHelper('isLinked', function() {
-  if(Meteor.user().profile.playing.linked != undefined) {
-    return Meteor.user().profile.playing.linked; //return id of user to whom you are linked
-  } else { return false; }
 });
 
 
