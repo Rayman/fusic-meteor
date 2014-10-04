@@ -49,7 +49,7 @@ form.youtube-search {
 ul#searchresults {
 	position:absolute;
 	z-index:10;
-	left:4em;	
+	left:4em;
 	top:33px;
 }
 
@@ -69,7 +69,7 @@ span[data-action*="play"] {
 	cursor:pointer;
 }
 span[data-action*="play"]:hover {
-	color:rgb(96, 185, 96); 
+	color:rgb(96, 185, 96);
 }
 span[data-action*="remove"]:hover {
 	color:rgb(196, 87, 87);
@@ -160,7 +160,7 @@ span[data-action*="lovesong"]:hover {
 	-webkit-transform: scale(1.6,1.6);
 	color:rgba(196,87,87,0.5);
 	text-shadow:none;
-	
+
 }
 
 .red { 		color:rgb(196, 87, 87);		}
