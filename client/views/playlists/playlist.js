@@ -441,7 +441,7 @@ Template.songs.songs = function() {
 
     //extra info
     song.author = Meteor.users.findOne({_id: entry.author});
-    song.added = entry.added;
+    song.addedFromNow = entry.added ? moment(entry.added).fromNow() : "";
 
     return song;
   });
