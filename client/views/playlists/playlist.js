@@ -177,18 +177,6 @@ Template.playlist.events = {
   },
 };
 
-Template.loveSong.isLoved = function() {
-  var videoId = this._id;
-  var user = Meteor.user();
-  if (!user)
-    return;
-  var i = user.profile.lovedSongs.indexOf(videoId);
-  if (i<0)
-    return ""; //not loved
-  else
-    return "loved"; //return classname
-};
-
 Template.updatePlaylistForm.editingDoc = function () {
   return Playlists.findOne({_id: this._id});
 };
@@ -425,6 +413,8 @@ Template.songs.songs = function() {
     return u.profile.playing.playlistIndex;
   });
 
+  var lovedSongs = Meteor.user().profile.lovedSongs;
+
   // find all songs for this playlist
   var ids = _.pluck(this.songs, 'songId');
   var songDB = _.indexBy(
@@ -452,6 +442,9 @@ Template.songs.songs = function() {
     //extra info
     song.author = authorDB[entry.author];
     song.addedFromNow = entry.added ? moment(entry.added).fromNow() : "";
+
+    // check if this song is loved by the user
+    song.isLoved = (_.contains(lovedSongs, entry.songId)) ? 'loved' : '';
 
     return song;
   });
