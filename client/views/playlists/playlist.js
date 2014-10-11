@@ -420,14 +420,24 @@ Template.songs.songs = function() {
     return;
 
   // get all users that play a song on this playlist
-  var users = Meteor.users.find({'profile.playing.playlist': this._id});
-  var indexes = _.groupBy(users.fetch(), function(u) {
+  var playingUsers = Meteor.users.find({'profile.playing.playlist': this._id});
+  var indexes = _.groupBy(playingUsers.fetch(), function(u) {
     return u.profile.playing.playlistIndex;
   });
 
   // find all songs for this playlist
   var ids = _.pluck(this.songs, 'songId');
-  var songDB = _.indexBy(Songs.find({_id: {$in: ids}}).fetch(), '_id');
+  var songDB = _.indexBy(
+    Songs.find({ _id: {$in: ids} }).fetch(),
+    '_id'
+  );
+
+  // find all users that have contributed to this playlist
+  var authorIds = _.uniq(_.pluck(this.songs, 'author'));
+  var authorDB = _.indexBy(
+    Meteor.users.find({ _id: {$in: authorIds} }).fetch(),
+    '_id'
+  );
 
   var songs = this.songs.map(function (entry, i) {
 
@@ -440,7 +450,7 @@ Template.songs.songs = function() {
     song.users = songUsers;
 
     //extra info
-    song.author = Meteor.users.findOne({_id: entry.author});
+    song.author = authorDB[entry.author];
     song.addedFromNow = entry.added ? moment(entry.added).fromNow() : "";
 
     return song;
