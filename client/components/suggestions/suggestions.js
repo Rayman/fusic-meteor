@@ -6,7 +6,7 @@ var refreshSuggestions = function() {
 }
 
 Template.suggestions.created = function() {
-  Session.set("suggestion-genre","current");
+  Session.set("suggestion-genre","alternative rock");
   refreshSuggestions();
 }
 
@@ -16,7 +16,7 @@ Template.suggestions.songs = function() {
 
 Template.suggestions.events = {
   'click button#refreshSuggestions' : refreshSuggestions,
-  
+
   'click .suggestion-genres li' : function(e) {
     var genre = e.target.text.toLowerCase();
     Session.set("suggestion-genre",genre);
@@ -25,10 +25,10 @@ Template.suggestions.events = {
     $(e.currentTarget).addClass("active");
     refreshSuggestions();
   },
-  
+
   'click #addSong': function (e,template) {
     var playlistId = Router.current().params._id;
-    
+
     //prepare query for Youtube
     var options = {
       part: 'id',
@@ -37,26 +37,26 @@ Template.suggestions.events = {
       q: this.artist_name + " " + this.title
     }
     //perform Youtube search using artist and song information
-    Meteor.call('youtube_search', options, function(error, data) { 
+    Meteor.call('youtube_search', options, function(error, data) {
       if (error) { return false; }
-      
+
       //Id from first search result
       var videoId = data.items[0].id.videoId;
-      
+
       //Fetch extra info, put it in songcache
       var options = {
         'part': 'snippet,contentDetails,statistics',
         'id': videoId,
       }
       Meteor.call('youtube_videos_list', options);
-      
+
       //Put it in current playlist
       var songObject = {
         "added" : new Date(),
         "author" : Meteor.userId(),
         "songId" : videoId
       };
-      
+
       Playlists.update(
         { _id: playlistId},
         { $push: { songs: songObject} }
