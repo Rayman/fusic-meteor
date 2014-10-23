@@ -5,7 +5,7 @@
 
 standard-app-packages
 insecure
-mrt:accounts-ui-bootstrap-3
+ian:accounts-ui-bootstrap-3
 accounts-password
 aldeed:autoform
 aldeed:collection2
