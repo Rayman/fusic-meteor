@@ -2,6 +2,7 @@ Template.contributionChart.rendered = function () {
   if (!this.data)
     return;
 
+  /*
   var width = 300,
       height = 200,
       radius = Math.min(width, height) / 2;
@@ -47,4 +48,83 @@ Template.contributionChart.rendered = function () {
       .attr("dy", ".35em")
       .style("text-anchor", "middle")
       .text(function(d) { return d.data.name; });
+  */
+
+  var data = [
+    {
+      "name": "hm5",
+      "amount": 2
+    },
+    {
+      "name": "Rayman",
+      "amount": 7
+    },
+    {
+      "name": "terence",
+      "amount": 5
+    },
+    {
+      "name": "wesley",
+      "amount": 14
+    },
+    {
+      "name": "omar",
+      "amount": 11
+    },
+    {
+      "name": "stefan",
+      "amount": 26
+    },
+    {
+      "name": "ThomHurks",
+      "amount": 11
+    },
+    {
+      "name": "rein",
+      "amount": 10
+    },
+    {
+      "name": "sirxemic",
+      "amount": 2
+    },
+    {
+      "name": "Paulm",
+      "amount": 3
+    },
+    {
+      "name": "Ka1wa",
+      "amount": 4
+    }
+  ];
+
+  var width = 420,
+      barHeight = 20;
+
+  var x = d3.scale.linear()
+      .domain([0, 50])
+      .range([0, width]);
+
+  var chart = d3.select(this.find('svg'))
+      .attr("width", width)
+      .attr("height", barHeight * data.length);
+
+  var bar = chart.selectAll("g")
+      .data(data)
+    .enter().append("g")
+      .attr("transform", function(d, i) {
+        return "translate(0," + i * barHeight + ")";
+      });
+
+  bar.append("rect")
+      .attr("width", x)
+      .attr("height", barHeight - 1);
+
+  bar.append("text")
+      .attr("x", function(d) {
+        return x(d.amount) - 3;
+      })
+      .attr("y", barHeight / 2)
+      .attr("dy", ".35em")
+      .text(function(d) { return d.name; });
+
 };
