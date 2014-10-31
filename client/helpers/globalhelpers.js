@@ -48,17 +48,14 @@ Handlebars.registerHelper('avatarUrl', function(user) {
 });
 
 Handlebars.registerHelper('currentRoute', function() {
-	var currentRoute = Router.current();
-	if (!currentRoute) { return ''; } else {
-		return Router.current().route.name;
-	}
+  return Router.current();.route.getName();
 });
 
 Handlebars.registerHelper('sessionIs', function(p1, p2) {
-    return Session.get(p1) === p2;
+  return Session.get(p1) === p2;
 });
 
 
 Template.circleAvatar.rendered = function() {
-    $('div.avatar').tooltip();
+  $('div.avatar').tooltip();
 }
