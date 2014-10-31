@@ -5,17 +5,21 @@
 
 standard-app-packages
 insecure
+
 ian:accounts-ui-bootstrap-3
 accounts-password
+
 aldeed:autoform
 aldeed:collection2
-mrt:iron-router-progress
-renaldo:youtube-api
+aldeed:delete-button
+
+iron:router
+multiply:iron-router-progress
 zimme:iron-router-active
+
 nemo64:bootstrap
 less
 peerlibrary:assert
 d3
 http
-aldeed:delete-button
-
+renaldo:youtube-api
