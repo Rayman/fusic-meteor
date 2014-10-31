@@ -42,9 +42,9 @@ Router.map(function() {
 
   this.route('playlist', {
     path: '/playlist/:_id',
-    onBeforeAction: function() {
+    subscriptions: function() {
       console.log("subscribe to playlist", this.params._id);
-      this.subscribe('playlist', this.params._id);
+      this.subscribe('playlist', this.params._id).wait();
       var playlist = this.data();
       if (!playlist) {
         console.warn("no playlist");
@@ -52,9 +52,7 @@ Router.map(function() {
       }
       var songs = playlist.songs || [];
       songs = _.pluck(songs, 'songId');
-      //add another subscription to waiting list
       this.subscribe('songs', songs);
-      this.next();
     },
     loadingTemplate: 'playlist',
     data: function() {
@@ -64,13 +62,12 @@ Router.map(function() {
   });
 
   this.route('loved', {
-    onBeforeAction: function() {
+    subscriptions: function() {
       var user = Meteor.user();
       if (!user)
         return;
       var songs = user.profile.lovedSongs;
       this.subscribe('songs', songs);
-      this.next();
     },
     data: {
       lovedSongs: function() {
