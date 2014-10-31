@@ -8,11 +8,8 @@ Router.configure({
   }
 });
 
-// enable hooks
-if (Meteor.isClient) {
-  Router.onBeforeAction('dataNotFound');
-  Router.onBeforeAction('loading');
-}
+// when data returns falsy, show the NotFound template
+Router.plugin('dataNotFound', {notFoundTemplate: 'NotFound'});
 
 // global configuration
 Router.waitOn(function() {
@@ -57,9 +54,9 @@ Router.map(function() {
       songs = _.pluck(songs, 'songId');
       //add another subscription to waiting list
       this.subscribe('songs', songs);
+      this.next();
     },
     loadingTemplate: 'playlist',
-    notFoundTemplate: 'playlistNotFound',
     data: function() {
       //return all current client side playlists (just one ;)
       return Playlists.findOne(this.params._id);
@@ -73,6 +70,7 @@ Router.map(function() {
         return;
       var songs = user.profile.lovedSongs;
       this.subscribe('songs', songs);
+      this.next();
     },
     data: {
       lovedSongs: function() {
