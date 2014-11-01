@@ -48,7 +48,7 @@ Handlebars.registerHelper('avatarUrl', function(user) {
 });
 
 Handlebars.registerHelper('currentRoute', function() {
-  return Router.current();.route.getName();
+  return Router.current().route.getName();
 });
 
 Handlebars.registerHelper('sessionIs', function(p1, p2) {
