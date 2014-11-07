@@ -1,24 +1,33 @@
 <template name="header">
   <div class="navbar navbar-default" role="navigation">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="{{pathFor 'home'}}">Fusic <small>Realtime Social Music Collaboration</small></a>
-      </div>
 
-		<div class="navbar-right container-fluid">
-			<ul id="login" class="nav navbar-nav">
-			  {{> loginButtons }}
-			</ul>
-		</div>
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{{pathFor 'home'}}">Fusic <small>Realtime Social Music Collaboration</small></a>
+    </div>
 
-	  {{#if currentUser}}
+    <div class="navbar-right container-fluid">
+      {{#with user}}
+        <ul class="nav navbar-nav">
+          <li class="{{ isActivePath regex='profile' }}">
+            <a href="{{pathFor 'userProfile'}}">
+              <span class="glyphicon glyphicon-user"></span> Profile
+            </a>
+          </li>
+        </ul>
+      {{/with}}
+      <ul id="login" class="nav navbar-nav">
+        {{> loginButtons }}
+      </ul>
+    </div>
+
+    {{#if currentUser}}
       <div class="collapse navbar-collapse">
-
         <ul class="nav navbar-nav">
           <li class="{{ isActivePath regex='playlists' }}"><a href="{{pathFor 'playlists'}}">Playlists</a></li>
           <li class="{{ isActivePath regex='loved'     }}"><a href="{{pathFor 'loved'}}">Loved songs</a></li>
@@ -28,16 +37,8 @@
             </a>
           </li>
         </ul>
-		</div><!--/.nav-collapse -->
-		{{/if}}
+    </div><!--/.nav-collapse -->
+    {{/if}}
 
   </div>
-</template>
-
-<template name="_loginButtonsAdditionalLoggedInDropdownActions">
-  {{#with user}}
-    <a href="{{pathFor 'userProfile'}}" class="btn btn-default btn-block" role="button">
-      <span class="glyphicon glyphicon-pencil"></span> Edit profile
-    </a>
-  {{/with}}
 </template>
