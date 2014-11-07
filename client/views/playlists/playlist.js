@@ -25,7 +25,7 @@ Template.ownerPanel.onError = function () {
 Template.ownerPanel.beforeRemove = function () {
   return function (collection, id) {
     var doc = collection.findOne(id);
-    if (confirm('Really delete "' + doc.name + '"?')) {
+    if (confirm('Really delete "' + doc.title + '"?')) {
       Router.go('playlists');
       this.remove();
     }
