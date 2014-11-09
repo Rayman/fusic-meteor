@@ -27,6 +27,7 @@
   "media":                true,
   "list-group":           true,
   "panels":               true,
+  "responsive-embed":     true,
   "wells":                true,
   "close":                true,
 
@@ -36,7 +37,7 @@
   "tooltip":              true,
   "popovers":             true,
   "carousel":             true,
-  
+
   "affix":                true,
   "alert":                true,
   "button":               true,
