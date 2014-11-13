@@ -7,14 +7,14 @@ Meteor.publish("allusers", function () {
 
 Meteor.publish("playlists/newest", function () {
   return Playlists.find(
-    { 'privacy' : { $ne: 'private'} },
+    { privacy: { $ne: 'private'} },
     { limit: 5 }
   );
 });
 
 //In all playlists view, hide the private ones
 Meteor.publish("allplaylists", function () {
-  return Playlists.find({'privacy' : { $ne: 'private'}});
+  return Playlists.find({ 'privacy': {$ne: 'private'} });
 });
 
 Meteor.publishComposite('playlist', function(id) {
@@ -41,15 +41,31 @@ Meteor.publish("songs", function (ids) {
 
 //Playlists from one user, including private ones
 Meteor.publish("playlistsByUser", function(userId) {
-  return  Playlists.find(
-    {owner:userId},
-    {
-      sort: {createdAt: 1},
-      fields: {
-        'title': 1,
-        'createdAt': 1,
-        'songs': 1
+  var fields = {
+    'title': 1,
+    'owner': 1,
+    'createdAt': 1,
+    'privacy': 1,
+    'songs': 1
+  };
+
+  if (this.userId == userId) {
+    // find also private playlists
+    return  Playlists.find(
+      { owner:userId },
+      {
+        sort: {createdAt: 1},
+        fields: fields
       }
-    }
-  );
+    );
+  } else {
+    // don't find private playlists
+    return  Playlists.find(
+      { owner:userId, privacy: { $ne: 'private'} },
+      {
+        sort: {createdAt: 1},
+        fields: fields
+      }
+    );
+  }
 });

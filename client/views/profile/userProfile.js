@@ -1,18 +1,9 @@
 Template.userProfile.created = function() {
-  Meteor.call('getPrivatePlaylists', function(error,result) {
-    if(error) { console.log(error); return; }
-    Session.set("privatePlaylists", result);
-  });
-  
   Session.setDefault("showEditAvatarBar",false);
-}
+};
 
 Template.userProfile.isOwner = function() {
   return Meteor.userId() == this._id;
-};
-
-Template.userProfile.privatePlaylists = function() {
-  return Session.get("privatePlaylists");
 };
 
 Template.userProfile.userFriends = function() {
@@ -54,6 +45,9 @@ Template.editAvatar.users = function () {
 
 
 Template.addRemoveFriend.isFriend = function() {
+  var user = Meteor.user();
+  if (!user)
+    return;
   return _.contains(Meteor.user().profile.friends,this._id);
 };
 

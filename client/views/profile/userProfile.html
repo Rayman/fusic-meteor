@@ -34,17 +34,20 @@
 
       <h2>Public playlists</h2>
       <p>If we are correct, these are playlists made by you and visible by everyone</p>
-      {{#each userPlaylists}}
+      {{#each publicPlaylists}}
           {{>userPlaylist}}
       {{/each}}
+
       <h3>Private playlists</h3>
-      {{#if privatePlaylists}}<p>Additionally, you have some private playlists</p>
-      {{else}}
-      <p>You have no private playlists yet</p>
-      {{/if}}
-      {{#each privatePlaylists}}
+      {{#if privatePlaylists}}
+        <p>Additionally, you have some private playlists</p>
+        {{#each privatePlaylists}}
           {{>userPlaylist}}
-      {{/each}}
+        {{/each}}
+      {{else}}
+        <p>You have no private playlists yet</p>
+      {{/if}}
+
     </div>
   {{else}}
     <div class="col-md-8">

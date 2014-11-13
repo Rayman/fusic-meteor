@@ -86,8 +86,14 @@ Router.map(function() {
       if (!user)
         return;
 
-      var playlists = Playlists.find( {owner: this.params._id});
-      user.userPlaylists = playlists;
+      // find all playlists that belong to this user,
+      // both public and private, that depends on our permissions
+      user.publicPlaylists  = Playlists.find(
+        { owner: this.params._id, privacy: {$ne: 'private'} }
+      );
+      user.privatePlaylists = Playlists.find(
+        { owner: this.params._id, privacy: 'private' }
+      );
       return user;
     },
   });
