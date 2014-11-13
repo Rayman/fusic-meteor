@@ -1,6 +1,6 @@
 accounts-base@1.1.2
 accounts-password@1.0.4
-aldeed:autoform@4.0.0
+aldeed:autoform@4.0.2
 aldeed:collection2@2.2.0
 aldeed:delete-button@1.0.0
 aldeed:simple-schema@1.1.0
@@ -29,7 +29,7 @@ handlebars@1.0.1
 html-tools@1.0.2
 htmljs@1.0.2
 http@1.0.8
-ian:accounts-ui-bootstrap-3@1.1.20
+ian:accounts-ui-bootstrap-3@1.1.21
 id-map@1.0.1
 insecure@1.0.1
 iron:controller@1.0.0
@@ -85,4 +85,4 @@ url@1.0.2
 webapp-hashing@1.0.1
 webapp@1.1.4
 wizonesolutions:underscore-string@1.0.0
-zimme:iron-router-active@1.0.0
+zimme:iron-router-active@1.0.1
