@@ -51,6 +51,13 @@ Router.map(function() {
     path: '/playlist/:_id',
     subscriptions: function() {
       this.subscribe('playlist', this.params._id).wait();
+
+      // we have to load the loved songs to be able to insert them
+      var user = Meteor.user();
+      if (!user)
+        return;
+      var songs = user.profile.lovedSongs;
+      this.subscribe('songs', songs);
     },
     loadingTemplate: 'playlist',
     data: function() {

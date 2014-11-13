@@ -314,10 +314,6 @@ Template.songs.events = {
         { $pull : { 'profile.lovedSongs': videoId }}
       );
     }
-    //update lovedsongs session variable
-    Meteor.call('getLovedSongs',function(error,data) {
-      Session.set("lovedSongs",data);
-    });
   }
 };
 
@@ -452,13 +448,11 @@ Template.songs.songs = function() {
   return songs;
 };
 
-Template.playlistTabs.rendered = function() {
-  Meteor.call('getLovedSongs',function(error,data) {
-    Session.set("lovedSongs",data);
-  });
-}
 Template.playlistTabs.lovedSongs = function() {
-  return Session.get("lovedSongs");
+  var user = Meteor.user();
+  if (!user)
+    return;
+  return Songs.find({_id: {$in: user.profile.lovedSongs} });
 };
 
 
