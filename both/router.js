@@ -43,16 +43,7 @@ Router.map(function() {
   this.route('playlist', {
     path: '/playlist/:_id',
     subscriptions: function() {
-      console.log("subscribe to playlist", this.params._id);
       this.subscribe('playlist', this.params._id).wait();
-      var playlist = this.data();
-      if (!playlist) {
-        console.warn("no playlist");
-        return;
-      }
-      var songs = playlist.songs || [];
-      songs = _.pluck(songs, 'songId');
-      this.subscribe('songs', songs);
     },
     loadingTemplate: 'playlist',
     data: function() {

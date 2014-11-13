@@ -10,8 +10,20 @@ Meteor.publish("allplaylists", function () {
   return Playlists.find({'privacy' : { $ne: 'private'}});
 });
 
-Meteor.publish("playlist", function (id) {
-  return Playlists.find({_id: id});
+Meteor.publishComposite('playlist', function(id) {
+  return {
+    find: function() {
+      return Playlists.find({_id: id});
+    },
+    children: [
+      {
+        find: function(playlist) {
+          var songIds = _.pluck(playlist.songs, 'songId');
+          return Songs.find({_id: {$in: songIds}});
+        }
+      }
+    ]
+  };
 });
 
 //songs by id
