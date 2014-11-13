@@ -13,8 +13,9 @@ Router.plugin('dataNotFound', {notFoundTemplate: 'NotFound'});
 
 // global configuration
 Router.waitOn(function() {
-  return [Meteor.subscribe('allplaylists'),
-          Meteor.subscribe('allusers')];
+  return [
+    Meteor.subscribe('allusers')
+  ];
 });
 
 // route specific configuration
@@ -25,6 +26,9 @@ Router.map(function() {
   this.route('notfound'); //<Testing purposes only
 
   this.route('playlists', {
+    subscriptions: function() {
+      this.subscribe('playlists/newest').wait();
+    },
     data: {
       playlists: function() {
         return Playlists.find({privacy:{$ne:'private'}},{sort: {createdAt: -1}, limit: 5});
@@ -33,6 +37,9 @@ Router.map(function() {
   });
 
   this.route('allplaylists', {
+    subscriptions: function() {
+      this.subscribe('allplaylists').wait();
+    },
     data: {
       playlists: function() {
         return Playlists.find({privacy:{$ne:'private'}},{sort: {createdAt: -1}});

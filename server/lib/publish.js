@@ -5,6 +5,13 @@ Meteor.publish("allusers", function () {
   );
 });
 
+Meteor.publish("playlists/newest", function () {
+  return Playlists.find(
+    { 'privacy' : { $ne: 'private'} },
+    { limit: 5 }
+  );
+});
+
 //In all playlists view, hide the private ones
 Meteor.publish("allplaylists", function () {
   return Playlists.find({'privacy' : { $ne: 'private'}});
