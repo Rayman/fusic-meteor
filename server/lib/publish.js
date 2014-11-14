@@ -7,8 +7,8 @@ Meteor.publish("allusers", function () {
 
 Meteor.publish("playlists/newest", function () {
   return Playlists.find(
-    { privacy: { $ne: 'private'} },
-    { limit: 5 }
+    { privacy: {$ne: 'private'} },
+    { sort: {createdAt: -1}, limit: 5 }
   );
 });
 
