@@ -14,7 +14,9 @@ Router.plugin('dataNotFound', {notFoundTemplate: 'NotFound'});
 // global configuration
 Router.waitOn(function() {
   return [
-    Meteor.subscribe('allusers')
+    Meteor.subscribe('allusers'),
+    Meteor.subscribe('allradios'),
+    Meteor.subscribe('allradiosongs'),
   ];
 });
 
@@ -63,6 +65,13 @@ Router.map(function() {
     data: function() {
       //return all current client side playlists (just one ;)
       return Playlists.findOne(this.params._id);
+    },
+  });
+
+  this.route('radio', {
+    path: '/radios/:_id',
+    data: function() {
+      return Radios.findOne(this.params._id);
     },
   });
 

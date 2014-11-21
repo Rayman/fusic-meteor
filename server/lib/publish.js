@@ -69,3 +69,11 @@ Meteor.publish("playlistsByUser", function(userId) {
     );
   }
 });
+
+
+Meteor.publish("allradios", function () {
+  return Radios.find({});
+});
+Meteor.publish("allradiosongs", function () {
+  return RadioSongs.find({});
+});
