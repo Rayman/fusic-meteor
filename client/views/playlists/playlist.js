@@ -69,7 +69,7 @@ Template.playlist.totalDuration = function() {
     return memo.add(duration);
   }, moment.duration());
 
-	return sum.humanize();
+  return sum.humanize();
 };
 
 Template.playlist.following = function () {
@@ -103,7 +103,7 @@ Template.playlist.players = function () {
 
 //This should probably not run on the client
 Template.playlist.isOwner = function() {
-	return this.owner == Meteor.userId();
+  return this.owner == Meteor.userId();
 };
 
 Template.playlist.owner = function () {
@@ -181,74 +181,6 @@ Template.updatePlaylistForm.editingDoc = function () {
   return Playlists.findOne({_id: this._id});
 };
 
-// initialize active_tab
-Session.set('active_tab', 'songs');
-
-Template.playlistTabs.helpers({
-  isActiveTab: function(route) {
-    return Session.equals("active_tab", route) ? "active" : "";
-  },
-});
-
-Template.playlistTabs.events = {
-  'click ul.playlist-tabs > li': function (e) {
-    var li = $(e.currentTarget);
-    var route = li.data('id');
-    Session.set("active_tab", route);
-  },
-  'submit form.youtube-search': function (e) {
-    e.preventDefault();
-  },
-  'input input.youtube-query': function (e) {
-    var input = $(e.currentTarget);
-    youtubeSearch(input.val());
-  },
-  //hide/show results window
-  'focus input.youtube-query' : function(e) {
-	var results = $("#searchresults");
-	if(!results.is(":visible")) {
-		results.fadeIn('fast');
-	}
-  },
-  'click button[data-toggle="clearResults"]': function(e) {
-	  $("input.youtube-query").val("");
-	  searchResults = null;
-    searchResultsDependency.changed();
-    $("input.youtube-query").focus();
-  },
-  'click .youtube-result, click a.loved': function (e, template) {
-    var videoId = (this.id != undefined) ? this.id : this._id;
-    var playlistId = template.data._id;
-    console.log('queue video:', videoId, 'to playlist', playlistId);
-    $("input.youtube-query").focus();
-    var songObject = {
-      "added" : new Date(),
-      "author" : Meteor.userId(),
-      "songId" : videoId
-    };
-    Playlists.update(
-      { _id: playlistId},
-      { $push: { songs: songObject} }
-    );
-  },
-  //Loved a song!
-  'click button#quickLove': function(e) {
-	e.stopPropagation();
-	console.log("add "+this.snippet.title+" to loved songs");
-	var user = Meteor.users; //loved songs are stored in users profile
-	user.update(
-                    { _id: Meteor.userId()	},
-                    { $addToSet : { 'profile.lovedSongs': this.id.videoId }}
-                  );
-  },
-  'click [data-action="show-list"]' : function() {
-    Session.set("songView","list");
-  },
-  'click [data-action="show-grid"]' : function() {
-    Session.set("songView","grid");
-  }
-};
-
 Template.songs.events = {
 
   'click [data-action="play"]' : function(e, template) {
@@ -277,22 +209,21 @@ Template.songs.events = {
     var index = $(e.delegateTarget).children('div.song').index(row);
     console.log('removing song at index', index);
 
-	var songrow = $(row[0]);
-	//set styles
-	songrow.css("box-shadow","0px 0px 15px rgba(155, 155, 155, 0.55)");
-	songrow.css("left","125%");
+    var songrow = $(row[0]);
+    //set styles
+    songrow.css("box-shadow","0px 0px 15px rgba(155, 155, 155, 0.55)");
+    songrow.css("left","125%");
 
-	//animation takes 300 seconds
-	setTimeout(function(){
-		// removing a element at a position is impossible in mongodb,
-		// so just set the shole array
-		if (index >= 0) {
-      var songs = _.clone(template.data.songs); // clone is important!!!
-      songs.splice(index, 1); // remove 1 element at position index
-      Playlists.update({_id: template.data._id}, { $set : {"songs": songs}});
-		}
-	},300);
-
+    //animation takes 300 seconds
+    setTimeout(function () {
+      // removing a element at a position is impossible in mongodb,
+      // so just set the shole array
+      if (index >= 0) {
+        var songs = _.clone(template.data.songs); // clone is important!!!
+        songs.splice(index, 1); // remove 1 element at position index
+        Playlists.update({_id: template.data._id}, { $set : {"songs": songs}});
+      }
+    }, 300);
 
   },
   'click [data-action="lovesong"]' : function(e) {
@@ -315,88 +246,6 @@ Template.songs.events = {
       );
     }
   }
-};
-
-// Youtube search results
-
-var searchTimer;
-var searchDelay = 250; // ms
-
-function youtubeSearch(value) {
-  clearTimeout(searchTimer);
-  searchTimer = setTimeout(function() {
-    if (!value) {
-      SsearchResults = null;
-      searchError = 'Please search for something';
-      searchResultsDependency.changed();
-      return;
-    }
-    console.log('youtube search for:', value);
-    youtubeSearchQuery({
-      part: 'id,snippet',
-      type: 'video',
-      videoEmbeddable: 'true',
-      q: value
-    });
-  },searchDelay);
-}
-
-
-var searchError;
-var searchResults;
-var searchResultsDependency = new Deps.Dependency();
-
-youtubeSearchQuery = function(options) {
-  options = options || {};
-  var currentSearchTimer = searchTimer;
-
-  Meteor.call('youtube_search', options, function(error, data) {
-    if (error) {
-      console.log('Youtube search API error:', error);
-    } else {
-      console.log('Youtube search API result:', data);
-    }
-    searchError   = error;
-    searchResults = data; // TODO: search result data != videoQuery data
-    searchResultsDependency.changed();
-
-    if (currentSearchTimer != searchTimer) {
-      console.warn('cancel video query');
-      return;
-    }
-
-    // query for more details (needs optimization)
-    var ids = _.pluck(_.pluck(data.items, 'id'), 'videoId');
-    console.log('load more data for ', ids);
-
-    youtubeVideoQuery({
-      'part': 'snippet,contentDetails,statistics',
-      'id': ids,
-    });
-  });
-};
-
-youtubeVideoQuery = function(options) {
-  options = options || {};
-
-  Meteor.call('youtube_videos_list', options, function(error, data) {
-    if (error) {
-      console.log('Youtube list API error:', error);
-    } else {
-      searchResults = data; // TODO: search result data != videoQuery data
-      searchResultsDependency.changed();
-    }
-  });
-};
-
-Template.searchResults.result = function() {
-  Deps.depend(searchResultsDependency);
-  return searchResults;
-};
-
-Template.playlistTabs.error = function() {
-  Deps.depend(searchResultsDependency);
-  return searchError;
 };
 
 Template.songs.songs = function() {
@@ -448,14 +297,6 @@ Template.songs.songs = function() {
   return songs;
 };
 
-Template.playlistTabs.lovedSongs = function() {
-  var user = Meteor.user();
-  if (!user)
-    return;
-  return Songs.find({_id: {$in: user.profile.lovedSongs} });
-};
-
-
 Template.songs.rendered = function() {
-	Session.setDefault("songView","list");
+  Session.setDefault("songView","list");
 };
