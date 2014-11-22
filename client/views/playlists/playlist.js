@@ -69,7 +69,7 @@ Template.playlist.totalDuration = function() {
     return memo.add(duration);
   }, moment.duration());
 
-	return sum.humanize();
+  return sum.humanize();
 };
 
 Template.playlist.following = function () {
@@ -103,7 +103,7 @@ Template.playlist.players = function () {
 
 //This should probably not run on the client
 Template.playlist.isOwner = function() {
-	return this.owner == Meteor.userId();
+  return this.owner == Meteor.userId();
 };
 
 Template.playlist.owner = function () {
@@ -209,22 +209,21 @@ Template.songs.events = {
     var index = $(e.delegateTarget).children('div.song').index(row);
     console.log('removing song at index', index);
 
-	var songrow = $(row[0]);
-	//set styles
-	songrow.css("box-shadow","0px 0px 15px rgba(155, 155, 155, 0.55)");
-	songrow.css("left","125%");
+    var songrow = $(row[0]);
+    //set styles
+    songrow.css("box-shadow","0px 0px 15px rgba(155, 155, 155, 0.55)");
+    songrow.css("left","125%");
 
-	//animation takes 300 seconds
-	setTimeout(function(){
-		// removing a element at a position is impossible in mongodb,
-		// so just set the shole array
-		if (index >= 0) {
-      var songs = _.clone(template.data.songs); // clone is important!!!
-      songs.splice(index, 1); // remove 1 element at position index
-      Playlists.update({_id: template.data._id}, { $set : {"songs": songs}});
-		}
-	},300);
-
+    //animation takes 300 seconds
+    setTimeout(function () {
+      // removing a element at a position is impossible in mongodb,
+      // so just set the shole array
+      if (index >= 0) {
+        var songs = _.clone(template.data.songs); // clone is important!!!
+        songs.splice(index, 1); // remove 1 element at position index
+        Playlists.update({_id: template.data._id}, { $set : {"songs": songs}});
+      }
+    }, 300);
 
   },
   'click [data-action="lovesong"]' : function(e) {
@@ -299,5 +298,5 @@ Template.songs.songs = function() {
 };
 
 Template.songs.rendered = function() {
-	Session.setDefault("songView","list");
+  Session.setDefault("songView","list");
 };
