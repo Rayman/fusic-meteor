@@ -15,3 +15,14 @@ Template.radio.helpers({
     return radioSongs;
   },
 });
+
+Template.radioSong.events({
+  'click [data-action="voteup"]': function (e, template) {
+    var id = template.data._id;
+    console.log('voting for', id);
+    RadioSongs.update(
+      { _id: id },
+      { $addToSet : {'votes': Meteor.userId()} }
+    );
+  }
+});

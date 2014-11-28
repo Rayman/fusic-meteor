@@ -268,7 +268,8 @@ RadioSongSchema = new SimpleSchema({
       } else if (this.isUpsert) {
         return { $setOnInsert: [this.userId] };
       } else {
-        this.unset();
+        // figure out if this is allowed or not :D
+        return;
       }
     }
   }
