@@ -177,6 +177,24 @@ Template.playlist.events = {
   },
 };
 
+Template.playlist.helpers({
+  searchCallback: function (videoId) {
+    // this function will get called from the searchBar template
+    var playlistId = Template.parentData(1)._id;
+
+    console.log('queue video:', videoId, 'to playlist', playlistId);
+    var songObject = {
+      "added" : new Date(),
+      "author" : Meteor.userId(),
+      "songId" : videoId
+    };
+    Playlists.update(
+      { _id: playlistId},
+      { $push: { songs: songObject} }
+    );
+  }
+});
+
 Template.updatePlaylistForm.editingDoc = function () {
   return Playlists.findOne({_id: this._id});
 };

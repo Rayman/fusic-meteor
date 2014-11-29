@@ -85,7 +85,7 @@
       </div>
 
       <div class="col-md-8">
-        {{> searchBar viewToggle=1 collection="Playlists" playlistId=this._id }}
+        {{> searchBar viewToggle=true callback="searchCallback" }}
         {{> songs}}
       </div>
     </div>

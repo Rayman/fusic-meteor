@@ -1,38 +1,25 @@
-// initialize active_tab
-Session.set('active_tab', 'songs');
-
 //Initialisation of searchbar component,
 // template example:
-// {{> searchBar lovedToggle=0 viewToggle=0 collection="Playlists" playlistId=this._id }}
+// {{> searchBar viewToggle=true callback="searchCallback" }}
 /*--------------------------
   Available parameters
-  collection  (Collection)  Name of the collection to add objects to, requires extra code in
-                            the add function, or sh*t will hit the fan (default: Playlists)
-  playlistId  (int)         pointer to which playlist songs should be added (required)
+  callback    (string)      The name of the helper of the parent template that
+                            will be called when a song has been selected
   viewToggle  (boolean)     show/hide the toggle view buttons (default: show)
   lovedToggle (boolean)     show/hide the add songs from loved songs button (default: show)
 ---------------------------*/
 
 Template.searchBar.created = function( template ) {
-  //debug purposes
-  var d = Template.currentData() || {}; //at least return an obj
-  this.collection  = (typeof d.playlistId !== "undefined") ? window[d.collection] : window.Playlists;
-  this.playlistId  = (typeof d.playlistId !== "undefined") ? d.playlistId : null;
+  var d = this.data;
   this.lovedToggle = (typeof d.lovedToggle !== "undefined") ? d.lovedToggle : 1;
   this.viewToggle  = (typeof d.viewToggle !== "undefined") ? d.viewToggle : 1;
-
 
   this.lovedToggleWidth = (this.lovedToggle === 1) ? 1 : 0;
   this.viewToggleWidth  = (this.viewToggle === 1) ? 2 : 0;
   this.searchBarWidth = 12 - this.lovedToggleWidth - this.viewToggleWidth;
-  console.log(this);
-
 };
 
 Template.searchBar.helpers({
-  isActiveTab: function(route) {
-    return Session.equals("active_tab", route) ? "active" : "";
-  },
   lovedSongs: function() {
     var user = Meteor.user();
     if (!user)
@@ -47,11 +34,6 @@ Template.searchBar.helpers({
 
 
 Template.searchBar.events = {
-  'click ul.playlist-tabs > li': function (e) {
-    var li = $(e.currentTarget);
-    var route = li.data('id');
-    Session.set("active_tab", route);
-  },
   'submit form.youtube-search': function (e) {
     e.preventDefault();
   },
@@ -75,24 +57,14 @@ Template.searchBar.events = {
 
   //add search result to Meteor collection
   'click .youtube-result, click a.loved': function(e, template) {
+    $("input.youtube-query").focus();
 
     var videoId = (this.id !== undefined) ? this.id : this._id;
 
-    //see if search bar is linked up to a collection
-    if (!template.collection) { console.warn("no collection defined"); return; }
-    if (!template.playlistId) { console.warn("no collection id defined"); return; }
-
-    console.log('queue video:', videoId, 'to playlist', template.playlistId);
-    $("input.youtube-query").focus();
-    var songObject = {
-      "added" : new Date(),
-      "author" : Meteor.userId(),
-      "songId" : videoId
-    };
-    template.collection.update(
-      { _id: template.playlistId},
-      { $push: { songs: songObject} }
-    );
+    // callback here
+    var callbackName = template.data.callback;
+    var cb = template.view.parentView.parentView.template.__helpers.get(callbackName);
+    cb(videoId);
   },
 
   //Loved a song!
