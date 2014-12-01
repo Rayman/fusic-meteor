@@ -53,8 +53,8 @@ Meteor.methods({
         doc.contentDetails = item.contentDetails;
         doc.statistics     = item.statistics;
 
-        var r = Songs.update(
-          { _id: doc._id },
+        Songs.update(
+          { _id: doc._id, etag: {$ne: item.etag} },
           doc,
           { upsert: true }
         );
