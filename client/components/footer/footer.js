@@ -46,13 +46,13 @@ Template.player.rendered = function() {
       isDragging = false;
       $(window).unbind("mousemove");
   });
-}
+};
 
 // * * * * * * * * * * * * * * * YOUTUBE IFRAME PLAYER INITIALIZATION  * * * * * * * * * * * * * *
 
 Session.set('youtubePlayerInitialized', false);
 youtubePlayer=null;
-initPlayer = function() {
+var initPlayer = function() {
   youtubePlayer = new YT.Player('youtube-embed', {
     height: '480',
     width: '640',
@@ -63,7 +63,7 @@ initPlayer = function() {
     }
   });
   Session.set('youtubePlayerInitialized', true);
-}
+};
 onYouTubeIframeAPIReady = initPlayer;
 
 
@@ -72,21 +72,22 @@ onYouTubeIframeAPIReady = initPlayer;
 function onPlayerReady(event) {
   // the footer is not yet loaded
 }
+
+playerState = new ReactiveVar('stopped');
+
 function onPlayerStateChange(event) {
   $("#player-song-title").text(event.target.getVideoData().title);
 
   $(".player-control-button").removeClass("active");
 
-  console.log("Player State: "+event.data);
-
   switch (event.data) {
     case -1: //unstarted
       $("#player-stop").addClass("active");
-      Session.set("playerState","stopped");
+      playerState.set('stopped');
       break;
     case 0: //ended
       $("#player-stop").addClass("active");
-      Session.set("playerState","stopped");
+      playerState.set('stopped');
       var id = Meteor.userId();
       console.log('song ended');
       Meteor.users.update({_id: id},
@@ -95,11 +96,11 @@ function onPlayerStateChange(event) {
       break;
     case 1: //playing
       $("#player-play").addClass("active");
-      Session.set("playerState","playing");
+      playerState.set('playing');
       break;
     case 2: //paused
       $("#player-pause").addClass("active");
-      Session.set("playerState","paused");
+      playerState.set('paused');
       break;
     case 3: //buffering
       break;
@@ -223,7 +224,7 @@ setInterval(function() {
 
 //  * * * * * * * * * * * * * * Player TEMPLATE Controls  * * * * * * * * * * * * * *
 
-Template.player.events = {
+Template.player.events({
   'click #player-play': function (e) {
     youtubePlayer.playVideo();
   },
@@ -257,7 +258,7 @@ Template.player.events = {
         );
       }
   },
-};
+});
 
 String.prototype.toHHMMSS = function () {
     var sec_num = parseInt(this, 10); // don't forget the second param
@@ -270,7 +271,7 @@ String.prototype.toHHMMSS = function () {
     if (seconds < 10) {seconds = "0"+seconds;}
     var time    = hours+':'+minutes+':'+seconds;
     return time;
-}
+};
 
 // always subscribe to the current playing playlist
 Deps.autorun(function () {
@@ -290,6 +291,12 @@ Deps.autorun(function () {
       check(songs, [String]);
       Meteor.subscribe('songs', songs);
     }
+  }
+});
+
+Template.player.helpers({
+  playerStateIs: function (value) {
+    return playerState.get() === value;
   }
 });
 
