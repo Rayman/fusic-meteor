@@ -12,7 +12,7 @@ Template.contributionChart.rendered = function () {
 
   var pie = d3.layout.pie()
       .sort(null)
-      .value(function(d) { console.log(d); return d.values.length; });
+      .value(function(d) { return d.values.length; });
 
   var svg = d3.select(this.find('svg'))
       .attr("width", width)

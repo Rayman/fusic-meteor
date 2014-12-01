@@ -10,10 +10,6 @@ Template.player.rendered = function() {
     initPlayer();
   }
 
-
-  var isDragging = false;
-
-
   var setVolume = function(volume) {
     var vol = (volume/100) *  $("div.track").width();
     $("div.bar").width(vol);
@@ -26,10 +22,8 @@ Template.player.rendered = function() {
   var defaultVolume = 75;
   setVolume(defaultVolume);
 
-
   $("div.thumb").mousedown(function() {
       $(window).mousemove(function(e) {
-          isDragging = true;
             var parentOffset = $("div.track").offset();
             var relX = e.pageX - parentOffset.left;
             var trackWidth = $("div.track").width();
@@ -42,8 +36,6 @@ Template.player.rendered = function() {
       });
   });
   $(window).mouseup(function() {
-      var wasDragging = isDragging;
-      isDragging = false;
       $(window).unbind("mousemove");
   });
 };
@@ -169,7 +161,7 @@ Deps.autorun(function () {
 });
 
 // Sync player status with youtube player
-var playerProgress = setInterval(function() {
+setInterval(function () {
   if(!youtubePlayer) {return;}
   if(Session.equals('youtubePlayerInitialized', true)) {
     if (youtubePlayer.getCurrentTime) {
