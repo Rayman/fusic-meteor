@@ -1,7 +1,4 @@
 Template.contributionChart.rendered = function () {
-  if (!this.data)
-    return;
-
   var width = 300,
       height = 200,
       radius = Math.min(width, height) / 2;
@@ -15,7 +12,7 @@ Template.contributionChart.rendered = function () {
 
   var pie = d3.layout.pie()
       .sort(null)
-      .value(function(d) { return d.amount; });
+      .value(function(d) { console.log(d); return d.values.length; });
 
   var svg = d3.select(this.find('svg'))
       .attr("width", width)
@@ -23,28 +20,32 @@ Template.contributionChart.rendered = function () {
     .append("g")
       .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-  var groups = _.groupBy(this.data.songs, 'author');
-  var users = _.map(groups, function (songs, author) {
-    var user = Meteor.users.findOne({_id: author});
-    user = user ? user.username : "";
-    return {
-      name: user,
-      amount: songs.length,
-    };
-  });
+  this.autorun(function() {
+    var data = Template.currentData();
+    if (!data)
+      return;
 
-  var g = svg.selectAll(".arc")
-      .data(pie(users))
-    .enter().append("g")
-      .attr("class", "arc");
+    var songsByUser = d3.nest()
+      .key(function(song) {
+        var user = Meteor.users.findOne({_id: song.author});
+        return user ? user.username : "";
+      })
+      .entries(data.songs);
 
-  g.append("path")
-      .attr("d", arc)
-      .style("fill", function(d) { return color(d.data.name); });
+    svg.selectAll(".arc").remove();
+    var g = svg.selectAll(".arc")
+        .data(pie(songsByUser))
+      .enter().append("g")
+        .attr("class", "arc");
 
-  g.append("text")
-      .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
-      .attr("dy", ".35em")
-      .style("text-anchor", "middle")
-      .text(function(d) { return d.data.name; });
+    g.append("path")
+        .attr("d", arc)
+        .style("fill", function(d) { return color(d.data.key); });
+
+    g.append("text")
+        .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
+        .attr("dy", ".35em")
+        .style("text-anchor", "middle")
+        .text(function(d) { return d.data.key; });
+    });
 };
