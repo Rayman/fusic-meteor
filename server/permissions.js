@@ -7,7 +7,7 @@ Meteor.users.allow({
 	var old = Meteor.users.findOne(userId).username;
 	console.log("current username: ", old ,"\tnew username: ", doc.username);
 	if( _.contains(fields, 'username') &&
-		(doc.username == null || doc.username == "")) { //if username hasn't been set
+		(doc.username === null || doc.username === "")) { //if username hasn't been set
 			return true;
 		}
 	else if ( _.contains(fields, 'profile')) {
@@ -34,7 +34,7 @@ Playlists.allow({
       if(doc.privacy == "public") { return true; }
       else if((doc.privacy == "viewonly" || doc.privacy == "private") && doc.owner == userId) { return true; }
       else { console.log("this user can't edit these playlists"); return false;  }
-    }  
+    }
     console.log("not editing songs");
     //for now, other fields can be edited without problems...
     return true;

@@ -19,7 +19,6 @@ Router.waitOn(function() {
 });
 
 // route specific configuration
-
 Router.map(function() {
   this.route('home', {path: '/'});
   this.route('loading'); //<Testing purposes only
@@ -63,7 +62,7 @@ Router.map(function() {
     data: function() {
       //return all current client side playlists (just one ;)
       return Playlists.findOne(this.params._id);
-    },
+    }
   });
 
   this.route('loved', {
