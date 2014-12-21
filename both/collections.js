@@ -83,6 +83,10 @@ UserSchema = new SimpleSchema({
     type: Object,
     optional: true,
     blackbox: true
+  },
+  status: {
+    type: Object,
+    blackbox: true //part of meteor-user-status package
   }
 });
 Meteor.users.attachSchema(UserSchema);
