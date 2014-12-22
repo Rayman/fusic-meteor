@@ -227,7 +227,7 @@ Template.player.events({
     youtubePlayer.stopVideo();
   },
   'click #player-progressbar-container': function (e) {
-    var fraction = e.offsetX / $(e.target).width();
+    var fraction = e.offsetX / $(e.currentTarget).width();
     youtubePlayer.seekTo( youtubePlayer.getDuration() * fraction );
   },
   'click #player-next': function(e) {
