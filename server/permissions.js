@@ -29,7 +29,7 @@ Playlists.allow({
   },
   //only check if we're updating songs; if so, find out if this allowed
   update: function (userId, doc, fields, modifier) {
-  console.log(userId, " wants to modify ", fields, " of ", doc.privacy, " playlist by ", doc.owner);
+  // console.log(userId, " wants to modify ", fields, " of ", doc.privacy, " playlist by ", doc.owner);
   	if( _.contains(fields, 'songs')) {
       if(doc.privacy == "public") { return true; }
       else if((doc.privacy == "viewonly" || doc.privacy == "private") && doc.owner == userId) { return true; }
