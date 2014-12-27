@@ -18,8 +18,20 @@ Router.waitOn(function() {
   ];
 });
 
-// route specific configuration
+Router.onBeforeAction(function () {
+  if (!Meteor.userId()) {
+    // if the user is not logged in, render the Login template
+    this.render('header', {to:"header"});
+    this.render("home");
+  } else {
+    // otherwise don't hold up the rest of hooks or our route/action function
+    // from running
+    this.next();
+    return;
+  }
+});
 
+// route specific configuration
 Router.map(function() {
   this.route('home', {path: '/'});
   this.route('loading'); //<Testing purposes only
@@ -62,8 +74,15 @@ Router.map(function() {
     loadingTemplate: 'playlist',
     data: function() {
       //return all current client side playlists (just one ;)
-      return Playlists.findOne(this.params._id);
-    },
+      var playlist = Playlists.findOne(this.params._id);
+      if (typeof playlist === "undefined") { return; }
+      if(playlist.owner !== Meteor.userId() && playlist.privacy === "private")
+      {
+        console.log("trying to view private playlist");
+        Router.go("home");
+      }
+      return playlist;
+    }
   });
 
   this.route('loved', {

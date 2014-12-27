@@ -9,7 +9,7 @@ Youtube.authenticate({
 
 function callYoutubeAPI(module, fn, options) {
     var future = new Future();
-
+    
     Youtube[module][fn](options, function (err, data) {
       if (err) {
         console.log('Youtube error:', err);
@@ -31,6 +31,15 @@ function callYoutubeAPI(module, fn, options) {
 
 Meteor.methods({
   youtube_search: function(options) {
+    //get client ip, use it as restriction option to filter available videos for this ip
+    var clientIp  = this.connection.clientAddress;
+    //dont activate restriction for "invalid ip ranges" http://nl.wikipedia.org/wiki/RFC_1918
+    if (clientIp.indexOf("10.") !== 0 &&
+        clientIp.indexOf("192.") !== 0 &&
+        clientIp.indexOf("172.") !== 0 &&
+        clientIp.indexOf("127.0.0.1") !== 0 ) {
+      options.restriction = clientIp;
+    }
     //first get id's, then fetch additional info using youtube_videos_list method
     return callYoutubeAPI("search", "list", options);
   },
