@@ -1,7 +1,19 @@
 SimpleSchema.debug = true;
 
-//User Profile Schema
+// sub schema for UserProfile
+UserCountry = new SimpleSchema({
+    name: {
+        type: String
+    },
+    code: {
+        type: String,
+        regEx: /^[A-Z]{2}$/
+    }
+});
+
+// sub schema for UserSchema
 UserProfile = new SimpleSchema({
+  // standard fields
   firstName: {
     type: String,
     regEx: /^[a-zA-Z-]{2,25}$/,
@@ -21,6 +33,11 @@ UserProfile = new SimpleSchema({
     allowedValues: ['Male', 'Female'],
     optional: true
   },
+  organization : {
+    type: String,
+    regEx: /^[a-z0-9A-z .]{3,30}$/,
+    optional: true
+  },
   website: {
     type: String,
     regEx: SimpleSchema.RegEx.Url,
@@ -30,6 +47,11 @@ UserProfile = new SimpleSchema({
     type: String,
     optional: true
   },
+  country: {
+    type: UserCountry,
+    optional: true
+  },
+  // fusic fields
   lovedSongs: {
     type: [String],
   },
@@ -52,18 +74,18 @@ UserProfile = new SimpleSchema({
   }
 });
 
-//User Schema
+// User Schema
 UserSchema = new SimpleSchema({
-  _id: {
-    type: String,
-    regEx: SimpleSchema.RegEx.Id
-  },
+  // standard fields
   username: {
     type: String,
     regEx: /^[a-z0-9A-Z_]{3,15}$/
   },
   emails: {
-    type: [Object]
+    type: [Object],
+    // this must be optional if you also use other login services like facebook,
+    // but if you use only accounts-password, then it can be required
+    optional: true
   },
   "emails.$.address": {
     type: String,
@@ -84,14 +106,16 @@ UserSchema = new SimpleSchema({
     optional: true,
     blackbox: true
   },
+  // fields from meteor-user-status package
   status: {
     type: Object,
-    blackbox: true //part of meteor-user-status package
+    optional: true,
+    blackbox: true
   }
 });
 Meteor.users.attachSchema(UserSchema);
 
-//Playlist Schema
+// Playlist Schema
 PlaylistsSchema = new SimpleSchema({
   owner: {
     // Force value to be current date (on server) upon insert
@@ -178,10 +202,10 @@ PlaylistsSchema = new SimpleSchema({
 Playlists = new Meteor.Collection('playlists');
 Playlists.attachSchema(PlaylistsSchema);
 
-//Songcache
+// Songcache
 Songs = new Meteor.Collection('songs');
 
-//PlayCounts schema
+// PlayCounts schema
 PlayCountsSchema = new SimpleSchema({
   songId: {
     type: String,
