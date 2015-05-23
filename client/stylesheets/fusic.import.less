@@ -26,5 +26,45 @@ div.avatar {
     opacity:1.0;
     cursor:pointer;
   }
-  
+
+}
+
+.top-song-points {
+  font-size: 0.75em;
+  color:  @brand-warning;
+}
+
+.cto-top-songs {
+    color: @gray;
+    text-align: center;
+    font-size: 0.8em;
+    a:link,
+    a:visited {
+      color: @gray;
+    }
+}
+
+.top-songs {
+	counter-reset: top-songs-counter;
+  list-style-type: none;
+
+  li:before {
+  	content: counter(top-songs-counter);
+  	counter-increment: top-songs-counter;
+
+    display: inline-block;
+    width: 30px;
+    margin-right: 10px;
+
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: right;
+  }
+}
+
+*	> .hovershow {
+  visibility: hidden;
+}
+*:hover > .hovershow {
+  visibility: visible;
 }

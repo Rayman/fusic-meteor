@@ -79,6 +79,11 @@
 
         {{>suggestions}}
 
+        <div class="cto-top-songs">
+          <span class="glyphicon glyphicon-question-sign"></span>
+          <a href="{{pathFor 'top'}}">You need more inspiration?</a>
+        </div>
+
         {{#if isOwner}}
           {{>ownerPanel}}
         {{/if}}
