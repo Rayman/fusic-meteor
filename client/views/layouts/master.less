@@ -32,7 +32,11 @@ div.bgImg {
 
 div.bgImg.home {
   background-color: @gray-dark;
-  animation: bgAnimation 20s ease-in-out 2.5s infinite alternate;
+  @animation:  bgAnimation 20s ease-in-out 2.5s infinite alternate;
+  animation: @animation;
+  -webkit-animation: @animation;
+  -moz-animation:    @animation;
+  -ms-animation:     @animation;
 
   &.sheep {
     background-image: url('../../../img/sheep_cropped.jpg');
