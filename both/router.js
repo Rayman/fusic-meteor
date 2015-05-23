@@ -19,15 +19,12 @@ Router.waitOn(function() {
 });
 
 Router.onBeforeAction(function () {
-  if (!Meteor.userId()) {
+  if (Router.current().route.getName() !== 'home' && !Meteor.userId()) {
     // if the user is not logged in, render the Login template
     this.render('header', {to:"header"});
     this.render("home");
   } else {
-    // otherwise don't hold up the rest of hooks or our route/action function
-    // from running
     this.next();
-    return;
   }
 });
 
