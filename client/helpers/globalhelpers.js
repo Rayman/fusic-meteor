@@ -1,5 +1,5 @@
 Handlebars.registerHelper('fromNow', function(input){
-  if (input) {
+  if (typeof moment !== "undefined" && input) {
     return moment(input).fromNow();
   } else {
     return "no Date";
