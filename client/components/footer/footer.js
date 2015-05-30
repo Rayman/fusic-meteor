@@ -105,8 +105,6 @@ function onPlayerStateChange(event) {
 var lastPlaylistIndex, lastPlaylistId, lastVideoId;
 Deps.autorun(function () {
 
-  if(typeof Playlists === "undefined") { return; }
-
   var user = Meteor.user();
   if (!user || !user.profile)
     return;
@@ -126,6 +124,7 @@ Deps.autorun(function () {
   }
   */
 
+  if(typeof Playlists === "undefined") { return; }
   var playlist = Playlists.findOne({_id: playing.playlist});
   if (!playlist)
     return;
