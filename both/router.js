@@ -31,6 +31,7 @@ Router.onBeforeAction(function () {
 // route specific configuration
 Router.map(function() {
   this.route('home', {path: '/'});
+  this.route('top');
   this.route('loading'); //<Testing purposes only
   this.route('notfound'); //<Testing purposes only
 

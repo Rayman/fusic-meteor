@@ -1,0 +1,22 @@
+<template name="top">
+  <div class="row">
+    <div class="col-md-12">
+      <h2><span class=" red glyphicon glyphicon-fire"></span> Top songs</h2>
+      <p>The following songs are the most popular <em>fusic-wide</em> songs.
+        Behind each song is displayed in how much different playlists the song appears.</p>
+      <ol class="top-songs">
+      {{#each topSongs}}
+        <li>
+      		<span class="song">
+      			{{snippet.title}}
+            <span class="top-song-points"> <span class="glyphicon glyphicon-flash"></span>{{count}} </span>
+      			<div class="inline songoptions hovershow">
+      				<a rel="external" href="http://youtu.be/{{_id}}" target="_blank"><span class="glyphicon glyphicon-link blue"></span></a>
+      			</div>
+      		</span>
+        </li>
+    	{{/each}}
+      </ol>
+    </div>
+  </div>
+</template>

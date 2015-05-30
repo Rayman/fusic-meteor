@@ -1,6 +1,9 @@
 <template name="MasterLayout">
-  <body>
-    <div class="bgImg {{currentRoute}}"></div>
+  <body class="page-{{currentRoute}}">
+    <div class="bgImg-container">
+      <div class="bgImg {{currentRoute}} seaguls"></div>
+    </div>
+
     <div class="container">
       <header>
         {{> yield region='header'}}
