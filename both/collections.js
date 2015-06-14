@@ -241,5 +241,5 @@ PlayCountsSchema = new SimpleSchema({
     }
   }
 });
-PlayCounts = new Meteor.Collection('playCounts')
+PlayCounts = new Meteor.Collection('playCounts');
 PlayCounts.attachSchema(PlayCountsSchema);
