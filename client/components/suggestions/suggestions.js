@@ -7,7 +7,10 @@ var refreshSuggestions = function() {
   });
 };
 
-var addSongfromQuery = function(query, playlistId) {
+/**
+ * GLOBAL SCOPE From a youtube query, return video id matching the most fitting video
+ */
+songIdFromQuery = function( query, callback ) {
   //prepare query for Youtube
   var options = {
     part: 'id',
@@ -19,17 +22,30 @@ var addSongfromQuery = function(query, playlistId) {
   Meteor.call('youtube_search', options, function(error, data) {
     if (error) { return false; }
 
-      //Id from first search result
-      var videoId = data.items[0].id.videoId;
+    //Id from first search result
+    var videoId = (data.items.length > 0) ? data.items[0].id.videoId: null;
 
-      //Fetch extra info, put it in songcache
-      var options = {
-        'part': 'snippet,contentDetails,statistics',
-        'id': videoId,
-      };
-      Meteor.call('youtube_videos_list', options);
+    //Fetch extra info, put it in songcache
+    var options = {
+      'part': 'snippet,contentDetails,statistics',
+      'id': videoId,
+    };
+    Meteor.call('youtube_videos_list', options);
 
-      //Put it in current playlist
+    //after search completes, call the callback with the videoId
+    callback.call(this, videoId);
+
+  });
+};
+
+/**
+ * Add best matching result from youtub query to a defined playlist
+ */
+var addSongfromQuery = function(query, playlistId) {
+
+  songIdFromQuery( query, function( videoId ){
+
+      //Put videoId in current playlist
       var songObject = {
         "added" : new Date(),
         "author" : Meteor.userId(),
@@ -40,7 +56,7 @@ var addSongfromQuery = function(query, playlistId) {
         { _id: playlistId},
         { $push: { songs: songObject} }
       );
-    });
+  });
 };
 
 
