@@ -1,0 +1,35 @@
+<template name="importSpotifyModal">
+	<div class="modal fade" id="import-spotify" tabindex="-1" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form class="saved-tracks">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4>Import Spotify tracks to Fusic</h4>
+				</div>
+				<div class="modal-body">
+					<p>Select the songs you wish to import from the list below</p>
+					{{#if spotifySavedTracks }}
+						<ul class="spotifyTracks">
+						{{#each spotifySavedTracks }}
+							<li><label>
+								<input type="checkbox" value="{{track.id}}" data-artist={{getArtist track}} data-title={{track.name}} />
+								{{{ songPreview }}}
+								{{getArtist track}} - {{track.name}}
+							</label></li>
+						{{/each}}
+						</uL>
+						<button type="button" class="btn btn-default action-select-all">Select all</button>
+					{{else}}
+					 <em>Loading....</em>
+					{{/if}}
+				</div>
+				<div class="modal-footer">
+					<p>{{importStatus}}</p>
+					<button type="button" class="btn btn-primary action-import">Import!</button>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</template>
