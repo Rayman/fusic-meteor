@@ -8,15 +8,18 @@
 Meteor.methods({
   // Get current user's saved tracks from the spotify api
   // https://developer.spotify.com/web-api/console/get-current-user-saved-tracks/
-  spotifyGetSavedTracks: function(key) {
-    check(key, String);
+  spotifyGetSavedTracks: function(key, offset, limit) {
+    check(key,    String);
+    check(offset, Number);
+    check(limit,  Number);
+
     var apiUrl = "https://api.spotify.com/v1/me/tracks";
 
     //get accesToken from pending credential
     var cred = OAuth._pendingCredentials.findOne({key: key});
     var token = cred.credential.serviceData.accessToken;
     //clean up pending credential
-    OAuth._pendingCredentials.remove({ _id: cred._id });
+    // OAuth._pendingCredentials.remove({ _id: cred._id });
 
     var result;
     try {
@@ -24,7 +27,7 @@ Meteor.methods({
           "Accept"        : "application/json",
           "Authorization" : "Bearer " + token
           },
-          params: {limit: 50} 
+          params: {limit: limit, offset: offset}
       });
     } catch(e) {
       console.log(e.toString());

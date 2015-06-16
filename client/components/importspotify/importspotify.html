@@ -8,7 +8,7 @@
 					<h4>Import Spotify tracks to Fusic</h4>
 				</div>
 				<div class="modal-body">
-					<p>Select the songs you wish to import from the list below</p>
+					<p>You have {{ nrOfTracks }} tracks saved to Spotify. Select the songs you wish to import from the list below</p>
 					{{#if spotifySavedTracks }}
 						<ul class="spotifyTracks">
 						{{#each spotifySavedTracks }}
@@ -20,6 +20,13 @@
 						{{/each}}
 						</uL>
 						<button type="button" class="btn btn-default action-select-all">Select all</button>
+            {{#if multiPage}}
+  						<button type="button" class="btn btn-default action-get-prev"
+								{{ isPrevPage }}>Previous</button>
+  						<button type="button" class="btn btn-default action-get-next"
+								{{ isNextPage }}>Next</button>
+							<span>Page {{ pageNr }}</span>
+            {{/if}}
 					{{else}}
 					 <em>Loading....</em>
 					{{/if}}
