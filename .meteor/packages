@@ -9,13 +9,12 @@ reactive-var
 ian:accounts-ui-bootstrap-3
 accounts-password
 
-aldeed:autoform
+aldeed:autoform@5.7.1
 aldeed:collection2
 aldeed:delete-button
 
 iron:router
 multiply:iron-router-progress
-zimme:iron-router-active
 
 nemo64:bootstrap
 less
@@ -28,3 +27,5 @@ reywood:publish-composite
 mizzao:user-status
 meteorhacks:aggregate
 momentjs:moment
+standard-minifiers
+zimme:active-route
