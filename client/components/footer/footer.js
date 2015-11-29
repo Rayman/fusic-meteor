@@ -112,16 +112,6 @@ Deps.autorun(function () {
   if (!playing || playing.status == 'pause')
     return;
 
-  // start the youtube video on pause,
-  // on page load, both are undefined
-  /*
-  var startPaused = (!lastPlaylistIndex || !lastPlaylistId);
-  if (startPaused) {
-    console.log('starting paused');
-    youtubePlayer.pauseVideo();
-    return;
-  }
-  */
 
   if(typeof Playlists === "undefined") { return; }
   var playlist = Playlists.findOne({_id: playing.playlist});
@@ -137,10 +127,7 @@ Deps.autorun(function () {
   if (!videoId)
     return;
 
-  if (lastVideoId       == videoId /* &&
-      lastPlaylistId    == playing.playlist &&
-      lastPlaylistIndex == playing.playlistIndex */
-  ) {
+  if (lastVideoId       == videoId ) {
     console.log('not playing: same song');
     return;
   }

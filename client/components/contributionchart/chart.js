@@ -77,7 +77,6 @@ Template.contributionChart.rendered = function () {
     .duration(500)
     .style("font-size", function(d) {
       var delta = Math.abs(d.startAngle - d.endAngle);
-      console.log(delta);
       return ( delta < 0.7) ? "10px" : " 14px"; })
     .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; });
 
