@@ -1,9 +1,9 @@
 Template.playlist.rendered = function() {
   AutoForm.hooks({
     updatePlaylistForm: { //on successful edit, collapse back out
-      onSuccess: function(operation, result, template) {
+      onSuccess: function(operation, result) {
         $('#playlistInfo').collapse('show');
-        $('#updatePlaylistForm').collapse('hide');
+        $('.edit-playlist-info').collapse('hide');
       }
     }
   });
