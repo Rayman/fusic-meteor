@@ -14,7 +14,7 @@ Template.Loading.events({
 Template.Loading.helpers({
      randomQuote: function () {
        var quotes = [
-         ["Loading, Bitch!","J.Pinkman"],
+         ["Good things come to those who wait","Some random guy"],
          ["Rivers know this: there is no hurry. We shall get there some day.","A.A.Milne"],
          ["Patience is bitter, but its fruit is sweet","Aristotle"],
          ["Why is patience so important? <br/> Because it makes us pay attention.","Paulo Coelho"],

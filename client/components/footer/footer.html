@@ -19,6 +19,15 @@
         <button class="btn btn-default btn-xs" id="player-play"><span class="glyphicon glyphicon-play"></span></button>
       {{/if}}
         <button class="player-control-button btn btn-default btn-xs" id="player-next"><span class="glyphicon glyphicon-step-forward"></span></button>
+
+        <button class="player-control-button btn btn-default btn-xs
+        " id="player-mode" data-toggle="tooltip" data-placement="top" title="Toggle shuffle mode">
+        {{#if playerModeIs 'shuffle'}}
+          <span class="glyphicon glyphicon-random"></span>
+        {{else}}
+          <span class="glyphicon glyphicon-arrow-right"></span>
+        {{/if}}
+        </button>
       </div>
 
       <!-- stop button, 1 wide -->

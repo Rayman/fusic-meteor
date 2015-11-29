@@ -38,6 +38,8 @@ Template.player.rendered = function() {
   $(window).mouseup(function() {
       $(window).unbind("mousemove");
   });
+
+  $("button").tooltip();
 };
 
 // * * * * * * * * * * * * * * * YOUTUBE IFRAME PLAYER INITIALIZATION  * * * * * * * * * * * * * *
@@ -66,6 +68,7 @@ function onPlayerReady(event) {
 }
 
 playerState = new ReactiveVar('stopped');
+playerMode = new ReactiveVar('normal'); //other value is 'shuffle'
 
 function onPlayerStateChange(event) {
   $("#player-song-title").text(event.target.getVideoData().title);
@@ -80,11 +83,7 @@ function onPlayerStateChange(event) {
     case 0: //ended
       $("#player-stop").addClass("active");
       playerState.set('stopped');
-      var id = Meteor.userId();
-      console.log('song ended');
-      Meteor.users.update({_id: id},
-        {$inc: {'profile.playing.playlistIndex': 1}}
-      );
+      Template.player.offsetSong(1);
       break;
     case 1: //playing
       $("#player-play").addClass("active");
@@ -113,16 +112,6 @@ Deps.autorun(function () {
   if (!playing || playing.status == 'pause')
     return;
 
-  // start the youtube video on pause,
-  // on page load, both are undefined
-  /*
-  var startPaused = (!lastPlaylistIndex || !lastPlaylistId);
-  if (startPaused) {
-    console.log('starting paused');
-    youtubePlayer.pauseVideo();
-    return;
-  }
-  */
 
   if(typeof Playlists === "undefined") { return; }
   var playlist = Playlists.findOne({_id: playing.playlist});
@@ -138,10 +127,7 @@ Deps.autorun(function () {
   if (!videoId)
     return;
 
-  if (lastVideoId       == videoId /* &&
-      lastPlaylistId    == playing.playlist &&
-      lastPlaylistIndex == playing.playlistIndex */
-  ) {
+  if (lastVideoId       == videoId ) {
     console.log('not playing: same song');
     return;
   }
@@ -227,31 +213,55 @@ Template.player.events({
   'click #player-stop': function (e) {
     youtubePlayer.stopVideo();
   },
+
+  // Toggle shuffle option on and off
+  'click #player-mode': function (e) {
+    var newMode = (playerMode.get() === "shuffle") ? "normal" : "shuffle";
+    playerMode.set(newMode);
+  },
+
   'click #player-progressbar-container': function (e) {
     var fraction = e.offsetX / $(e.currentTarget).width();
     youtubePlayer.seekTo( youtubePlayer.getDuration() * fraction );
   },
-  'click #player-next': function(e) {
-      console.log('next song');
-      var list = Session.get("playlist");
-      if(Session.get("playlistIndex") < list.songs.length-1) {
+  'click #player-next': function(e, tmpl) { tmpl.view.template.offsetSong(1); },
+  'click #player-previous': function(e, tmpl) { tmpl.view.template.offsetSong(-1); }
 
-        var id = Meteor.userId();
-        Meteor.users.update({_id: id},
-          {$inc: {'profile.playing.playlistIndex': 1}}
-        );
-      }
-  },
-  'click #player-previous': function(e) {
-      console.log('previous song');
-      if (Session.get("playlistIndex")>0) {
-        var id = Meteor.userId();
-        Meteor.users.update({_id: id},
-          {$inc: {'profile.playing.playlistIndex': -1}}
-        );
-      }
-  },
 });
+
+/**
+ * Actually skip the song, see if shuffle is enabled, update DB
+ */
+Template.player.offsetSong = function( offset ) {
+  if(_.isUndefined(offset)) { return; }
+
+  var list = Session.get("playlist");
+  var id = Meteor.userId();
+  var mode = playerMode.get();
+
+  if(mode === "shuffle")
+  {
+    //@TODO this is not a proper shuffle, doesn't take into account previously played songs
+    //just randoms whatever comes next, as long as it is not the current song
+    var randomSong;
+    //at least don't end up at the same song
+    while( !_.isNumber(randomSong) || randomSong === Session.get('playlistIndex') )
+    {
+      randomSong = _.random(0, list.songs.length-1);
+    }
+    Meteor.users.update({_id: id},
+      {$set: {'profile.playing.playlistIndex': randomSong}}
+    );
+  }
+  else {
+    if ( (Session.get("playlistIndex") > 0 && offset < 0) ||
+         (Session.get("playlistIndex") < list.songs.length-1 && offset > 0) ) {
+      Meteor.users.update({_id: id},
+        {$inc: {'profile.playing.playlistIndex': offset}}
+      );
+    }
+  }
+};
 
 String.prototype.toHHMMSS = function () {
     var sec_num = parseInt(this, 10); // don't forget the second param
@@ -290,6 +300,10 @@ Deps.autorun(function () {
 Template.player.helpers({
   playerStateIs: function (value) {
     return playerState.get() === value;
+  },
+  //helper to check for current play mode [normal, shuffle]
+  playerModeIs: function(value) {
+    return playerMode.get() === value;
   }
 });
 
