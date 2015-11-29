@@ -23,4 +23,4 @@ Template.playlistsEntry.events = {
   'click .playlist-container' : function(e,template) {
     Router.go('playlist',{_id:this._id});
   }
-}
+};
