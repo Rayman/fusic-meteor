@@ -1,7 +1,7 @@
 <template name="playlists">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Newest playlists</h3>
+      <h3 class="panel-title"><span class="glyphicon glyphicon-certificate"></span> Newest playlists</h3>
     </div>
     <div class="panel-body">
       {{#each playlists}}
@@ -12,6 +12,22 @@
        </div>
     </div>
   </div>
+
+  {{#with following_playlists }}
+    {{#if this.count}}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><span class="glyphicon glyphicon-pushpin"></span> Followed playlists</h3>
+      </div>
+      <div class="panel-body">
+        {{#each this}}
+          {{> playlistsEntry}}
+         {{/each}}
+      </div>
+    </div>
+    {{/if}}
+  {{/with}}
+
   <div class="row">
     <div class="col-md-4 col-md-offset-4">
       <h2>
