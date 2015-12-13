@@ -5,11 +5,31 @@ Meteor.publish("allusers", function () {
   );
 });
 
-Meteor.publish("playlists/newest", function () {
-  return Playlists.find(
-    { privacy: {$ne: 'private'} },
-    { sort: {createdAt: -1}, limit: 5 }
-  );
+/**
+ * for playlists overview page, return two cursors from the same collection
+ * One for recently created playlists
+ * One for playlists the current user is following (sorted by created date)
+ */
+Meteor.publishComposite("playlists/overview", function(userId) {
+  return {
+    find: function() {
+      return Playlists.find(
+        { privacy: {$ne: 'private'} },
+        { sort: {createdAt: -1}, limit: 5 }
+      );
+    },
+    children: [ {
+      collectionName: "followedPlaylists",
+      find: function() {
+        var user = Meteor.users.findOne(userId);
+        var following = (!user.profile.following) ? [] : user.profile.following;
+        return Playlists.find(
+          { _id: {$in: following}},
+          { sort: {createdAt: -1}, limit: 5}
+        );
+      }
+    } ]
+  };
 });
 
 //In all playlists view, hide the private ones

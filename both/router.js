@@ -37,11 +37,18 @@ Router.map(function() {
 
   this.route('playlists', {
     subscriptions: function() {
-      this.subscribe('playlists/newest').wait();
+      this.subscribe('playlists/overview', Meteor.userId()).wait();
     },
     data: {
       playlists: function() {
         return Playlists.find({privacy:{$ne:'private'}},{sort: {createdAt: -1}, limit: 5});
+      },
+      following_playlists: function() {
+        //Temporary client-side collection to save the results from the second subscription in
+        if(!window.followedPlaylists) { // <---- This represents what is wrong with Meteor as a framework
+          window.followedPlaylists = new Meteor.Collection("followedPlaylists");
+        }
+        return followedPlaylists.find({});
       }
     }
   });

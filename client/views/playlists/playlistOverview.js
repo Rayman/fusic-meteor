@@ -24,3 +24,9 @@ Template.playlistsEntry.events = {
     Router.go('playlist',{_id:this._id});
   }
 };
+
+Template.playlistsEntry.helpers({
+  'songCount': function() {
+    return this.songs ? this.songs.length : 0;
+  }
+});
