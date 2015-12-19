@@ -29,3 +29,4 @@ meteorhacks:aggregate
 momentjs:moment
 standard-minifiers
 zimme:active-route
+reywood:iron-router-ga

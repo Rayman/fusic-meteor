@@ -5,7 +5,8 @@ Router.configure({
   yieldTemplates: {
     'header': { to: 'header' },
     'footer': { to: 'footer' }
-  }
+  },
+  trackPageView: true
 });
 
 // when data returns falsy, show the NotFound template
