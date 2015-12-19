@@ -12,15 +12,6 @@
     </div>
 
     <div class="navbar-right container-fluid">
-      {{#with user}}
-        <ul class="nav navbar-nav">
-          <li class="{{ isActivePath regex='profile' }}">
-            <a href="{{pathFor 'userProfile'}}">
-              <span class="glyphicon glyphicon-user"></span> Profile
-            </a>
-          </li>
-        </ul>
-      {{/with}}
       <ul id="login" class="nav navbar-nav">
         {{> loginButtons }}
       </ul>
@@ -31,14 +22,14 @@
         <ul class="nav navbar-nav">
           <li class="{{ isActivePath regex='playlists' }}"><a href="{{pathFor 'playlists'}}">Playlists</a></li>
           <li class="{{ isActivePath regex='loved'     }}"><a href="{{pathFor 'loved'}}">Loved songs</a></li>
-          <li>
-            <a rel="external" href="https://github.com/Rayman/fusic-meteor/issues?state=open">
-              <span class="glyphicon glyphicon-exclamation-sign"> </span> Report Issue
-            </a>
-          </li>
         </ul>
     </div><!--/.nav-collapse -->
     {{/if}}
 
   </div>
+</template>
+
+<template name="_loginButtonsAdditionalLoggedInDropdownActions">
+    <button class="btn btn-default btn-block nav-editprofile"><span class="glyphicon glyphicon-user"></span> Edit profile</button>
+    <button class="btn btn-default btn-block nav-reportissue"><span class="glyphicon glyphicon-exclamation-sign"></span> Report issue</button>
 </template>
