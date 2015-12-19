@@ -1,16 +1,3 @@
-Template.insertPlaylistForm.rendered = function() {
-  Session.setDefault('playlistPrivacy','public');
-  this.find('[data-schema-key=privacy]').value = 'public';
-  $("button").tooltip();
-  AutoForm.hooks({
-    insertPlaylistForm: {
-      onSuccess: function(operation, result, template) {
-        Router.go('/playlist/'+result);
-      }
-    }
-  });
-};
-
 Template.insertPlaylistForm.events = {
   'click #privacyToggle button' : function(e,template) {
     var btn = e.currentTarget;

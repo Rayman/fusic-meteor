@@ -12,6 +12,13 @@
     </div>
 
     <div class="navbar-right container-fluid">
+      {{#with user}}
+        <ul class="nav navbar-nav">
+          <button type="button" class="btn btn-primary btn-xs navbar-btn" data-toggle="modal" data-target="#addPlaylistModal">
+            <span class="glyphicon glyphicon-plus"></span> New playlist
+          </button>
+        </ul>
+      {{/with}}
       <ul id="login" class="nav navbar-nav">
         {{> loginButtons }}
       </ul>
@@ -27,6 +34,9 @@
     {{/if}}
 
   </div>
+
+  {{! Modal div, invisible by default }}
+  {{> addPlaylist }}
 </template>
 
 <template name="_loginButtonsAdditionalLoggedInDropdownActions">
