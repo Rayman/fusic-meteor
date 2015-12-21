@@ -5,7 +5,8 @@ Router.configure({
   yieldTemplates: {
     'header': { to: 'header' },
     'footer': { to: 'footer' }
-  }
+  },
+  trackPageView: true
 });
 
 // when data returns falsy, show the NotFound template
@@ -108,6 +109,7 @@ Router.map(function() {
   });
 
   this.route('userProfile', {
+    name: 'userProfile',
     path:'/profile/:_id',
     waitOn: function() {
       return Meteor.subscribe('playlistsByUser', this.params._id);

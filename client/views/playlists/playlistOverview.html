@@ -28,14 +28,6 @@
     {{/if}}
   {{/with}}
 
-  <div class="row">
-    <div class="col-md-4 col-md-offset-4">
-      <h2>
-        <span class="glyphicon glyphicon-plus"></span> Or add a new one
-      </h2>
-      {{> insertPlaylistForm}}
-    </div>
-  </div>
 </template>
 
 <template name="allplaylists">
@@ -49,29 +41,6 @@
        {{/each}}
     </div>
   </div>
-</template>
-
-
-<template name="insertPlaylistForm">
-{{#autoForm collection="Playlists" id="insertPlaylistForm" type="insert" }}
-  {{> afQuickField name="title"}}
-  {{> afQuickField name="cover"}}
-  {{> afQuickField name="tags" }}
-  {{> afFieldInput name="privacy" type="hidden"}}
-  <label class="control-label" for="privacy">Privacy Setting</label>
-  <div class="btn-group btn-group-md" id="privacyToggle">
-      <button data-action="public" data-toggle="tooltip" data-placement="bottom" title="Your playlist will be viewable and editable by everyone" type="button" class="btn btn-default {{#if sessionIs 'playlistPrivacy' 'public'}}active{{/if}}">
-        <span class="glyphicon glyphicon glyphicon-globe"></span> Public
-      </button>
-      <button data-action="viewonly" data-toggle="tooltip" data-placement="bottom" title="Only you can edit your playlist, the rest can view and listen" type="button" class="btn btn-default {{#if sessionIs 'playlistPrivacy' 'viewonly'}}active{{/if}}">
-        <span class="glyphicon glyphicon glyphicon-eye-open"></span> View only
-      </button>
-      <button data-action="private" data-toggle="tooltip" data-placement="bottom" title="This playlist will only be visible by you" type="button" class="btn btn-default {{#if sessionIs 'playlistPrivacy' 'private'}}active{{/if}}">
-        <span class="glyphicon glyphicon-lock"></span> Private
-      </button>
-  </div>
-  <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Add!</button>
-{{/autoForm}}
 </template>
 
 <template name="playlistsEntry">
