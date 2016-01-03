@@ -1,0 +1,35 @@
+<template name="radio">
+  <div class="row">
+    <div class="col-md-8">
+      {{> searchBar viewToggle=0 collection="Playlists" playlistId=this._id }}
+
+      {{#each radioSongs}}
+        {{> radioSong}}
+      {{/each}}
+    </div>
+    <div class="col-md-4">
+      <h1>{{title}}</h1>
+      <p>Stuff</p>
+    </div>
+  </div>
+</template>
+
+<template name="radioSong">
+  <div class="row">
+    <div class="col-md-1">
+      <img src="{{song.snippet.thumbnails.default.url}}" class="img-responsive" alt="Responsive image">
+    </div>
+    <div class="col-md-6">
+      <p><strong>{{song.snippet.title}}</strong></p>
+      <small>Added by xxx on xxx</small>
+    </div>
+    <div class="col-md-4">
+      {{#each votes}}
+        {{> circleAvatar}}
+      {{/each}}
+    </div>
+    <div class="col-md-1">
+      <button data-action="voteup"><span class="glyphicon glyphicon-chevron-up"></span></button>
+    </div>
+  </div>
+</template>

@@ -243,3 +243,64 @@ PlayCountsSchema = new SimpleSchema({
 });
 PlayCounts = new Meteor.Collection('playCounts')
 PlayCounts.attachSchema(PlayCountsSchema);
+
+//Radio schema
+RadioSchema = new SimpleSchema({
+  title: {
+    type: String,
+    label: "Radio title",
+    max: 100,
+  },
+  cover: {
+    type: String,
+    label: "Cover url",
+    regEx: SimpleSchema.RegEx.Url,
+    optional: true,
+  },
+  tags: {
+    type: String,
+    label: "Tags",
+    optional: true,
+  },
+  description: {
+    type: String,
+    label: "A brief description of your radio",
+    optional: true,
+    max: 500
+  },
+
+  currentSong: {
+    type: String, // RadioSongId
+    optional: true,
+  },
+});
+Radios = new Meteor.Collection('Radios');
+Radios.attachSchema(RadioSchema);
+
+//RadioSong schema
+RadioSongSchema = new SimpleSchema({
+  radioId: {
+    type: String,
+    denyUpdate: true,
+  },
+  songId: {
+    type: String,
+    denyUpdate: true,
+  },
+  votes: {
+    type: [String], // array of userIds
+    // Force value to be [current user] upon insert
+    autoValue: function() {
+      if (this.isInsert) {
+        return [this.userId];
+      } else if (this.isUpsert) {
+        return { $setOnInsert: [this.userId] };
+      } else {
+        // figure out if this is allowed or not :D
+        return;
+      }
+    }
+  }
+});
+RadioSongs = new Meteor.Collection('RadioSongs');
+RadioSongs.attachSchema(RadioSongSchema);
